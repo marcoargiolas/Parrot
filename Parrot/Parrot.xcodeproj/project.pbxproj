@@ -1,0 +1,552 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		DECADBCD1961EA300024D067 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADBCC1961EA300024D067 /* Foundation.framework */; };
+		DECADBCF1961EA300024D067 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADBCE1961EA300024D067 /* CoreGraphics.framework */; };
+		DECADBD11961EA300024D067 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADBD01961EA300024D067 /* UIKit.framework */; };
+		DECADBD71961EA300024D067 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DECADBD51961EA300024D067 /* InfoPlist.strings */; };
+		DECADBD91961EA300024D067 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DECADBD81961EA300024D067 /* main.m */; };
+		DECADBE01961EA300024D067 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DECADBDE1961EA300024D067 /* Main.storyboard */; };
+		DECADBE51961EA300024D067 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DECADBE41961EA300024D067 /* Images.xcassets */; };
+		DECADBEC1961EA310024D067 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADBEB1961EA310024D067 /* XCTest.framework */; };
+		DECADBED1961EA310024D067 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADBCC1961EA300024D067 /* Foundation.framework */; };
+		DECADBEE1961EA310024D067 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADBD01961EA300024D067 /* UIKit.framework */; };
+		DECADBF61961EA310024D067 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DECADBF41961EA310024D067 /* InfoPlist.strings */; };
+		DECADBF81961EA310024D067 /* ParrotTests.m in Sources */ = {isa = PBXBuildFile; fileRef = DECADBF71961EA310024D067 /* ParrotTests.m */; };
+		DECADC061961EBF40024D067 /* login-button-small-pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = DECADC041961EBF40024D067 /* login-button-small-pressed.png */; };
+		DECADC071961EBF40024D067 /* login-button-small.png in Resources */ = {isa = PBXBuildFile; fileRef = DECADC051961EBF40024D067 /* login-button-small.png */; };
+		DECADC0C1961EC160024D067 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DECADC091961EC160024D067 /* AppDelegate.m */; };
+		DECADC0D1961EC160024D067 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DECADC0B1961EC160024D067 /* ViewController.m */; };
+		DECADC0F1961EC450024D067 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADC0E1961EC450024D067 /* AVFoundation.framework */; };
+		DECADC121961EC9E0024D067 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADC101961EC9E0024D067 /* FacebookSDK.framework */; };
+		DECADC131961EC9E0024D067 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADC111961EC9E0024D067 /* Parse.framework */; };
+		DECADC151961ECB00024D067 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADC141961ECB00024D067 /* CoreLocation.framework */; };
+		DECADC171961ECB80024D067 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADC161961ECB80024D067 /* AudioToolbox.framework */; };
+		DECADC191961ECC20024D067 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADC181961ECC20024D067 /* CFNetwork.framework */; };
+		DECADC1B1961ECDA0024D067 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADC1A1961ECDA0024D067 /* libz.dylib */; };
+		DECADC1D1961ECE60024D067 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADC1C1961ECE60024D067 /* MobileCoreServices.framework */; };
+		DECADC1F1961ECEC0024D067 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADC1E1961ECEC0024D067 /* QuartzCore.framework */; };
+		DECADC211961ECF30024D067 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADC201961ECF30024D067 /* Security.framework */; };
+		DECADC231961ECF90024D067 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADC221961ECF90024D067 /* StoreKit.framework */; };
+		DECADC251961ED010024D067 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADC241961ED010024D067 /* SystemConfiguration.framework */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DECADBEF1961EA310024D067 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DECADBC11961EA300024D067 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DECADBC81961EA300024D067;
+			remoteInfo = Parrot;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		DECADBC91961EA300024D067 /* Parrot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Parrot.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		DECADBCC1961EA300024D067 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		DECADBCE1961EA300024D067 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		DECADBD01961EA300024D067 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		DECADBD41961EA300024D067 /* Parrot-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Parrot-Info.plist"; sourceTree = "<group>"; };
+		DECADBD61961EA300024D067 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		DECADBD81961EA300024D067 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		DECADBDA1961EA300024D067 /* Parrot-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Parrot-Prefix.pch"; sourceTree = "<group>"; };
+		DECADBDF1961EA300024D067 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		DECADBE41961EA300024D067 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		DECADBEA1961EA310024D067 /* ParrotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ParrotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DECADBEB1961EA310024D067 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		DECADBF31961EA310024D067 /* ParrotTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ParrotTests-Info.plist"; sourceTree = "<group>"; };
+		DECADBF51961EA310024D067 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		DECADBF71961EA310024D067 /* ParrotTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ParrotTests.m; sourceTree = "<group>"; };
+		DECADC041961EBF40024D067 /* login-button-small-pressed.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login-button-small-pressed.png"; sourceTree = "<group>"; };
+		DECADC051961EBF40024D067 /* login-button-small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login-button-small.png"; sourceTree = "<group>"; };
+		DECADC081961EC160024D067 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Source/AppDelegate.h; sourceTree = "<group>"; };
+		DECADC091961EC160024D067 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Source/AppDelegate.m; sourceTree = "<group>"; };
+		DECADC0A1961EC160024D067 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = Source/ViewController.h; sourceTree = "<group>"; };
+		DECADC0B1961EC160024D067 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController.m; path = Source/ViewController.m; sourceTree = "<group>"; };
+		DECADC0E1961EC450024D067 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		DECADC101961EC9E0024D067 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = Libs/FacebookSDK.framework; sourceTree = "<group>"; };
+		DECADC111961EC9E0024D067 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = Libs/Parse.framework; sourceTree = "<group>"; };
+		DECADC141961ECB00024D067 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		DECADC161961ECB80024D067 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		DECADC181961ECC20024D067 /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		DECADC1A1961ECDA0024D067 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		DECADC1C1961ECE60024D067 /* MobileCoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MobileCoreServices.framework; path = System/Library/Frameworks/MobileCoreServices.framework; sourceTree = SDKROOT; };
+		DECADC1E1961ECEC0024D067 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		DECADC201961ECF30024D067 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		DECADC221961ECF90024D067 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
+		DECADC241961ED010024D067 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DECADBC61961EA300024D067 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DECADBD11961EA300024D067 /* UIKit.framework in Frameworks */,
+				DECADC251961ED010024D067 /* SystemConfiguration.framework in Frameworks */,
+				DECADC231961ECF90024D067 /* StoreKit.framework in Frameworks */,
+				DECADC211961ECF30024D067 /* Security.framework in Frameworks */,
+				DECADC1F1961ECEC0024D067 /* QuartzCore.framework in Frameworks */,
+				DECADC1D1961ECE60024D067 /* MobileCoreServices.framework in Frameworks */,
+				DECADC1B1961ECDA0024D067 /* libz.dylib in Frameworks */,
+				DECADC191961ECC20024D067 /* CFNetwork.framework in Frameworks */,
+				DECADC171961ECB80024D067 /* AudioToolbox.framework in Frameworks */,
+				DECADC151961ECB00024D067 /* CoreLocation.framework in Frameworks */,
+				DECADC121961EC9E0024D067 /* FacebookSDK.framework in Frameworks */,
+				DECADC131961EC9E0024D067 /* Parse.framework in Frameworks */,
+				DECADC0F1961EC450024D067 /* AVFoundation.framework in Frameworks */,
+				DECADBCF1961EA300024D067 /* CoreGraphics.framework in Frameworks */,
+				DECADBCD1961EA300024D067 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DECADBE71961EA310024D067 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DECADBEC1961EA310024D067 /* XCTest.framework in Frameworks */,
+				DECADBEE1961EA310024D067 /* UIKit.framework in Frameworks */,
+				DECADBED1961EA310024D067 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		DECADBC01961EA300024D067 = {
+			isa = PBXGroup;
+			children = (
+				DECADBD21961EA300024D067 /* Parrot */,
+				DECADC011961EA6C0024D067 /* Resources */,
+				DECADBF11961EA310024D067 /* ParrotTests */,
+				DECADBCB1961EA300024D067 /* Frameworks */,
+				DECADBCA1961EA300024D067 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		DECADBCA1961EA300024D067 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				DECADBC91961EA300024D067 /* Parrot.app */,
+				DECADBEA1961EA310024D067 /* ParrotTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		DECADBCB1961EA300024D067 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DECADC241961ED010024D067 /* SystemConfiguration.framework */,
+				DECADC221961ECF90024D067 /* StoreKit.framework */,
+				DECADC201961ECF30024D067 /* Security.framework */,
+				DECADC1E1961ECEC0024D067 /* QuartzCore.framework */,
+				DECADC1C1961ECE60024D067 /* MobileCoreServices.framework */,
+				DECADC1A1961ECDA0024D067 /* libz.dylib */,
+				DECADC181961ECC20024D067 /* CFNetwork.framework */,
+				DECADC161961ECB80024D067 /* AudioToolbox.framework */,
+				DECADC141961ECB00024D067 /* CoreLocation.framework */,
+				DECADC101961EC9E0024D067 /* FacebookSDK.framework */,
+				DECADC111961EC9E0024D067 /* Parse.framework */,
+				DECADC0E1961EC450024D067 /* AVFoundation.framework */,
+				DECADBCC1961EA300024D067 /* Foundation.framework */,
+				DECADBCE1961EA300024D067 /* CoreGraphics.framework */,
+				DECADBD01961EA300024D067 /* UIKit.framework */,
+				DECADBEB1961EA310024D067 /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DECADBD21961EA300024D067 /* Parrot */ = {
+			isa = PBXGroup;
+			children = (
+				DECADC081961EC160024D067 /* AppDelegate.h */,
+				DECADC091961EC160024D067 /* AppDelegate.m */,
+				DECADC0A1961EC160024D067 /* ViewController.h */,
+				DECADC0B1961EC160024D067 /* ViewController.m */,
+				DECADBDE1961EA300024D067 /* Main.storyboard */,
+				DECADBE41961EA300024D067 /* Images.xcassets */,
+				DECADBD31961EA300024D067 /* Supporting Files */,
+			);
+			path = Parrot;
+			sourceTree = "<group>";
+		};
+		DECADBD31961EA300024D067 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				DECADBD41961EA300024D067 /* Parrot-Info.plist */,
+				DECADBD51961EA300024D067 /* InfoPlist.strings */,
+				DECADBD81961EA300024D067 /* main.m */,
+				DECADBDA1961EA300024D067 /* Parrot-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		DECADBF11961EA310024D067 /* ParrotTests */ = {
+			isa = PBXGroup;
+			children = (
+				DECADBF71961EA310024D067 /* ParrotTests.m */,
+				DECADBF21961EA310024D067 /* Supporting Files */,
+			);
+			path = ParrotTests;
+			sourceTree = "<group>";
+		};
+		DECADBF21961EA310024D067 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				DECADBF31961EA310024D067 /* ParrotTests-Info.plist */,
+				DECADBF41961EA310024D067 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		DECADC011961EA6C0024D067 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				DECADC031961EBF40024D067 /* Images */,
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+		DECADC031961EBF40024D067 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				DECADC041961EBF40024D067 /* login-button-small-pressed.png */,
+				DECADC051961EBF40024D067 /* login-button-small.png */,
+			);
+			name = Images;
+			path = Parrot/Resources/Images;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		DECADBC81961EA300024D067 /* Parrot */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DECADBFB1961EA310024D067 /* Build configuration list for PBXNativeTarget "Parrot" */;
+			buildPhases = (
+				DECADBC51961EA300024D067 /* Sources */,
+				DECADBC61961EA300024D067 /* Frameworks */,
+				DECADBC71961EA300024D067 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Parrot;
+			productName = Parrot;
+			productReference = DECADBC91961EA300024D067 /* Parrot.app */;
+			productType = "com.apple.product-type.application";
+		};
+		DECADBE91961EA310024D067 /* ParrotTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DECADBFE1961EA310024D067 /* Build configuration list for PBXNativeTarget "ParrotTests" */;
+			buildPhases = (
+				DECADBE61961EA310024D067 /* Sources */,
+				DECADBE71961EA310024D067 /* Frameworks */,
+				DECADBE81961EA310024D067 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DECADBF01961EA310024D067 /* PBXTargetDependency */,
+			);
+			name = ParrotTests;
+			productName = ParrotTests;
+			productReference = DECADBEA1961EA310024D067 /* ParrotTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		DECADBC11961EA300024D067 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0510;
+				ORGANIZATIONNAME = "Marco Argiolas";
+				TargetAttributes = {
+					DECADBE91961EA310024D067 = {
+						TestTargetID = DECADBC81961EA300024D067;
+					};
+				};
+			};
+			buildConfigurationList = DECADBC41961EA300024D067 /* Build configuration list for PBXProject "Parrot" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = DECADBC01961EA300024D067;
+			productRefGroup = DECADBCA1961EA300024D067 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				DECADBC81961EA300024D067 /* Parrot */,
+				DECADBE91961EA310024D067 /* ParrotTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		DECADBC71961EA300024D067 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DECADC061961EBF40024D067 /* login-button-small-pressed.png in Resources */,
+				DECADBE51961EA300024D067 /* Images.xcassets in Resources */,
+				DECADBD71961EA300024D067 /* InfoPlist.strings in Resources */,
+				DECADBE01961EA300024D067 /* Main.storyboard in Resources */,
+				DECADC071961EBF40024D067 /* login-button-small.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DECADBE81961EA310024D067 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DECADBF61961EA310024D067 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		DECADBC51961EA300024D067 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DECADC0C1961EC160024D067 /* AppDelegate.m in Sources */,
+				DECADBD91961EA300024D067 /* main.m in Sources */,
+				DECADC0D1961EC160024D067 /* ViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DECADBE61961EA310024D067 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DECADBF81961EA310024D067 /* ParrotTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DECADBF01961EA310024D067 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DECADBC81961EA300024D067 /* Parrot */;
+			targetProxy = DECADBEF1961EA310024D067 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		DECADBD51961EA300024D067 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DECADBD61961EA300024D067 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		DECADBDE1961EA300024D067 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DECADBDF1961EA300024D067 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		DECADBF41961EA310024D067 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				DECADBF51961EA310024D067 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		DECADBF91961EA310024D067 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		DECADBFA1961EA310024D067 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.1;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		DECADBFC1961EA310024D067 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Libs",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Parrot/Parrot-Prefix.pch";
+				INFOPLIST_FILE = "Parrot/Parrot-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		DECADBFD1961EA310024D067 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Libs",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Parrot/Parrot-Prefix.pch";
+				INFOPLIST_FILE = "Parrot/Parrot-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		DECADBFF1961EA310024D067 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Parrot.app/Parrot";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Parrot/Parrot-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = "ParrotTests/ParrotTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Debug;
+		};
+		DECADC001961EA310024D067 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Parrot.app/Parrot";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Parrot/Parrot-Prefix.pch";
+				INFOPLIST_FILE = "ParrotTests/ParrotTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = xctest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		DECADBC41961EA300024D067 /* Build configuration list for PBXProject "Parrot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DECADBF91961EA310024D067 /* Debug */,
+				DECADBFA1961EA310024D067 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DECADBFB1961EA310024D067 /* Build configuration list for PBXNativeTarget "Parrot" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DECADBFC1961EA310024D067 /* Debug */,
+				DECADBFD1961EA310024D067 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		DECADBFE1961EA310024D067 /* Build configuration list for PBXNativeTarget "ParrotTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DECADBFF1961EA310024D067 /* Debug */,
+				DECADC001961EA310024D067 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = DECADBC11961EA300024D067 /* Project object */;
+}
