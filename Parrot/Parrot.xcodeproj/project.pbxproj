@@ -7,6 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DEAA901A19634F960036B6BF /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA901919634F960036B6BF /* ProfileViewController.m */; };
+		DEAA901D196350A40036B6BF /* WallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA901C196350A40036B6BF /* WallViewController.m */; };
+		DEAA9020196350B20036B6BF /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA901F196350B20036B6BF /* SearchViewController.m */; };
+		DEAA9022196355CF0036B6BF /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEAA9021196355CF0036B6BF /* GLKit.framework */; };
+		DEAA9040196356170036B6BF /* AEFloatConverter.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA9026196356170036B6BF /* AEFloatConverter.m */; };
+		DEAA9041196356170036B6BF /* EZAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA9028196356170036B6BF /* EZAudio.m */; };
+		DEAA9042196356170036B6BF /* EZAudioFile.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA902A196356170036B6BF /* EZAudioFile.m */; };
+		DEAA9043196356170036B6BF /* EZAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA902C196356170036B6BF /* EZAudioPlayer.m */; };
+		DEAA9044196356170036B6BF /* EZAudioPlot.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA902E196356170036B6BF /* EZAudioPlot.m */; };
+		DEAA9045196356170036B6BF /* EZAudioPlotGL.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA9030196356170036B6BF /* EZAudioPlotGL.m */; };
+		DEAA9046196356170036B6BF /* EZAudioPlotGLKViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA9032196356170036B6BF /* EZAudioPlotGLKViewController.m */; };
+		DEAA9047196356170036B6BF /* EZMicrophone.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA9034196356170036B6BF /* EZMicrophone.m */; };
+		DEAA9048196356170036B6BF /* EZOutput.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA9036196356170036B6BF /* EZOutput.m */; };
+		DEAA9049196356170036B6BF /* EZPlot.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA9038196356170036B6BF /* EZPlot.m */; };
+		DEAA904A196356170036B6BF /* EZRecorder.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA903A196356170036B6BF /* EZRecorder.m */; };
+		DEAA904B196356170036B6BF /* TPCircularBuffer.c in Sources */ = {isa = PBXBuildFile; fileRef = DEAA903B196356170036B6BF /* TPCircularBuffer.c */; };
+		DEAA904C196356170036B6BF /* CHANGELOG in Resources */ = {isa = PBXBuildFile; fileRef = DEAA903E196356170036B6BF /* CHANGELOG */; };
+		DEAA904D196356170036B6BF /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = DEAA903F196356170036B6BF /* VERSION */; };
+		DEAA9051196356C70036B6BF /* RecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA9050196356C70036B6BF /* RecordViewController.m */; };
 		DECADBCD1961EA300024D067 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADBCC1961EA300024D067 /* Foundation.framework */; };
 		DECADBCF1961EA300024D067 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADBCE1961EA300024D067 /* CoreGraphics.framework */; };
 		DECADBD11961EA300024D067 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADBD01961EA300024D067 /* UIKit.framework */; };
@@ -14,7 +33,6 @@
 		DECADBD91961EA300024D067 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DECADBD81961EA300024D067 /* main.m */; };
 		DECADBE01961EA300024D067 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DECADBDE1961EA300024D067 /* Main.storyboard */; };
 		DECADBE51961EA300024D067 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DECADBE41961EA300024D067 /* Images.xcassets */; };
-		DECADBEC1961EA310024D067 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADBEB1961EA310024D067 /* XCTest.framework */; };
 		DECADBED1961EA310024D067 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADBCC1961EA300024D067 /* Foundation.framework */; };
 		DECADBEE1961EA310024D067 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADBD01961EA300024D067 /* UIKit.framework */; };
 		DECADBF61961EA310024D067 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DECADBF41961EA310024D067 /* InfoPlist.strings */; };
@@ -22,7 +40,6 @@
 		DECADC061961EBF40024D067 /* login-button-small-pressed.png in Resources */ = {isa = PBXBuildFile; fileRef = DECADC041961EBF40024D067 /* login-button-small-pressed.png */; };
 		DECADC071961EBF40024D067 /* login-button-small.png in Resources */ = {isa = PBXBuildFile; fileRef = DECADC051961EBF40024D067 /* login-button-small.png */; };
 		DECADC0C1961EC160024D067 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DECADC091961EC160024D067 /* AppDelegate.m */; };
-		DECADC0D1961EC160024D067 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DECADC0B1961EC160024D067 /* ViewController.m */; };
 		DECADC0F1961EC450024D067 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADC0E1961EC450024D067 /* AVFoundation.framework */; };
 		DECADC121961EC9E0024D067 /* FacebookSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADC101961EC9E0024D067 /* FacebookSDK.framework */; };
 		DECADC131961EC9E0024D067 /* Parse.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADC111961EC9E0024D067 /* Parse.framework */; };
@@ -35,6 +52,8 @@
 		DECADC211961ECF30024D067 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADC201961ECF30024D067 /* Security.framework */; };
 		DECADC231961ECF90024D067 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADC221961ECF90024D067 /* StoreKit.framework */; };
 		DECADC251961ED010024D067 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADC241961ED010024D067 /* SystemConfiguration.framework */; };
+		DECADC291961EE3D0024D067 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DECADC281961EE3D0024D067 /* LoginViewController.m */; };
+		DECADC2C1961EEF50024D067 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DECADC2B1961EEF50024D067 /* MainViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -48,6 +67,41 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DEAA901819634F960036B6BF /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProfileViewController.h; path = Source/ProfileViewController.h; sourceTree = "<group>"; };
+		DEAA901919634F960036B6BF /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProfileViewController.m; path = Source/ProfileViewController.m; sourceTree = "<group>"; };
+		DEAA901B196350A40036B6BF /* WallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WallViewController.h; path = Source/WallViewController.h; sourceTree = "<group>"; };
+		DEAA901C196350A40036B6BF /* WallViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = WallViewController.m; path = Source/WallViewController.m; sourceTree = "<group>"; };
+		DEAA901E196350B20036B6BF /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SearchViewController.h; path = Source/SearchViewController.h; sourceTree = "<group>"; };
+		DEAA901F196350B20036B6BF /* SearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SearchViewController.m; path = Source/SearchViewController.m; sourceTree = "<group>"; };
+		DEAA9021196355CF0036B6BF /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		DEAA9025196356170036B6BF /* AEFloatConverter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AEFloatConverter.h; sourceTree = "<group>"; };
+		DEAA9026196356170036B6BF /* AEFloatConverter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AEFloatConverter.m; sourceTree = "<group>"; };
+		DEAA9027196356170036B6BF /* EZAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZAudio.h; sourceTree = "<group>"; };
+		DEAA9028196356170036B6BF /* EZAudio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZAudio.m; sourceTree = "<group>"; };
+		DEAA9029196356170036B6BF /* EZAudioFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZAudioFile.h; sourceTree = "<group>"; };
+		DEAA902A196356170036B6BF /* EZAudioFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZAudioFile.m; sourceTree = "<group>"; };
+		DEAA902B196356170036B6BF /* EZAudioPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZAudioPlayer.h; sourceTree = "<group>"; };
+		DEAA902C196356170036B6BF /* EZAudioPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZAudioPlayer.m; sourceTree = "<group>"; };
+		DEAA902D196356170036B6BF /* EZAudioPlot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZAudioPlot.h; sourceTree = "<group>"; };
+		DEAA902E196356170036B6BF /* EZAudioPlot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZAudioPlot.m; sourceTree = "<group>"; };
+		DEAA902F196356170036B6BF /* EZAudioPlotGL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZAudioPlotGL.h; sourceTree = "<group>"; };
+		DEAA9030196356170036B6BF /* EZAudioPlotGL.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZAudioPlotGL.m; sourceTree = "<group>"; };
+		DEAA9031196356170036B6BF /* EZAudioPlotGLKViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZAudioPlotGLKViewController.h; sourceTree = "<group>"; };
+		DEAA9032196356170036B6BF /* EZAudioPlotGLKViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZAudioPlotGLKViewController.m; sourceTree = "<group>"; };
+		DEAA9033196356170036B6BF /* EZMicrophone.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZMicrophone.h; sourceTree = "<group>"; };
+		DEAA9034196356170036B6BF /* EZMicrophone.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZMicrophone.m; sourceTree = "<group>"; };
+		DEAA9035196356170036B6BF /* EZOutput.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZOutput.h; sourceTree = "<group>"; };
+		DEAA9036196356170036B6BF /* EZOutput.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZOutput.m; sourceTree = "<group>"; };
+		DEAA9037196356170036B6BF /* EZPlot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZPlot.h; sourceTree = "<group>"; };
+		DEAA9038196356170036B6BF /* EZPlot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZPlot.m; sourceTree = "<group>"; };
+		DEAA9039196356170036B6BF /* EZRecorder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EZRecorder.h; sourceTree = "<group>"; };
+		DEAA903A196356170036B6BF /* EZRecorder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EZRecorder.m; sourceTree = "<group>"; };
+		DEAA903B196356170036B6BF /* TPCircularBuffer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = TPCircularBuffer.c; sourceTree = "<group>"; };
+		DEAA903C196356170036B6BF /* TPCircularBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPCircularBuffer.h; sourceTree = "<group>"; };
+		DEAA903E196356170036B6BF /* CHANGELOG */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = CHANGELOG; sourceTree = "<group>"; };
+		DEAA903F196356170036B6BF /* VERSION */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VERSION; sourceTree = "<group>"; };
+		DEAA904F196356C70036B6BF /* RecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecordViewController.h; path = Source/RecordViewController.h; sourceTree = "<group>"; };
+		DEAA9050196356C70036B6BF /* RecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecordViewController.m; path = Source/RecordViewController.m; sourceTree = "<group>"; };
 		DECADBC91961EA300024D067 /* Parrot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Parrot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DECADBCC1961EA300024D067 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		DECADBCE1961EA300024D067 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -59,7 +113,6 @@
 		DECADBDF1961EA300024D067 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DECADBE41961EA300024D067 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		DECADBEA1961EA310024D067 /* ParrotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ParrotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		DECADBEB1961EA310024D067 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		DECADBF31961EA310024D067 /* ParrotTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ParrotTests-Info.plist"; sourceTree = "<group>"; };
 		DECADBF51961EA310024D067 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		DECADBF71961EA310024D067 /* ParrotTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ParrotTests.m; sourceTree = "<group>"; };
@@ -67,8 +120,6 @@
 		DECADC051961EBF40024D067 /* login-button-small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "login-button-small.png"; sourceTree = "<group>"; };
 		DECADC081961EC160024D067 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = Source/AppDelegate.h; sourceTree = "<group>"; };
 		DECADC091961EC160024D067 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = Source/AppDelegate.m; sourceTree = "<group>"; };
-		DECADC0A1961EC160024D067 /* ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ViewController.h; path = Source/ViewController.h; sourceTree = "<group>"; };
-		DECADC0B1961EC160024D067 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ViewController.m; path = Source/ViewController.m; sourceTree = "<group>"; };
 		DECADC0E1961EC450024D067 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		DECADC101961EC9E0024D067 /* FacebookSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FacebookSDK.framework; path = Libs/FacebookSDK.framework; sourceTree = "<group>"; };
 		DECADC111961EC9E0024D067 /* Parse.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Parse.framework; path = Libs/Parse.framework; sourceTree = "<group>"; };
@@ -81,6 +132,10 @@
 		DECADC201961ECF30024D067 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		DECADC221961ECF90024D067 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		DECADC241961ED010024D067 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		DECADC271961EE3D0024D067 /* LoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LoginViewController.h; path = Source/LoginViewController.h; sourceTree = "<group>"; };
+		DECADC281961EE3D0024D067 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Source/LoginViewController.m; sourceTree = "<group>"; };
+		DECADC2A1961EEF50024D067 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = Source/MainViewController.h; sourceTree = "<group>"; };
+		DECADC2B1961EEF50024D067 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = Source/MainViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +143,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEAA9022196355CF0036B6BF /* GLKit.framework in Frameworks */,
 				DECADBD11961EA300024D067 /* UIKit.framework in Frameworks */,
 				DECADC251961ED010024D067 /* SystemConfiguration.framework in Frameworks */,
 				DECADC231961ECF90024D067 /* StoreKit.framework in Frameworks */,
@@ -110,7 +166,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DECADBEC1961EA310024D067 /* XCTest.framework in Frameworks */,
 				DECADBEE1961EA310024D067 /* UIKit.framework in Frameworks */,
 				DECADBED1961EA310024D067 /* Foundation.framework in Frameworks */,
 			);
@@ -119,6 +174,59 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DEAA9024196356170036B6BF /* EZAudio */ = {
+			isa = PBXGroup;
+			children = (
+				DEAA9025196356170036B6BF /* AEFloatConverter.h */,
+				DEAA9026196356170036B6BF /* AEFloatConverter.m */,
+				DEAA9027196356170036B6BF /* EZAudio.h */,
+				DEAA9028196356170036B6BF /* EZAudio.m */,
+				DEAA9029196356170036B6BF /* EZAudioFile.h */,
+				DEAA902A196356170036B6BF /* EZAudioFile.m */,
+				DEAA902B196356170036B6BF /* EZAudioPlayer.h */,
+				DEAA902C196356170036B6BF /* EZAudioPlayer.m */,
+				DEAA902D196356170036B6BF /* EZAudioPlot.h */,
+				DEAA902E196356170036B6BF /* EZAudioPlot.m */,
+				DEAA902F196356170036B6BF /* EZAudioPlotGL.h */,
+				DEAA9030196356170036B6BF /* EZAudioPlotGL.m */,
+				DEAA9031196356170036B6BF /* EZAudioPlotGLKViewController.h */,
+				DEAA9032196356170036B6BF /* EZAudioPlotGLKViewController.m */,
+				DEAA9033196356170036B6BF /* EZMicrophone.h */,
+				DEAA9034196356170036B6BF /* EZMicrophone.m */,
+				DEAA9035196356170036B6BF /* EZOutput.h */,
+				DEAA9036196356170036B6BF /* EZOutput.m */,
+				DEAA9037196356170036B6BF /* EZPlot.h */,
+				DEAA9038196356170036B6BF /* EZPlot.m */,
+				DEAA9039196356170036B6BF /* EZRecorder.h */,
+				DEAA903A196356170036B6BF /* EZRecorder.m */,
+				DEAA903B196356170036B6BF /* TPCircularBuffer.c */,
+				DEAA903C196356170036B6BF /* TPCircularBuffer.h */,
+				DEAA903D196356170036B6BF /* VERSION */,
+			);
+			name = EZAudio;
+			path = Libs/EZAudio;
+			sourceTree = SOURCE_ROOT;
+		};
+		DEAA903D196356170036B6BF /* VERSION */ = {
+			isa = PBXGroup;
+			children = (
+				DEAA903E196356170036B6BF /* CHANGELOG */,
+				DEAA903F196356170036B6BF /* VERSION */,
+			);
+			path = VERSION;
+			sourceTree = "<group>";
+		};
+		DEAA904E196356A00036B6BF /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				DEAA901819634F960036B6BF /* ProfileViewController.h */,
+				DEAA901919634F960036B6BF /* ProfileViewController.m */,
+				DEAA904F196356C70036B6BF /* RecordViewController.h */,
+				DEAA9050196356C70036B6BF /* RecordViewController.m */,
+			);
+			name = Profile;
+			sourceTree = "<group>";
+		};
 		DECADBC01961EA300024D067 = {
 			isa = PBXGroup;
 			children = (
@@ -142,6 +250,7 @@
 		DECADBCB1961EA300024D067 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DEAA9021196355CF0036B6BF /* GLKit.framework */,
 				DECADC241961ED010024D067 /* SystemConfiguration.framework */,
 				DECADC221961ECF90024D067 /* StoreKit.framework */,
 				DECADC201961ECF30024D067 /* Security.framework */,
@@ -157,7 +266,6 @@
 				DECADBCC1961EA300024D067 /* Foundation.framework */,
 				DECADBCE1961EA300024D067 /* CoreGraphics.framework */,
 				DECADBD01961EA300024D067 /* UIKit.framework */,
-				DECADBEB1961EA310024D067 /* XCTest.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -165,10 +273,9 @@
 		DECADBD21961EA300024D067 /* Parrot */ = {
 			isa = PBXGroup;
 			children = (
-				DECADC081961EC160024D067 /* AppDelegate.h */,
-				DECADC091961EC160024D067 /* AppDelegate.m */,
-				DECADC0A1961EC160024D067 /* ViewController.h */,
-				DECADC0B1961EC160024D067 /* ViewController.m */,
+				DEAA904E196356A00036B6BF /* Profile */,
+				DEAA9024196356170036B6BF /* EZAudio */,
+				DECADC261961EE230024D067 /* Start */,
 				DECADBDE1961EA300024D067 /* Main.storyboard */,
 				DECADBE41961EA300024D067 /* Images.xcassets */,
 				DECADBD31961EA300024D067 /* Supporting Files */,
@@ -221,6 +328,23 @@
 			);
 			name = Images;
 			path = Parrot/Resources/Images;
+			sourceTree = "<group>";
+		};
+		DECADC261961EE230024D067 /* Start */ = {
+			isa = PBXGroup;
+			children = (
+				DECADC271961EE3D0024D067 /* LoginViewController.h */,
+				DECADC281961EE3D0024D067 /* LoginViewController.m */,
+				DECADC081961EC160024D067 /* AppDelegate.h */,
+				DECADC091961EC160024D067 /* AppDelegate.m */,
+				DECADC2A1961EEF50024D067 /* MainViewController.h */,
+				DECADC2B1961EEF50024D067 /* MainViewController.m */,
+				DEAA901B196350A40036B6BF /* WallViewController.h */,
+				DEAA901C196350A40036B6BF /* WallViewController.m */,
+				DEAA901E196350B20036B6BF /* SearchViewController.h */,
+				DEAA901F196350B20036B6BF /* SearchViewController.m */,
+			);
+			name = Start;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -300,10 +424,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				DECADC061961EBF40024D067 /* login-button-small-pressed.png in Resources */,
+				DEAA904D196356170036B6BF /* VERSION in Resources */,
 				DECADBE51961EA300024D067 /* Images.xcassets in Resources */,
 				DECADBD71961EA300024D067 /* InfoPlist.strings in Resources */,
 				DECADBE01961EA300024D067 /* Main.storyboard in Resources */,
 				DECADC071961EBF40024D067 /* login-button-small.png in Resources */,
+				DEAA904C196356170036B6BF /* CHANGELOG in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -322,9 +448,26 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEAA904A196356170036B6BF /* EZRecorder.m in Sources */,
+				DEAA9044196356170036B6BF /* EZAudioPlot.m in Sources */,
+				DEAA9043196356170036B6BF /* EZAudioPlayer.m in Sources */,
+				DEAA901D196350A40036B6BF /* WallViewController.m in Sources */,
+				DEAA9045196356170036B6BF /* EZAudioPlotGL.m in Sources */,
+				DEAA9046196356170036B6BF /* EZAudioPlotGLKViewController.m in Sources */,
+				DEAA9048196356170036B6BF /* EZOutput.m in Sources */,
+				DEAA9040196356170036B6BF /* AEFloatConverter.m in Sources */,
+				DEAA904B196356170036B6BF /* TPCircularBuffer.c in Sources */,
 				DECADC0C1961EC160024D067 /* AppDelegate.m in Sources */,
+				DEAA9041196356170036B6BF /* EZAudio.m in Sources */,
+				DEAA9047196356170036B6BF /* EZMicrophone.m in Sources */,
 				DECADBD91961EA300024D067 /* main.m in Sources */,
-				DECADC0D1961EC160024D067 /* ViewController.m in Sources */,
+				DECADC291961EE3D0024D067 /* LoginViewController.m in Sources */,
+				DECADC2C1961EEF50024D067 /* MainViewController.m in Sources */,
+				DEAA9049196356170036B6BF /* EZPlot.m in Sources */,
+				DEAA9042196356170036B6BF /* EZAudioFile.m in Sources */,
+				DEAA901A19634F960036B6BF /* ProfileViewController.m in Sources */,
+				DEAA9020196350B20036B6BF /* SearchViewController.m in Sources */,
+				DEAA9051196356C70036B6BF /* RecordViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -452,6 +595,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libs",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Parrot/Parrot-Prefix.pch";
@@ -469,6 +613,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libs",
+					"$(DEVELOPER_FRAMEWORKS_DIR)",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Parrot/Parrot-Prefix.pch";
@@ -537,6 +682,7 @@
 				DECADBFD1961EA310024D067 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		DECADBFE1961EA310024D067 /* Build configuration list for PBXNativeTarget "ParrotTests" */ = {
 			isa = XCConfigurationList;
@@ -545,6 +691,7 @@
 				DECADC001961EA310024D067 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

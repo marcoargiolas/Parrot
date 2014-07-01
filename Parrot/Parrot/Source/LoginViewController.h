@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  LoginViewController.h
 //  Parrot
 //
 //  Created by Marco Argiolas on 30/06/14.
@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface LoginViewController : UIViewController
+- (IBAction)loginButtonPressed:(id)sender;
 
 @end
