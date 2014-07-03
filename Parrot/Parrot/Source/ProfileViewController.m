@@ -7,12 +7,18 @@
 //
 
 #import "ProfileViewController.h"
+#import "UIImage+Additions.h"
 
+#define IMAGE_WIDTH 80
 @interface ProfileViewController ()
 
 @end
 
 @implementation ProfileViewController
+
+@synthesize nameLabel;
+@synthesize infoLabel;
+@synthesize userImageView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -26,6 +32,21 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    profile = [[UserProfile sharedProfile].currentUser objectForKey:@"profile"];
+    
+    UIImage *maskImage = [UIImage ellipsedMaskFromRect:CGRectMake(0, 0, IMAGE_WIDTH, IMAGE_WIDTH) inSize:CGSizeMake(IMAGE_WIDTH, IMAGE_WIDTH)];
+    NSData *img_data = [profile objectForKey:@"imageData"];
+    UIImage *img_load = [UIImage imageWithData:img_data];
+    if(img_load != nil)
+    {
+        CGFloat scale = [UIScreen mainScreen].scale;
+        img_load = [img_load roundedImageWithSize:CGSizeMake(userImageView.frame.size.width*scale, userImageView.frame.size.height*scale) andMaskImage:maskImage];
+        [userImageView setImage:img_load];
+    }
+
+    [nameLabel setText:[profile objectForKey:@"name"]];
+    [infoLabel setText:[profile objectForKey:@"bio"]];
+    
     [buttonContainerView setFrame:CGRectMake(buttonContainerView.frame.origin.x, self.view.frame.size.height - 60 - buttonContainerView.frame.size.height, buttonContainerView.frame.size.width, buttonContainerView.frame.size.height)];
 }
 

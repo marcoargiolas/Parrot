@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DE9DFC5C1965F0EC00908ED7 /* UserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = DE9DFC5B1965F0EC00908ED7 /* UserProfile.m */; };
+		DE9DFC621965FC3200908ED7 /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DE9DFC611965FC3200908ED7 /* UIImage+Additions.m */; };
 		DEAA901A19634F960036B6BF /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA901919634F960036B6BF /* ProfileViewController.m */; };
 		DEAA901D196350A40036B6BF /* WallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA901C196350A40036B6BF /* WallViewController.m */; };
 		DEAA9020196350B20036B6BF /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA901F196350B20036B6BF /* SearchViewController.m */; };
@@ -67,6 +69,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DE9DFC5A1965F0EC00908ED7 /* UserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserProfile.h; path = Source/UserProfile.h; sourceTree = "<group>"; };
+		DE9DFC5B1965F0EC00908ED7 /* UserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserProfile.m; path = Source/UserProfile.m; sourceTree = "<group>"; };
+		DE9DFC5E1965F80600908ED7 /* GlobalDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GlobalDefines.h; path = Source/GlobalDefines.h; sourceTree = "<group>"; };
+		DE9DFC601965FC3200908ED7 /* UIImage+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Additions.h"; path = "Source/UIImage+Additions.h"; sourceTree = "<group>"; };
+		DE9DFC611965FC3200908ED7 /* UIImage+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Additions.m"; path = "Source/UIImage+Additions.m"; sourceTree = "<group>"; };
 		DEAA901819634F960036B6BF /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProfileViewController.h; path = Source/ProfileViewController.h; sourceTree = "<group>"; };
 		DEAA901919634F960036B6BF /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProfileViewController.m; path = Source/ProfileViewController.m; sourceTree = "<group>"; };
 		DEAA901B196350A40036B6BF /* WallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WallViewController.h; path = Source/WallViewController.h; sourceTree = "<group>"; };
@@ -174,6 +181,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DE9DFC5F1965FC0E00908ED7 /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				DE9DFC601965FC3200908ED7 /* UIImage+Additions.h */,
+				DE9DFC611965FC3200908ED7 /* UIImage+Additions.m */,
+				DE9DFC5E1965F80600908ED7 /* GlobalDefines.h */,
+			);
+			name = Utilities;
+			sourceTree = "<group>";
+		};
 		DEAA9024196356170036B6BF /* EZAudio */ = {
 			isa = PBXGroup;
 			children = (
@@ -223,6 +240,8 @@
 				DEAA901919634F960036B6BF /* ProfileViewController.m */,
 				DEAA904F196356C70036B6BF /* RecordViewController.h */,
 				DEAA9050196356C70036B6BF /* RecordViewController.m */,
+				DE9DFC5A1965F0EC00908ED7 /* UserProfile.h */,
+				DE9DFC5B1965F0EC00908ED7 /* UserProfile.m */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -273,6 +292,7 @@
 		DECADBD21961EA300024D067 /* Parrot */ = {
 			isa = PBXGroup;
 			children = (
+				DE9DFC5F1965FC0E00908ED7 /* Utilities */,
 				DEAA904E196356A00036B6BF /* Profile */,
 				DEAA9024196356170036B6BF /* EZAudio */,
 				DECADC261961EE230024D067 /* Start */,
@@ -455,10 +475,12 @@
 				DEAA9045196356170036B6BF /* EZAudioPlotGL.m in Sources */,
 				DEAA9046196356170036B6BF /* EZAudioPlotGLKViewController.m in Sources */,
 				DEAA9048196356170036B6BF /* EZOutput.m in Sources */,
+				DE9DFC621965FC3200908ED7 /* UIImage+Additions.m in Sources */,
 				DEAA9040196356170036B6BF /* AEFloatConverter.m in Sources */,
 				DEAA904B196356170036B6BF /* TPCircularBuffer.c in Sources */,
 				DECADC0C1961EC160024D067 /* AppDelegate.m in Sources */,
 				DEAA9041196356170036B6BF /* EZAudio.m in Sources */,
+				DE9DFC5C1965F0EC00908ED7 /* UserProfile.m in Sources */,
 				DEAA9047196356170036B6BF /* EZMicrophone.m in Sources */,
 				DECADBD91961EA300024D067 /* main.m in Sources */,
 				DECADC291961EE3D0024D067 /* LoginViewController.m in Sources */,

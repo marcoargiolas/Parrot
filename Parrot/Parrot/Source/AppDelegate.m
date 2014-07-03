@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import <AVFoundation/AVFoundation.h>
+#import <Parse/Parse.h>
 
 @implementation AppDelegate
 
@@ -23,9 +24,30 @@
     if( err ){
         NSLog(@"There was an error sending the audio to the speakers");
     }
+
+    // ****************************************************************************
+    // Fill in with your Parse credentials:
+    // ****************************************************************************
+    [Parse setApplicationId:@"VRcSMFZCaAgMrJGsvb5dSkbhVrB8o3tGIn6cN4NP" clientKey:@"rzoCRx1IYtv2Zgx5VhBiwhpdCDmECKQLGde9AHg1"];
+    
+    // ****************************************************************************
+    // Your Facebook application id is configured in Info.plist.
+    // ****************************************************************************
+    [PFFacebookUtils initializeFacebook];
+
     return YES;
 }
-							
+
+// ****************************************************************************
+// App switching methods to support Facebook Single Sign-On.
+// ****************************************************************************
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    return [FBAppCall handleOpenURL:url
+                  sourceApplication:sourceApplication
+                        withSession:[PFFacebookUtils session]];
+}
+
 - (void)applicationWillResignActive:(UIApplication *)application
 {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
@@ -46,11 +68,17 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application
 {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [FBAppCall handleDidBecomeActiveWithSession:[PFFacebookUtils session]];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
 {
-    // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    /*
+     Called when the application is about to terminate.
+     Save data if appropriate.
+     See also applicationDidEnterBackground:.
+     */
+    [[PFFacebookUtils session] close];
 }
 
 @end

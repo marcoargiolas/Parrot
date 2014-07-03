@@ -11,4 +11,5 @@
 @interface LoginViewController : UIViewController
 - (IBAction)loginButtonPressed:(id)sender;
 
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @end
