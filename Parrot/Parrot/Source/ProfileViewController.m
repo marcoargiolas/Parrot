@@ -8,6 +8,7 @@
 
 #import "ProfileViewController.h"
 #import "UIImage+Additions.h"
+#import "GlobalDefines.h"
 
 #define IMAGE_WIDTH 80
 @interface ProfileViewController ()
@@ -32,10 +33,10 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    profile = [[UserProfile sharedProfile].currentUser objectForKey:@"profile"];
+    profile = [[UserProfile sharedProfile].currentUser objectForKey:USER_PROFILE];
     
     UIImage *maskImage = [UIImage ellipsedMaskFromRect:CGRectMake(0, 0, IMAGE_WIDTH, IMAGE_WIDTH) inSize:CGSizeMake(IMAGE_WIDTH, IMAGE_WIDTH)];
-    NSData *img_data = [profile objectForKey:@"imageData"];
+    NSData *img_data = [profile objectForKey:USER_IMAGE_DATA];
     UIImage *img_load = [UIImage imageWithData:img_data];
     if(img_load != nil)
     {
@@ -44,8 +45,8 @@
         [userImageView setImage:img_load];
     }
 
-    [nameLabel setText:[profile objectForKey:@"name"]];
-    [infoLabel setText:[profile objectForKey:@"bio"]];
+    [nameLabel setText:[profile objectForKey:USER_FULL_NAME]];
+    [infoLabel setText:[profile objectForKey:USER_BIO]];
     
     [buttonContainerView setFrame:CGRectMake(buttonContainerView.frame.origin.x, self.view.frame.size.height - 60 - buttonContainerView.frame.size.height, buttonContainerView.frame.size.width, buttonContainerView.frame.size.height)];
 }

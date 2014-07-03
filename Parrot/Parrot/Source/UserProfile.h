@@ -8,13 +8,16 @@
 
 #import <Foundation/Foundation.h>
 #import <Parse/Parse.h>
+#import "Spoke.h"
 
 @interface UserProfile : NSObject
 {
-   PFUser *currentUser;
+    PFUser *currentUser;
+    NSMutableArray *spokesArray;
 }
 
 @property (nonatomic, strong) PFUser *currentUser;
+@property (nonatomic, strong) NSMutableArray *spokesArray;
 
 +(UserProfile*)sharedProfile;
 - (void) loadProfileFromFacebook;

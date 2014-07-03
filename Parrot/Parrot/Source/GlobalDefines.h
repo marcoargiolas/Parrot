@@ -9,4 +9,13 @@
 
 #import <UIKit/UIKit.h>
 
-#define PROFILE_LOADED_FROM_FACEBOOK                      @"userID"
+#define PROFILE_LOADED_FROM_FACEBOOK    @"profileLoadedFromFacebook"
+#define USER_ID                         @"userID"
+#define USER_FULL_NAME                  @"fullName"
+#define USER_LOCATION                   @"location"
+#define USER_GENDER                     @"gender"
+#define USER_BIRTHDAY                   @"birthday"
+#define USER_RELATIONSHIP               @"relationship"
+#define USER_BIO                        @"bio"
+#define USER_IMAGE_DATA                 @"imageData"
+#define USER_PROFILE                    @"profile"

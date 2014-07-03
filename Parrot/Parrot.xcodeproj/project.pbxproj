@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		DE9DFC5C1965F0EC00908ED7 /* UserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = DE9DFC5B1965F0EC00908ED7 /* UserProfile.m */; };
 		DE9DFC621965FC3200908ED7 /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DE9DFC611965FC3200908ED7 /* UIImage+Additions.m */; };
+		DE9DFC661966062300908ED7 /* Spoke.m in Sources */ = {isa = PBXBuildFile; fileRef = DE9DFC651966062300908ED7 /* Spoke.m */; };
 		DEAA901A19634F960036B6BF /* ProfileViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA901919634F960036B6BF /* ProfileViewController.m */; };
 		DEAA901D196350A40036B6BF /* WallViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA901C196350A40036B6BF /* WallViewController.m */; };
 		DEAA9020196350B20036B6BF /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA901F196350B20036B6BF /* SearchViewController.m */; };
@@ -74,6 +75,8 @@
 		DE9DFC5E1965F80600908ED7 /* GlobalDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GlobalDefines.h; path = Source/GlobalDefines.h; sourceTree = "<group>"; };
 		DE9DFC601965FC3200908ED7 /* UIImage+Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIImage+Additions.h"; path = "Source/UIImage+Additions.h"; sourceTree = "<group>"; };
 		DE9DFC611965FC3200908ED7 /* UIImage+Additions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIImage+Additions.m"; path = "Source/UIImage+Additions.m"; sourceTree = "<group>"; };
+		DE9DFC641966062300908ED7 /* Spoke.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Spoke.h; path = Source/Spoke.h; sourceTree = "<group>"; };
+		DE9DFC651966062300908ED7 /* Spoke.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Spoke.m; path = Source/Spoke.m; sourceTree = "<group>"; };
 		DEAA901819634F960036B6BF /* ProfileViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ProfileViewController.h; path = Source/ProfileViewController.h; sourceTree = "<group>"; };
 		DEAA901919634F960036B6BF /* ProfileViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ProfileViewController.m; path = Source/ProfileViewController.m; sourceTree = "<group>"; };
 		DEAA901B196350A40036B6BF /* WallViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = WallViewController.h; path = Source/WallViewController.h; sourceTree = "<group>"; };
@@ -191,6 +194,15 @@
 			name = Utilities;
 			sourceTree = "<group>";
 		};
+		DE9DFC631966060600908ED7 /* Spoke */ = {
+			isa = PBXGroup;
+			children = (
+				DE9DFC641966062300908ED7 /* Spoke.h */,
+				DE9DFC651966062300908ED7 /* Spoke.m */,
+			);
+			name = Spoke;
+			sourceTree = "<group>";
+		};
 		DEAA9024196356170036B6BF /* EZAudio */ = {
 			isa = PBXGroup;
 			children = (
@@ -292,6 +304,7 @@
 		DECADBD21961EA300024D067 /* Parrot */ = {
 			isa = PBXGroup;
 			children = (
+				DE9DFC631966060600908ED7 /* Spoke */,
 				DE9DFC5F1965FC0E00908ED7 /* Utilities */,
 				DEAA904E196356A00036B6BF /* Profile */,
 				DEAA9024196356170036B6BF /* EZAudio */,
@@ -489,6 +502,7 @@
 				DEAA9042196356170036B6BF /* EZAudioFile.m in Sources */,
 				DEAA901A19634F960036B6BF /* ProfileViewController.m in Sources */,
 				DEAA9020196350B20036B6BF /* SearchViewController.m in Sources */,
+				DE9DFC661966062300908ED7 /* Spoke.m in Sources */,
 				DEAA9051196356C70036B6BF /* RecordViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

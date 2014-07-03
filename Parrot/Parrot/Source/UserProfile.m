@@ -14,6 +14,7 @@ static UserProfile *shared = nil;
 @implementation UserProfile
 
 @synthesize currentUser;
+@synthesize spokesArray;
 
 +(UserProfile*)sharedProfile
 {
@@ -72,6 +73,7 @@ static UserProfile *shared = nil;
     if(currentUser == nil)
     {
         currentUser = [[PFUser alloc]init];
+        spokesArray = [[NSMutableArray alloc]init];
     }
     // Send request to Facebook
     FBRequest *request = [FBRequest requestForMe];
@@ -90,32 +92,32 @@ static UserProfile *shared = nil;
             NSMutableDictionary *userProfile = [[NSMutableDictionary alloc] init];
             
             if (facebookID) {
-                userProfile[@"facebookId"] = facebookID;
+                userProfile[USER_ID] = facebookID;
             }
             
             if (userData[@"name"]) {
-                userProfile[@"name"] = userData[@"name"];
+                userProfile[USER_FULL_NAME] = userData[@"name"];
             }
             
             if (userData[@"location"][@"name"]) {
-                userProfile[@"location"] = userData[@"location"][@"name"];
+                userProfile[USER_LOCATION] = userData[@"location"][@"name"];
             }
             
             if (userData[@"gender"]) {
-                userProfile[@"gender"] = userData[@"gender"];
+                userProfile[USER_GENDER] = userData[@"gender"];
             }
             
             if (userData[@"birthday"]) {
-                userProfile[@"birthday"] = userData[@"birthday"];
+                userProfile[USER_BIRTHDAY] = userData[@"birthday"];
             }
             
             if (userData[@"relationship_status"]) {
-                userProfile[@"relationship"] = userData[@"relationship_status"];
+                userProfile[USER_RELATIONSHIP] = userData[@"relationship_status"];
             }
             
             if (userData[@"bio"])
             {
-                userProfile[@"bio"] = userData[@"bio"];
+                userProfile[USER_BIO] = userData[@"bio"];
             }
             
             if ([pictureURL absoluteString])
@@ -123,10 +125,10 @@ static UserProfile *shared = nil;
                 NSURL *imageUrl = [NSURL URLWithString:[pictureURL absoluteString]];
                 NSData *imageData = [[NSData alloc]initWithContentsOfURL:imageUrl];
                 
-                userProfile[@"imageData"] = imageData;
+                userProfile[USER_IMAGE_DATA] = imageData;
             }
             
-            [currentUser setObject:userProfile forKey:@"profile"];
+            [currentUser setObject:userProfile forKey:USER_PROFILE];
 //            [currentUser saveInBackground];
             
             [[NSNotificationCenter defaultCenter]postNotificationName:PROFILE_LOADED_FROM_FACEBOOK object:nil];
