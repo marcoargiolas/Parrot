@@ -16,7 +16,13 @@
     IBOutlet UIButton *profileButton;
     IBOutlet UIButton *wallButton;
     IBOutlet UIButton *searchButton;
+    IBOutlet UIView *profileBackgroundView;
+    IBOutlet UIView *wallBackgroundView;
+    IBOutlet UIView *searchBackgroundView;
 }
+@property (strong, nonatomic) IBOutlet UIView *profileBackgroundView;
+@property (strong, nonatomic) IBOutlet UIView *wallBackgroundView;
+@property (strong, nonatomic) IBOutlet UIView *searchBackgroundView;
 
 @property (strong, nonatomic) IBOutlet UIView *profileContainerView;
 @property (strong, nonatomic) IBOutlet UIView *wallContainerView;

@@ -7,6 +7,7 @@
 //
 
 #import "RecordViewController.h"
+#import "Utilities.h"
 
 @interface RecordViewController ()
 
@@ -17,6 +18,7 @@
 @synthesize recordButton;
 @synthesize audioPlayer;
 @synthesize recorder;
+@synthesize audioPlot;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -33,7 +35,7 @@
     self.microphone = [EZMicrophone microphoneWithDelegate:self];
     self.audioPlot.backgroundColor = [UIColor blackColor];
     // Waveform color
-    self.audioPlot.color           = [UIColor redColor];
+    self.audioPlot.color           = [UIColor whiteColor];
     // Plot type
     self.audioPlot.plotType        = EZPlotTypeBuffer;
     // Fill
@@ -44,16 +46,20 @@
     /*
      Log out where the file is being written to within the app's documents directory
      */
+ 
+    [self.microphone startFetchingAudio];
     
     [buttonsContainerView setFrame:CGRectMake(buttonsContainerView.frame.origin.x, self.view.frame.size.height - buttonsContainerView.frame.size.height, buttonsContainerView.frame.size.width, buttonsContainerView.frame.size.height)];
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
     [recordButton addGestureRecognizer:longPress];
     
+    [hintContainerView setFrame:CGRectMake(hintContainerView.frame.origin.x, buttonsContainerView.frame.origin.y - hintContainerView.frame.size.height, hintContainerView.frame.size.width, hintContainerView.frame.size.height)];
     [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
     
     // Set up an observer for proximity changes
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:)
                                                  name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
+    userProf = [UserProfile sharedProfile];
 }
 
 - (void)dealloc
@@ -94,19 +100,19 @@
 {
     if (gesture.state == UIGestureRecognizerStateBegan)
     {
-        NSLog(@"START RECORDING");
         [self startRecording];
     }
     else if ( gesture.state == UIGestureRecognizerStateEnded )
     {
-        NSLog(@"STOP RECORDING");
+        
         [self stopRecording];
     }
 }
 
 - (void)startRecording
 {
-    [self.microphone startFetchingAudio];
+    NSLog(@"START RECORDING");
+    [hintContainerView removeFromSuperview];
     if( self.audioPlayer )
     {
         if( self.audioPlayer.playing )
@@ -115,27 +121,38 @@
         }
         self.audioPlayer = nil;
     }
-    
-        /*
-         Create the recorder
-         */
-        self.recorder = [EZRecorder recorderWithDestinationURL:[self testFilePathURL]
-                                                  sourceFormat:self.microphone.audioStreamBasicDescription
-                                           destinationFileType:EZRecorderFileTypeM4A];
-    
+    self.isRecording = YES;
+    /*
+     Create the recorder
+     */
+    self.recorder = [EZRecorder recorderWithDestinationURL:[Utilities soundFilePathUrl]
+                                              sourceFormat:self.microphone.audioStreamBasicDescription
+                                       destinationFileType:EZRecorderFileTypeM4A];
 }
 
 - (void) stopRecording
 {
+    NSLog(@"STOP RECORDING");
     [self.microphone stopFetchingAudio];
-    [self.recorder closeAudioFile];
+    self.isRecording = NO;
 }
+
 - (IBAction)cancelButtonPressed:(id)sender
 {
+    [self.microphone stopFetchingAudio];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (IBAction)saveButtonPressed:(id)sender {
+- (IBAction)saveButtonPressed:(id)sender
+{
+    [self.recorder closeAudioFile];
+    if(userProf.spokesArray == nil)
+    {
+        userProf.spokesArray = [[NSMutableArray alloc]init];
+    }
+    [userProf.spokesArray addObject:[Utilities soundFilePathString]];
+    [userProf saveProfileLocal];
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - EZMicrophoneDelegate
@@ -160,9 +177,9 @@ withNumberOfChannels:(UInt32)numberOfChannels {
 withNumberOfChannels:(UInt32)numberOfChannels {
     
     // Getting audio data as a buffer list that can be directly fed into the EZRecorder. This is happening on the audio thread - any UI updating needs a GCD main queue block. This will keep appending data to the tail of the audio file.
-    if( self.isRecording ){
-        [self.recorder appendDataFromBufferList:bufferList
-                                 withBufferSize:bufferSize];
+    if( self.isRecording )
+    {
+        [self.recorder appendDataFromBufferList:bufferList  withBufferSize:bufferSize];
     }
     
 }
@@ -178,25 +195,6 @@ withNumberOfChannels:(UInt32)numberOfChannels {
     [self.microphone startFetchingAudio];
 //    self.microphoneSwitch.on = YES;
 //    self.microphoneTextField.text = @"Microphone On";
-}
-
-#pragma mark - Utility
--(NSArray*)applicationDocuments
-{
-    return NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-}
-
--(NSString*)applicationDocumentsDirectory
-{
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
-    return basePath;
-}
-
--(NSURL*)testFilePathURL
-{
-    return [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@", [self applicationDocumentsDirectory],
-                                   kAudioFilePath]];
 }
 
 @end

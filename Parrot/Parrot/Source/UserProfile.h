@@ -21,5 +21,8 @@
 
 +(UserProfile*)sharedProfile;
 - (void) loadProfileFromFacebook;
+-(NSString*)getUserID;
+- (void)saveProfileLocal;
+- (void)loadProfileLocal;
 
 @end

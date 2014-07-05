@@ -9,6 +9,9 @@
 #import "AppDelegate.h"
 #import <AVFoundation/AVFoundation.h>
 #import <Parse/Parse.h>
+#import "UserProfile.h"
+#import "MainViewController.h"
+#import "GlobalDefines.h"
 
 @implementation AppDelegate
 
@@ -34,6 +37,19 @@
     // Your Facebook application id is configured in Info.plist.
     // ****************************************************************************
     [PFFacebookUtils initializeFacebook];
+
+    if([[NSUserDefaults standardUserDefaults]objectForKey:USER_ID] != nil)
+    {
+        [[UserProfile sharedProfile]loadProfileLocal];
+        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        
+        MainViewController *controller = [storyBoard  instantiateViewControllerWithIdentifier:@"MainViewController"];
+        self.window.rootViewController = controller;
+
+    }
+
+    [[UIApplication sharedApplication] setStatusBarHidden:NO];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 
     return YES;
 }

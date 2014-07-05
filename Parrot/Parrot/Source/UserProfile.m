@@ -31,41 +31,48 @@ static UserProfile *shared = nil;
 - (void)loadProfileLocal
 {
     //Check backward compatibility
-//    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//	NSString *documentsDirectory = [paths objectAtIndex:0];
-//	NSString *finalPath = [documentsDirectory stringByAppendingPathComponent:@"profile.plist"];
-//	if([[NSFileManager defaultManager] fileExistsAtPath:finalPath])
-//    {
-//		[[NSFileManager defaultManager] removeItemAtPath:finalPath error:nil];
-//	}
-//    
-//    NSString *userID = [[NSUserDefaults standardUserDefaults] objectForKey:USERID];
-//    documentsDirectory = [documentsDirectory stringByAppendingPathComponent:userID];
-//    finalPath = [documentsDirectory stringByAppendingPathComponent:@"profile.plist"];
-//	if(![[NSFileManager defaultManager] fileExistsAtPath:finalPath])
-//    {
-//		NSString *path = [[NSBundle mainBundle] bundlePath];
-//		finalPath = [path stringByAppendingPathComponent:@"profile.plist"];
-//	}
-//    
-//	userInfo = [NSMutableDictionary dictionaryWithContentsOfFile:finalPath];
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *userID = [[NSUserDefaults standardUserDefaults] objectForKey:USER_ID];
+    documentsDirectory = [documentsDirectory stringByAppendingPathComponent:userID];
+    NSString *finalPath = [documentsDirectory stringByAppendingPathComponent:@"profile.plist"];
+    NSString *spokesPath = [documentsDirectory stringByAppendingPathComponent:@"spokes.plist"];
+	if(![[NSFileManager defaultManager] fileExistsAtPath:finalPath])
+    {
+		NSString *path = [[NSBundle mainBundle] bundlePath];
+		finalPath = [path stringByAppendingPathComponent:@"profile.plist"];
+	}
+    if(currentUser == nil)
+    {
+        currentUser = [[PFUser alloc]init];
+        spokesArray = [[NSMutableArray alloc]init];
+    }
+	[currentUser setObject:[NSMutableDictionary dictionaryWithContentsOfFile:finalPath] forKey:USER_PROFILE];
+    NSMutableDictionary *tempDict = [NSMutableDictionary dictionaryWithContentsOfFile:spokesPath];
+    spokesArray = [tempDict objectForKey:USER_SPOKES_ARRAY];
 }
 
 - (void)saveProfileLocal
 {
-//	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//	NSString *documentsDirectory = [[paths objectAtIndex:0] stringByAppendingPathComponent:[self getUserID]];
-//	NSString *finalPath = [documentsDirectory stringByAppendingPathComponent:@"profile.plist"];
-//    
-//    if(![[NSFileManager defaultManager] fileExistsAtPath:finalPath])
-//    {
-//        [[NSFileManager defaultManager] createDirectoryAtPath:documentsDirectory
-//                                  withIntermediateDirectories:YES
-//                                                   attributes:nil
-//                                                        error:nil];
-//    }
-//    if(userInfo != nil)
-//        [userInfo writeToFile:finalPath atomically:NO];
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [[paths objectAtIndex:0] stringByAppendingPathComponent:[self getUserID]];
+	NSString *finalPath = [documentsDirectory stringByAppendingPathComponent:@"profile.plist"];
+    NSString *spokesPath = [documentsDirectory stringByAppendingPathComponent:@"spokes.plist"];
+    if(![[NSFileManager defaultManager] fileExistsAtPath:finalPath])
+    {
+        [[NSFileManager defaultManager] createDirectoryAtPath:documentsDirectory
+                                  withIntermediateDirectories:YES
+                                                   attributes:nil
+                                                        error:nil];
+    }
+
+    if(currentUser != nil)
+    {
+        [[currentUser objectForKey:USER_PROFILE] writeToFile:finalPath atomically:NO];
+    
+        NSMutableDictionary *tempDict = [[NSMutableDictionary alloc]initWithObjectsAndKeys:spokesArray,USER_SPOKES_ARRAY, nil];
+        [tempDict writeToFile:spokesPath atomically:NO];
+    }
 }
 
 - (void) loadProfileFromFacebook
@@ -89,35 +96,35 @@ static UserProfile *shared = nil;
             NSURL *pictureURL = [NSURL URLWithString:[NSString stringWithFormat:@"https://graph.facebook.com/%@/picture?type=large&return_ssl_resources=1", facebookID]];
             
             
-            NSMutableDictionary *userProfile = [[NSMutableDictionary alloc] init];
+            NSMutableDictionary *currentProfile = [[NSMutableDictionary alloc] init];
             
             if (facebookID) {
-                userProfile[USER_ID] = facebookID;
+                currentProfile[USER_ID] = facebookID;
             }
             
             if (userData[@"name"]) {
-                userProfile[USER_FULL_NAME] = userData[@"name"];
+                currentProfile[USER_FULL_NAME] = userData[@"name"];
             }
             
             if (userData[@"location"][@"name"]) {
-                userProfile[USER_LOCATION] = userData[@"location"][@"name"];
+                currentProfile[USER_LOCATION] = userData[@"location"][@"name"];
             }
             
             if (userData[@"gender"]) {
-                userProfile[USER_GENDER] = userData[@"gender"];
+                currentProfile[USER_GENDER] = userData[@"gender"];
             }
             
             if (userData[@"birthday"]) {
-                userProfile[USER_BIRTHDAY] = userData[@"birthday"];
+                currentProfile[USER_BIRTHDAY] = userData[@"birthday"];
             }
             
             if (userData[@"relationship_status"]) {
-                userProfile[USER_RELATIONSHIP] = userData[@"relationship_status"];
+                currentProfile[USER_RELATIONSHIP] = userData[@"relationship_status"];
             }
             
             if (userData[@"bio"])
             {
-                userProfile[USER_BIO] = userData[@"bio"];
+                currentProfile[USER_BIO] = userData[@"bio"];
             }
             
             if ([pictureURL absoluteString])
@@ -125,14 +132,17 @@ static UserProfile *shared = nil;
                 NSURL *imageUrl = [NSURL URLWithString:[pictureURL absoluteString]];
                 NSData *imageData = [[NSData alloc]initWithContentsOfURL:imageUrl];
                 
-                userProfile[USER_IMAGE_DATA] = imageData;
+                currentProfile[USER_IMAGE_DATA] = imageData;
             }
             
-            [currentUser setObject:userProfile forKey:USER_PROFILE];
+            [currentUser setObject:currentProfile forKey:USER_PROFILE];
+            [currentUser setObject:spokesArray forKey:USER_SPOKES_ARRAY];
+            
 //            [currentUser saveInBackground];
             
             [[NSNotificationCenter defaultCenter]postNotificationName:PROFILE_LOADED_FROM_FACEBOOK object:nil];
-//            [self updateProfile];
+            [[NSUserDefaults standardUserDefaults] setObject:facebookID forKey:USER_ID];
+            [self saveProfileLocal];
         }
         else if ([[[[error userInfo] objectForKey:@"error"] objectForKey:@"type"]
                     isEqualToString: @"OAuthException"])
@@ -146,6 +156,11 @@ static UserProfile *shared = nil;
             NSLog(@"Some other error: %@", error);
         }
     }];
+}
+
+-(NSString*)getUserID
+{
+    return [NSString stringWithFormat:@"%@",[[currentUser objectForKey:USER_PROFILE] objectForKey:USER_ID]];
 }
 
 //- (void)updateProfile {

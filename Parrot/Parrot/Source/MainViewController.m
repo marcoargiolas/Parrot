@@ -17,6 +17,9 @@
 @synthesize profileContainerView;
 @synthesize wallContainerView;
 @synthesize searchContainerView;
+@synthesize profileBackgroundView;
+@synthesize wallBackgroundView;
+@synthesize searchBackgroundView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -109,6 +112,9 @@
                          [profileContainerView setFrame:CGRectMake(0, profileContainerView.frame.origin.y, profileContainerView.frame.size.width, profileContainerView.frame.size.height)];
                          [wallContainerView setFrame:CGRectMake(self.view.frame.size.width, wallContainerView.frame.origin.y, wallContainerView.frame.size.width, wallContainerView.frame.size.height)];
                          [searchContainerView setFrame:CGRectMake(2 * self.view.frame.size.width, searchContainerView.frame.origin.y, searchContainerView.frame.size.width, searchContainerView.frame.size.height)];
+                         [profileBackgroundView setBackgroundColor:[UIColor blackColor]];
+                         [wallBackgroundView setBackgroundColor:[UIColor whiteColor]];
+                         [searchBackgroundView setBackgroundColor:[UIColor whiteColor]];
                      }
      ];
     
@@ -133,6 +139,9 @@
                          [profileContainerView setFrame:CGRectMake(-self.view.frame.size.width, profileContainerView.frame.origin.y, profileContainerView.frame.size.width, profileContainerView.frame.size.height)];
                          [wallContainerView setFrame:CGRectMake(0, wallContainerView.frame.origin.y, wallContainerView.frame.size.width, wallContainerView.frame.size.height)];
                          [searchContainerView setFrame:CGRectMake(self.view.frame.size.width, searchContainerView.frame.origin.y, searchContainerView.frame.size.width, searchContainerView.frame.size.height)];
+                         [profileBackgroundView setBackgroundColor:[UIColor whiteColor]];
+                         [wallBackgroundView setBackgroundColor:[UIColor blackColor]];
+                         [searchBackgroundView setBackgroundColor:[UIColor whiteColor]];
                      }
      ];
     [profileButton setSelected:NO];
@@ -157,6 +166,9 @@
                          [profileContainerView setFrame:CGRectMake(-2 *self.view.frame.size.width, profileContainerView.frame.origin.y, profileContainerView.frame.size.width, profileContainerView.frame.size.height)];
                          [wallContainerView setFrame:CGRectMake(-self.view.frame.size.width, wallContainerView.frame.origin.y, wallContainerView.frame.size.width, wallContainerView.frame.size.height)];
                          [searchContainerView setFrame:CGRectMake(0, searchContainerView.frame.origin.y, searchContainerView.frame.size.width, searchContainerView.frame.size.height)];
+                         [profileBackgroundView setBackgroundColor:[UIColor whiteColor]];
+                         [wallBackgroundView setBackgroundColor:[UIColor whiteColor]];
+                         [searchBackgroundView setBackgroundColor:[UIColor blackColor]];
                      }
      ];
     

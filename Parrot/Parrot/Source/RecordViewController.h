@@ -9,14 +9,17 @@
 #import <UIKit/UIKit.h>
 #import "EZAudio.h"
 #import <AVFoundation/AVFoundation.h>
+#import "UserProfile.h"
 
 #define kAudioFilePath @"EZAudioTest.m4a"
 
 @interface RecordViewController : UIViewController <AVAudioPlayerDelegate,EZMicrophoneDelegate, UIGestureRecognizerDelegate>
 {
-
+    NSString *spokeFileName;
     IBOutlet UIView *buttonsContainerView;
     IBOutlet UIButton *recordButton;
+    UserProfile *userProf;
+    IBOutlet UIView *hintContainerView;
 }
 /**
  Use a OpenGL based plot to visualize the data coming in
@@ -39,20 +42,20 @@
 @property (nonatomic,strong) EZRecorder *recorder;
 
 #pragma mark - Actions
-/**
- Stops the recorder and starts playing whatever has been recorded.
- */
--(IBAction)playFile:(id)sender;
-
-/**
- Toggles the microphone on and off. When the microphone is on it will send its delegate (aka this view controller) the audio data in various ways (check out the EZMicrophoneDelegate documentation for more details);
- */
--(IBAction)toggleMicrophone:(id)sender;
-
-/**
- Toggles the microphone on and off. When the microphone is on it will send its delegate (aka this view controller) the audio data in various ways (check out the EZMicrophoneDelegate documentation for more details);
- */
--(IBAction)toggleRecording:(id)sender;
+///**
+// Stops the recorder and starts playing whatever has been recorded.
+// */
+//-(IBAction)playFile:(id)sender;
+//
+///**
+// Toggles the microphone on and off. When the microphone is on it will send its delegate (aka this view controller) the audio data in various ways (check out the EZMicrophoneDelegate documentation for more details);
+// */
+//-(IBAction)toggleMicrophone:(id)sender;
+//
+///**
+// Toggles the microphone on and off. When the microphone is on it will send its delegate (aka this view controller) the audio data in various ways (check out the EZMicrophoneDelegate documentation for more details);
+// */
+//-(IBAction)toggleRecording:(id)sender;
 
 - (IBAction)cancelButtonPressed:(id)sender;
 - (IBAction)saveButtonPressed:(id)sender;

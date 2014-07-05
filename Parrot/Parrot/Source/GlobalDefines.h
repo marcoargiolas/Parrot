@@ -19,3 +19,6 @@
 #define USER_BIO                        @"bio"
 #define USER_IMAGE_DATA                 @"imageData"
 #define USER_PROFILE                    @"profile"
+#define USER_SPOKES_ARRAY               @"userSpokesArray"
+#define CURRENT_USER                    @"currentUser"
+#define PLAYBACK_STOP                   @"playbackStop"
