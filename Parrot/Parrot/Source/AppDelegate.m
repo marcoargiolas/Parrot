@@ -45,12 +45,12 @@
         
         MainViewController *controller = [storyBoard  instantiateViewControllerWithIdentifier:@"MainViewController"];
         self.window.rootViewController = controller;
-
     }
 
-    [[UIApplication sharedApplication] setStatusBarHidden:NO];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
-
+    
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+   
     return YES;
 }
 

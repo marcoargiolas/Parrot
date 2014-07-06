@@ -62,6 +62,12 @@
     userProf = [UserProfile sharedProfile];
 }
 
+
+-(UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 - (void)dealloc
 {
     [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];

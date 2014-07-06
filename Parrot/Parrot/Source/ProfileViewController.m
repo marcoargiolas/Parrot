@@ -21,6 +21,14 @@
 
 @synthesize playButton;
 @synthesize profileVC;
+@synthesize spokeContainerView;
+@synthesize spokeImageView;
+@synthesize spokeNameLabel;
+@synthesize spokeDateLabel;
+@synthesize heardLabel;
+@synthesize respokeTotalLabel;
+@synthesize likesLabel;
+@synthesize gotoRespokeButton;
 
 - (IBAction)playButtonPressed:(id)sender
 {

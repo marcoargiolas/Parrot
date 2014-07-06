@@ -39,6 +39,7 @@
 		DE6389301968A546008D5B9D /* 1024_parrot_ios_full.png in Resources */ = {isa = PBXBuildFile; fileRef = DE63892F1968A546008D5B9D /* 1024_parrot_ios_full.png */; };
 		DE6389331968A5CE008D5B9D /* iphone_retina_splashscreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE6389311968A5CE008D5B9D /* iphone_retina_splashscreen@2x.png */; };
 		DE6389341968A5CE008D5B9D /* iphone_splashscreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE6389321968A5CE008D5B9D /* iphone_splashscreen@2x.png */; };
+		DE6389361969A210008D5B9D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE6389351969A210008D5B9D /* Default-568h@2x.png */; };
 		DE9DFC5C1965F0EC00908ED7 /* UserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = DE9DFC5B1965F0EC00908ED7 /* UserProfile.m */; };
 		DE9DFC621965FC3200908ED7 /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DE9DFC611965FC3200908ED7 /* UIImage+Additions.m */; };
 		DE9DFC661966062300908ED7 /* Spoke.m in Sources */ = {isa = PBXBuildFile; fileRef = DE9DFC651966062300908ED7 /* Spoke.m */; };
@@ -135,6 +136,7 @@
 		DE63892F1968A546008D5B9D /* 1024_parrot_ios_full.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1024_parrot_ios_full.png; sourceTree = "<group>"; };
 		DE6389311968A5CE008D5B9D /* iphone_retina_splashscreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iphone_retina_splashscreen@2x.png"; sourceTree = "<group>"; };
 		DE6389321968A5CE008D5B9D /* iphone_splashscreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iphone_splashscreen@2x.png"; sourceTree = "<group>"; };
+		DE6389351969A210008D5B9D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		DE9DFC5A1965F0EC00908ED7 /* UserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserProfile.h; path = Source/UserProfile.h; sourceTree = "<group>"; };
 		DE9DFC5B1965F0EC00908ED7 /* UserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserProfile.m; path = Source/UserProfile.m; sourceTree = "<group>"; };
 		DE9DFC5E1965F80600908ED7 /* GlobalDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GlobalDefines.h; path = Source/GlobalDefines.h; sourceTree = "<group>"; };
@@ -328,6 +330,7 @@
 		DECADBC01961EA300024D067 = {
 			isa = PBXGroup;
 			children = (
+				DE6389351969A210008D5B9D /* Default-568h@2x.png */,
 				DECADBD21961EA300024D067 /* Parrot */,
 				DECADC011961EA6C0024D067 /* Resources */,
 				DECADBF11961EA310024D067 /* ParrotTests */,
@@ -525,6 +528,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Marco Argiolas";
 				TargetAttributes = {
+					DECADBC81961EA300024D067 = {
+						DevelopmentTeam = L992NGD4Z9;
+					};
 					DECADBE91961EA310024D067 = {
 						TestTargetID = DECADBC81961EA300024D067;
 					};
@@ -589,6 +595,7 @@
 				DE63892719689A08008D5B9D /* button_nav_search_selected@2x.png in Resources */,
 				DECADC071961EBF40024D067 /* login-button-small.png in Resources */,
 				DEAA904C196356170036B6BF /* CHANGELOG in Resources */,
+				DE6389361969A210008D5B9D /* Default-568h@2x.png in Resources */,
 				DE6389301968A546008D5B9D /* 1024_parrot_ios_full.png in Resources */,
 				DE63892519689A08008D5B9D /* button_nav_events_selected@2x.png in Resources */,
 				DE63892E19689B3A008D5B9D /* arrow_content_right@2x.png in Resources */,
@@ -756,6 +763,8 @@
 		DECADBFC1961EA310024D067 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libs",
@@ -765,6 +774,7 @@
 				GCC_PREFIX_HEADER = "Parrot/Parrot-Prefix.pch";
 				INFOPLIST_FILE = "Parrot/Parrot-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -772,6 +782,8 @@
 		DECADBFD1961EA310024D067 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libs",
@@ -781,6 +793,7 @@
 				GCC_PREFIX_HEADER = "Parrot/Parrot-Prefix.pch";
 				INFOPLIST_FILE = "Parrot/Parrot-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
