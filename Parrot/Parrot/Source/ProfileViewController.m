@@ -156,6 +156,17 @@
 */
 
 #pragma mark UITableView delegate
+-(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 70;
+}
+
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView* footerView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, spokesTableView.frame.size.width, 0)];
+    
+    return footerView;
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return [userProf.spokesArray count];
@@ -186,9 +197,9 @@
     {
         cell.spokeImageView.image = nil;
         cell.spokeNameLabel.text = @"";
-        
     }
     
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.profileVC = self;
     cell.playButton.tag = indexPath.row;
     

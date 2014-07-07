@@ -37,7 +37,7 @@
     // Waveform color
     self.audioPlot.color           = [UIColor whiteColor];
     // Plot type
-    self.audioPlot.plotType        = EZPlotTypeBuffer;
+    self.audioPlot.plotType        = EZPlotTypeRolling;
     // Fill
     self.audioPlot.shouldFill      = YES;
     // Mirror

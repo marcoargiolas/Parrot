@@ -35,16 +35,16 @@
 		<dict>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>fb516129971825847</string>
+				<string>fb499937060138204</string>
 			</array>
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
 	<string>1</string>
 	<key>FacebookAppID</key>
-	<string>516129971825847</string>
+	<string>499937060138204</string>
 	<key>FacebookDisplayName</key>
-	<string>Parrot Test</string>
+	<string>Parrot</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>UILaunchImages</key>
