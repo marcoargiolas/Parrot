@@ -16,8 +16,10 @@
     int totalLikes;
     int totalHeards;
     NSString *respokeToSpokeID;
+    NSString *audioFileName;
 }
 
+@property (nonatomic, strong)NSString *audioFileName;
 @property (nonatomic, strong) NSString *spokeID;
 @property (nonatomic, strong) NSData *audioData;
 @property (nonatomic, strong) NSDate *creationDate;

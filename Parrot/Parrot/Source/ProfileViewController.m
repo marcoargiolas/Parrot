@@ -29,40 +29,65 @@
 @synthesize respokeTotalLabel;
 @synthesize likesLabel;
 @synthesize gotoRespokeButton;
+@synthesize totalTimeLabel;
+@synthesize currentTimeLabel;
+@synthesize spokeSlider;
+@synthesize playContainerView;
+@synthesize updateTimer;
+@synthesize pausePlayButton;
 
 - (IBAction)playButtonPressed:(id)sender
 {
-    UserProfile *prof = [UserProfile sharedProfile];
-    NSString *soundFilePath = [prof.spokesArray objectAtIndex:playButton.tag];
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
-
-    NSURL *soundUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@.m4a", basePath, soundFilePath]];
-    
-    NSError *dataError;
-    NSData *soundData = [[NSData alloc] initWithContentsOfURL:soundUrl options:NSDataReadingMappedIfSafe error:&dataError];
-    if(dataError != nil)
+    if(![profileVC.player isPlaying])
     {
-        NSLog(@"DATA ERROR %@", dataError);
+        UserProfile *prof = [UserProfile sharedProfile];
+        NSString *soundFilePath = [prof.spokesArray objectAtIndex:playButton.tag];
+        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+        NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
+        
+        NSURL *soundUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@.m4a", basePath, soundFilePath]];
+        
+        NSError *dataError;
+        NSData *soundData = [[NSData alloc] initWithContentsOfURL:soundUrl options:NSDataReadingMappedIfSafe error:&dataError];
+        if(dataError != nil)
+        {
+            NSLog(@"DATA ERROR %@", dataError);
+        }
+        
+        NSError *error;
+        AVAudioPlayer *newPlayer =[[AVAudioPlayer alloc] initWithData: soundData error: &error];
+        newPlayer.delegate = profileVC;
+        
+        profileVC.player = newPlayer;
+        
+        updateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
+        
+        spokeSlider.minimumValue = 0;
+        spokeSlider.maximumValue = profileVC.player.duration;
+        totalTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)profileVC.player.duration / 60, (int)profileVC.player.duration % 60, nil];
+        
+        [profileVC playSelectedAudio];
+        
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changePlayButtonImage) name:PLAYBACK_STOP object:nil];
+        [playButton removeFromSuperview];
+        
+        [playContainerView addSubview:spokeSlider];
+        [playContainerView addSubview:currentTimeLabel];
+        [playContainerView addSubview:totalTimeLabel];
+        [playContainerView addSubview:pausePlayButton];
     }
-
-    NSError *error;
-    AVAudioPlayer *newPlayer =[[AVAudioPlayer alloc] initWithData: soundData error: &error];
-    if(error != nil)
-    {
-        NSLog(@"AVAudioPlayer Error %@", error);
-    }
-    
-    newPlayer.delegate = profileVC;
-    profileVC.player = newPlayer;
-    [profileVC playSelectedAudio];
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changePlayButtonImage) name:PLAYBACK_STOP object:nil];
 }
 
 -(void)changePlayButtonImage
 {
+    [spokeSlider removeFromSuperview];
+    [currentTimeLabel removeFromSuperview];
+    [totalTimeLabel removeFromSuperview];
+    [pausePlayButton removeFromSuperview];
+    [playContainerView addSubview:playButton];
     [playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
 }
+
 
 - (IBAction)gotoRespokeButtonPressed:(id)sender {
 }
@@ -71,6 +96,36 @@
 }
 
 - (IBAction)shareButtonPressed:(id)sender {
+}
+
+- (IBAction)progressSliderMoved:(UISlider*)sender
+{
+    profileVC.player.currentTime = spokeSlider.value;
+	profileVC.player.currentTime = sender.value;
+    currentTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)profileVC.player.currentTime / 60, (int)profileVC.player.currentTime % 60, nil];
+	spokeSlider.value = profileVC.player.currentTime;
+}
+
+
+- (void)updateSlider
+{
+    float progress = profileVC.player.currentTime;
+    currentTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)profileVC.player.currentTime / 60, (int)profileVC.player.currentTime % 60, nil];
+    [spokeSlider setValue:progress];
+}
+
+- (IBAction)pausePlayButtonPressed:(id)sender
+{
+    if(profileVC.player.playing)
+    {
+        [profileVC.player pause];
+        [pausePlayButton setSelected:YES];
+    }
+    else
+    {
+        [profileVC.player play];
+        [pausePlayButton setSelected:NO];
+    }
 }
 
 @end
@@ -131,7 +186,7 @@
     NSLog(@"PROFILE %@", userProf.spokesArray);
     if([userProf.spokesArray count] > 0)
     {
-        player = [[AVAudioPlayer alloc]init];
+//        player = [[AVAudioPlayer alloc]init];
 //        [[AVAudioSession sharedInstance] setCategory:AVAudioSessionCategoryPlayback error:nil];
 //        [[AVAudioSession sharedInstance] setActive: YES error:nil];
     }
@@ -219,6 +274,12 @@
     [cell.spokeContainerView.layer setBorderColor:[UIColor colorWithRed:150.000/255.000 green:150.000/255.000 blue:150.000/255.000 alpha:1.0].CGColor];
     [cell.spokeContainerView.layer setBorderWidth:0.3];
     
+    [cell.spokeSlider setThumbImage:[UIImage imageNamed:@"handle_slider.png"] forState:UIControlStateNormal];
+    [cell.spokeSlider removeFromSuperview];
+    [cell.currentTimeLabel removeFromSuperview];
+    [cell.totalTimeLabel removeFromSuperview];
+    [cell.pausePlayButton removeFromSuperview];
+    
     return cell;
 }
 
@@ -237,5 +298,6 @@
 {
     [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
 }
+
 
 @end

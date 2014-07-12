@@ -90,6 +90,7 @@
 		DECADC251961ED010024D067 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADC241961ED010024D067 /* SystemConfiguration.framework */; };
 		DECADC291961EE3D0024D067 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DECADC281961EE3D0024D067 /* LoginViewController.m */; };
 		DECADC2C1961EEF50024D067 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DECADC2B1961EEF50024D067 /* MainViewController.m */; };
+		DEF176F619717B9F003F15A0 /* handle_slider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF176F519717B9F003F15A0 /* handle_slider@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -213,6 +214,7 @@
 		DECADC281961EE3D0024D067 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Source/LoginViewController.m; sourceTree = "<group>"; };
 		DECADC2A1961EEF50024D067 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = Source/MainViewController.h; sourceTree = "<group>"; };
 		DECADC2B1961EEF50024D067 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = Source/MainViewController.m; sourceTree = "<group>"; };
+		DEF176F519717B9F003F15A0 /* handle_slider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "handle_slider@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -426,6 +428,7 @@
 		DECADC031961EBF40024D067 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				DEF176F519717B9F003F15A0 /* handle_slider@2x.png */,
 				DE6389311968A5CE008D5B9D /* iphone_retina_splashscreen@2x.png */,
 				DE6389321968A5CE008D5B9D /* iphone_splashscreen@2x.png */,
 				DE63892F1968A546008D5B9D /* 1024_parrot_ios_full.png */,
@@ -599,6 +602,7 @@
 				DE6389301968A546008D5B9D /* 1024_parrot_ios_full.png in Resources */,
 				DE63892519689A08008D5B9D /* button_nav_events_selected@2x.png in Resources */,
 				DE63892E19689B3A008D5B9D /* arrow_content_right@2x.png in Resources */,
+				DEF176F619717B9F003F15A0 /* handle_slider@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

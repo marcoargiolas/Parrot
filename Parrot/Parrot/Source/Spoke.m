@@ -16,6 +16,7 @@
 @synthesize audioData;
 @synthesize totalLikes;
 @synthesize respokeToSpokeID;
+@synthesize audioFileName;
 
 - (id)init
 {
@@ -27,6 +28,7 @@
         totalHeards = 0;
         audioData = [[NSData alloc]init];
         respokeToSpokeID = @"";
+        audioFileName = @"";
 	}
 	return self;
 }

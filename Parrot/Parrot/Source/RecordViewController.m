@@ -134,6 +134,11 @@
     self.recorder = [EZRecorder recorderWithDestinationURL:[Utilities soundFilePathUrl]
                                               sourceFormat:self.microphone.audioStreamBasicDescription
                                        destinationFileType:EZRecorderFileTypeM4A];
+    [NSTimer scheduledTimerWithTimeInterval:10.0
+                                     target:self
+                                   selector:@selector(stopRecording)
+                                   userInfo:nil
+                                    repeats:NO];
 }
 
 - (void) stopRecording

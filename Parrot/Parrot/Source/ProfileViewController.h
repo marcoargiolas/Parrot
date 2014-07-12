@@ -12,7 +12,7 @@
 #import "EZAudio.h"
 
 @class ProfileViewController;
-@interface SpokeCell : UITableViewCell
+@interface SpokeCell : UITableViewCell <AVAudioPlayerDelegate, AVAudioSessionDelegate,AVAudioRecorderDelegate>
 {
     ProfileViewController *profileVC;
     IBOutlet UIView *spokeContainerView;
@@ -22,9 +22,20 @@
     IBOutlet UILabel *respokeTotalLabel;
     IBOutlet UIButton *gotoRespokeButton;
     IBOutlet UILabel *spokeDateLabel;
+    IBOutlet UILabel *totalTimeLabel;
     IBOutlet UILabel *heardLabel;
+    IBOutlet UILabel *currentTimeLabel;
     IBOutlet UILabel *likesLabel;
+    IBOutlet UISlider *spokeSlider;
+    IBOutlet UIView *playContainerView;
+    IBOutlet UIButton *pausePlayButton;
+  	NSTimer *updateTimer;
 }
+@property (strong, nonatomic) NSTimer *updateTimer;
+@property (strong, nonatomic) IBOutlet UIView *playContainerView;
+@property (strong, nonatomic) IBOutlet UILabel *currentTimeLabel;
+@property (strong, nonatomic) IBOutlet UILabel *totalTimeLabel;
+@property (strong, nonatomic) IBOutlet UISlider *spokeSlider;
 @property (strong, nonatomic) IBOutlet UILabel *respokeTotalLabel;
 @property (strong, nonatomic) IBOutlet UIButton *gotoRespokeButton;
 @property (strong, nonatomic) IBOutlet UIView *spokeContainerView;
@@ -35,11 +46,14 @@
 @property (strong, nonatomic) IBOutlet UIButton *playButton;
 @property (strong, nonatomic) ProfileViewController *profileVC;
 @property (strong, nonatomic) IBOutlet UILabel *spokeDateLabel;
+@property (strong, nonatomic) IBOutlet UIButton *pausePlayButton;
 
 - (IBAction)playButtonPressed:(id)sender;
 - (IBAction)gotoRespokeButtonPressed:(id)sender;
 - (IBAction)likeButtonPressed:(id)sender;
 - (IBAction)shareButtonPressed:(id)sender;
+- (IBAction)progressSliderMoved:(UISlider*)sender;
+- (IBAction)pausePlayButtonPressed:(id)sender;
 
 @end
 
