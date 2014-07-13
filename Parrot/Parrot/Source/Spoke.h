@@ -17,8 +17,10 @@
     int totalHeards;
     NSString *respokeToSpokeID;
     NSString *ownerID;
+    NSMutableArray *listOfHeardsID;
 }
 
+@property (nonatomic, strong) NSMutableArray *listOfHeardsID;
 @property (nonatomic, strong) NSString *ownerID;
 @property (nonatomic, strong) NSString *spokeID;
 @property (nonatomic, strong) NSData *audioData;

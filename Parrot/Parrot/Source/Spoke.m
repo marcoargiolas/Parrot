@@ -16,6 +16,7 @@
 @synthesize audioData;
 @synthesize totalLikes;
 @synthesize respokeToSpokeID;
+@synthesize listOfHeardsID;
 
 - (id)init
 {
@@ -27,6 +28,7 @@
         totalHeards = 0;
         audioData = [[NSData alloc]init];
         respokeToSpokeID = @"";
+        listOfHeardsID = [[NSMutableArray alloc]init];
 	}
 	return self;
 }
@@ -39,6 +41,7 @@
     [aCoder encodeInt:totalHeards forKey:@"totalHeards"];
     [aCoder encodeObject:audioData forKey:@"audioData"];
     [aCoder encodeObject:respokeToSpokeID forKey:@"respokeToSpokeID"];
+    [aCoder encodeObject:listOfHeardsID forKey:@"listOfHeardsID"];
 }
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -51,6 +54,7 @@
         totalHeards = [aDecoder decodeIntForKey:@"totalHeards"];
         audioData = [aDecoder decodeObjectForKey:@"audioData"];
         respokeToSpokeID = [aDecoder decodeObjectForKey:@"respokeToSpokeID"];
+        listOfHeardsID = [aDecoder decodeObjectForKey:@"listOfHeardsID"];
     }
     
     return self;

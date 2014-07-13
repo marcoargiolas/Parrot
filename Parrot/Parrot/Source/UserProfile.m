@@ -185,22 +185,92 @@ static UserProfile *shared = nil;
     [obj setObject:[NSString stringWithFormat:@"%d",spokeToSave.totalLikes] forKey:@"totalLikes"];
     [obj setObject:spokeToSave.respokeToSpokeID forKey:@"respokeToSpokeID"];
     [obj setObject:spokeToSave.ownerID forKey:@"ownerID"];
+    [obj setObject:spokeToSave.listOfHeardsID forKey:@"listOfHeardsID"];
     
     [obj saveInBackground];
     
 //    [self loadSpokesFromRemoteForUser:[[currentUser objectForKey:@"profile"] objectForKey:@"userID"]];
 }
 
-//-(void)updateTotalSpokeLike:(NSString*)spokeID
-//{
-//    PFQuery *query = [PFQuery queryWithClassName:@"spoke"];
-//    [query whereKey:<#(NSString *)#> equalTo:<#(id)#>];
-//    [query getObjectInBackgroundWithId:spokeID block:^(PFObject *spokeObj, NSError *error) {
-//        Spoke *tempObj = (Spoke*)spokeObj;//[self getSpokeWithID:spokeID];
-//        [spokeObj setObject:[NSString stringWithFormat:@"%d",tempObj.totalLikes] forKey:@"totalLikes"];
-//        [spokeObj saveInBackground];
-//    }];
-//}
+-(void)updateTotalSpokeLike:(NSString*)spokeID
+{
+    PFQuery *query = [PFQuery queryWithClassName:@"spoke"];
+    [query whereKey:@"spokeID" equalTo:spokeID];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error)
+        {
+            Spoke *tempSpoke = [self getSpokeWithID:spokeID];
+            for (PFObject *object in objects)
+            {
+                [object setObject:[NSString stringWithFormat:@"%d",tempSpoke.totalLikes] forKey:@"totalLikes"];
+                [object saveInBackground];
+                [self saveProfileLocal];
+            }
+        }
+        else
+        {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
+}
+
+-(void)updateTotalSpokeHeard:(NSString*)spokeID heardID:(NSString*)userHeardID
+{
+    PFQuery *query = [PFQuery queryWithClassName:@"spoke"];
+    [query whereKey:@"spokeID" equalTo:spokeID];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error)
+        {
+            for (PFObject *object in objects)
+            {
+                Spoke *tempSpoke = [self getSpokeWithID:spokeID];
+                NSMutableArray *heardTempArray = [object objectForKey:@"listOfHeardsID"];
+                if([heardTempArray count] == 0)
+                {
+                    [object setObject:@"1" forKey:@"totalHeards"];
+                    [heardTempArray addObject:userHeardID];
+                    [object setObject:heardTempArray forKey:@"listOfHeardsID"];
+                    [object saveInBackground];
+                    [spokesArray removeObject:[self getSpokeWithID:spokeID]];
+                    tempSpoke.totalHeards = 1;
+                    tempSpoke.listOfHeardsID = heardTempArray;
+                    [spokesArray addObject:tempSpoke];
+                    [self saveProfileLocal];
+                    
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateHeards" object:self userInfo:nil];
+                }
+                else
+                {
+                    for(int i = 0; i < [heardTempArray count]; i++)
+                    {
+                        if(![[heardTempArray objectAtIndex:i] isEqualToString:userHeardID])
+                        {
+                            int totalHeards = [[object objectForKey:@"totalHeards"] intValue];
+                            totalHeards = totalHeards + 1;
+                            [object setObject:[NSString stringWithFormat:@"%d",totalHeards] forKey:@"totalHeards"];
+                            [heardTempArray addObject:userHeardID];
+                            [object setObject:heardTempArray forKey:@"listOfHeardsID"];
+                            [object saveInBackground];
+                            [spokesArray removeObject:[self getSpokeWithID:spokeID]];
+                            tempSpoke.totalHeards = totalHeards;
+                            tempSpoke.listOfHeardsID = heardTempArray;
+                            [spokesArray addObject:tempSpoke];
+                            [self saveProfileLocal];
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"updateHeards" object:self userInfo:nil];
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
+}
 
 -(void)loadSpokesFromRemoteForUser:(NSString*)userID
 {
@@ -221,6 +291,27 @@ static UserProfile *shared = nil;
     }];
 }
 
+-(void)deleteSpoke:(Spoke*)spokeToDelete
+{
+    PFQuery *query = [PFQuery queryWithClassName:@"spoke"];
+    [query whereKey:@"spokeID" equalTo:spokeToDelete.spokeID];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error)
+        {
+            for (PFObject *object in objects)
+            {
+                [object deleteEventually];
+                [self saveProfileLocal];
+            }
+        }
+        else
+        {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
+}
+
 -(Spoke*)getSpokeWithID:(NSString*)spokeID
 {
     Spoke *spokeRequested = nil;
@@ -230,6 +321,17 @@ static UserProfile *shared = nil;
             spokeRequested = temp;
     }
     return spokeRequested;
+}
+
+-(BOOL)spokeAlreadyListened:(Spoke*)spokeToCheck
+{
+    NSMutableArray *heardArray = spokeToCheck.listOfHeardsID;
+    for (NSString *userID in heardArray)
+    {
+        if([userID isEqualToString:[self getUserID]])
+            return YES;
+    }
+    return NO;
 }
 //- (void)updateProfile {
 //    if ([[PFUser currentUser] objectForKey:@"profile"][@"location"]) {

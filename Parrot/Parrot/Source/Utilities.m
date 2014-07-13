@@ -8,6 +8,7 @@
 
 #import "Utilities.h"
 #import "EZAudio.h"
+#import "Spoke.h"
 
 @implementation Utilities
 
@@ -38,12 +39,20 @@ static NSString *currentSpokeID = nil;
                                    spokeFileName]];
 }
 
-
 +(NSString*)soundFilePathString
 {
     NSString *returnID = currentSpokeID;
     currentSpokeID = nil;
     return returnID;
+}
+
++(NSMutableArray*)orderByDate:(NSMutableArray*)spokesArray
+{
+    NSSortDescriptor * dateDescriptor = [[NSSortDescriptor alloc] initWithKey:@"creationDate" ascending:NO];
+    
+    NSArray * descriptors = [NSArray arrayWithObjects:dateDescriptor, nil];
+    NSArray * sortedArray = [spokesArray sortedArrayUsingDescriptors:descriptors];
+    return [NSMutableArray arrayWithArray:sortedArray];
 }
 
 @end

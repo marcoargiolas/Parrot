@@ -31,7 +31,10 @@
     IBOutlet UIButton *pausePlayButton;
   	NSTimer *updateTimer;
     IBOutlet UIButton *likeButton;
+    Spoke *currentSpoke;
 }
+
+@property (strong, nonatomic) Spoke *currentSpoke;
 @property (strong, nonatomic) IBOutlet UIButton *likeButton;
 @property (strong, nonatomic) NSTimer *updateTimer;
 @property (strong, nonatomic) IBOutlet UIView *playContainerView;
@@ -74,8 +77,10 @@
     AVAudioPlayer *player;
     UIImage *userImageLoad;
     UIImage *maskImage;
+    int currentPlayingTag;
 }
 
+@property (nonatomic, assign) int currentPlayingTag;
 @property (strong, nonatomic) UserProfile *userProf;
 @property (strong, nonatomic) AVAudioPlayer *player;
 @property (strong, nonatomic) IBOutlet UIImageView *userImageView;

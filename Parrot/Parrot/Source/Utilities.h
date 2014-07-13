@@ -15,5 +15,6 @@
 +(NSString*)applicationDocumentsDirectory;
 +(NSURL*)soundFilePathUrl;
 +(NSString*)soundFilePathString;
++(NSMutableArray*)orderByDate:(NSMutableArray*)spokesArray;
 
 @end

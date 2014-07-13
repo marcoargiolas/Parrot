@@ -27,5 +27,8 @@
 -(void)saveSpokesArrayRemote:(Spoke*)spokeToSave;
 -(void)updateTotalSpokeLike:(NSString*)spokeID;
 -(Spoke*)getSpokeWithID:(NSString*)spokeID;
+-(void)updateTotalSpokeHeard:(NSString*)spokeID heardID:(NSString*)userHeardID;
+-(void)deleteSpoke:(Spoke*)spokeToDelete;
+-(BOOL)spokeAlreadyListened:(Spoke*)spokeToCheck;
 
 @end
