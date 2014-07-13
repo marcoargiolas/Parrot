@@ -8,6 +8,7 @@
 
 #import "RecordViewController.h"
 #import "Utilities.h"
+#import "Spoke.h"
 
 @interface RecordViewController ()
 
@@ -161,8 +162,22 @@
     {
         userProf.spokesArray = [[NSMutableArray alloc]init];
     }
-    [userProf.spokesArray addObject:[Utilities soundFilePathString]];
+
+    UserProfile *prof = [UserProfile sharedProfile];
+    Spoke *spokeObj = [[Spoke alloc]init];
+    spokeObj.ownerID = [[prof.currentUser objectForKey: @"profile"] objectForKey:@"userID"];
+    spokeObj.spokeID = [Utilities soundFilePathString];
+    spokeObj.creationDate = [NSDate date];
+
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
+    
+    NSURL *soundUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@.m4a", basePath, spokeObj.spokeID]];
+    spokeObj.audioData = [[NSData alloc] initWithContentsOfURL:soundUrl options:NSDataReadingMappedIfSafe error:nil];
+
+    [userProf.spokesArray addObject:spokeObj];
     [userProf saveProfileLocal];
+    [userProf saveSpokesArrayRemote:spokeObj];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

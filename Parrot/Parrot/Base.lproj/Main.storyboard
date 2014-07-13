@@ -314,7 +314,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="JFd-YZ-cfl">
-                                                            <rect key="frame" x="0.0" y="52" width="56" height="42"/>
+                                                            <rect key="frame" x="0.0" y="52" width="46" height="42"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                             <state key="normal" image="button_big_like_enabled.png">
@@ -326,7 +326,7 @@
                                                             </connections>
                                                         </button>
                                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="UpH-f7-BTX">
-                                                            <rect key="frame" x="252" y="52" width="56" height="42"/>
+                                                            <rect key="frame" x="262" y="52" width="46" height="42"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                             <state key="normal" image="button_big_share_enabled.png">
@@ -337,11 +337,11 @@
                                                             </connections>
                                                         </button>
                                                         <view contentMode="scaleToFill" id="bVi-1f-cnb">
-                                                            <rect key="frame" x="56" y="46" width="196" height="53"/>
+                                                            <rect key="frame" x="46" y="46" width="216" height="53"/>
                                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                             <subviews>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" id="29O-Ew-Qwt">
-                                                                    <rect key="frame" x="79" y="7" width="39" height="39"/>
+                                                                    <rect key="frame" x="89" y="7" width="39" height="39"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <state key="normal" image="button_big_play_enabled.png">
                                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -351,28 +351,29 @@
                                                                     </connections>
                                                                 </button>
                                                                 <slider opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" id="7NU-hw-rsC">
-                                                                    <rect key="frame" x="25" y="13" width="146" height="29"/>
+                                                                    <rect key="frame" x="56" y="10" width="120" height="29"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                                    <color key="tintColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <connections>
                                                                         <action selector="progressSliderMoved:" destination="aTA-je-CaE" eventType="valueChanged" id="sXc-fk-U5f"/>
                                                                     </connections>
                                                                 </slider>
                                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="0:00" lineBreakMode="tailTruncation" minimumFontSize="10" id="yTM-qP-43f">
-                                                                    <rect key="frame" x="86" y="32" width="25" height="21"/>
+                                                                    <rect key="frame" x="93" y="32" width="25" height="21"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" text="0:00" lineBreakMode="tailTruncation" minimumFontSize="10" id="pEq-8M-90j">
-                                                                    <rect key="frame" x="170" y="16" width="25" height="21"/>
+                                                                    <rect key="frame" x="181" y="16" width="25" height="21"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                                     <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                                     <nil key="highlightedColor"/>
                                                                 </label>
                                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="jN6-xf-a5L">
-                                                                    <rect key="frame" x="6" y="20" width="13" height="13"/>
+                                                                    <rect key="frame" x="6" y="5" width="44" height="44"/>
                                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                                     <state key="normal" image="button_player_pause_enabled.png">
                                                                         <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
@@ -420,6 +421,7 @@
                                             <outlet property="currentTimeLabel" destination="yTM-qP-43f" id="eEg-je-k7r"/>
                                             <outlet property="gotoRespokeButton" destination="3Rh-SN-3zN" id="p5X-VI-p9W"/>
                                             <outlet property="heardLabel" destination="MmV-It-uov" id="brS-GB-Zmy"/>
+                                            <outlet property="likeButton" destination="JFd-YZ-cfl" id="KOd-gT-UBs"/>
                                             <outlet property="likesLabel" destination="HpN-7D-wSO" id="o6Z-xh-7jg"/>
                                             <outlet property="pausePlayButton" destination="jN6-xf-a5L" id="Kqc-zA-AWY"/>
                                             <outlet property="playButton" destination="29O-Ew-Qwt" id="3DN-EM-tpd"/>

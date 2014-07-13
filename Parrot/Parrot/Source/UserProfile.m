@@ -48,8 +48,8 @@ static UserProfile *shared = nil;
         spokesArray = [[NSMutableArray alloc]init];
     }
 	[currentUser setObject:[NSMutableDictionary dictionaryWithContentsOfFile:finalPath] forKey:USER_PROFILE];
-    NSMutableDictionary *tempDict = [NSMutableDictionary dictionaryWithContentsOfFile:spokesPath];
-    spokesArray = [tempDict objectForKey:USER_SPOKES_ARRAY];
+    NSData *peopleData = [NSData dataWithContentsOfFile:spokesPath];
+    spokesArray = [NSKeyedUnarchiver unarchiveObjectWithData:peopleData];
 }
 
 - (void)saveProfileLocal
@@ -65,13 +65,20 @@ static UserProfile *shared = nil;
                                                    attributes:nil
                                                         error:nil];
     }
+    if(![[NSFileManager defaultManager] fileExistsAtPath:spokesPath])
+    {
+        [[NSFileManager defaultManager] createDirectoryAtPath:documentsDirectory
+                                  withIntermediateDirectories:YES
+                                                   attributes:nil
+                                                        error:nil];
+    }
 
     if(currentUser != nil)
     {
         [[currentUser objectForKey:USER_PROFILE] writeToFile:finalPath atomically:NO];
     
-        NSMutableDictionary *tempDict = [[NSMutableDictionary alloc]initWithObjectsAndKeys:spokesArray,USER_SPOKES_ARRAY, nil];
-        [tempDict writeToFile:spokesPath atomically:NO];
+        NSData *spokesData = [NSKeyedArchiver archivedDataWithRootObject:spokesArray];
+        [spokesData writeToFile:spokesPath atomically:NO];
     }
 }
 
@@ -163,6 +170,67 @@ static UserProfile *shared = nil;
     return [NSString stringWithFormat:@"%@",[[currentUser objectForKey:USER_PROFILE] objectForKey:USER_ID]];
 }
 
+-(void)saveProfileRemote
+{
+    
+}
+
+-(void)saveSpokesArrayRemote:(Spoke*)spokeToSave
+{
+    PFObject *obj = [PFObject objectWithClassName:@"spoke"];
+    [obj setObject:spokeToSave.spokeID forKey:@"spokeID"];
+    [obj setObject:spokeToSave.creationDate forKey:@"creationDate"];
+    [obj setObject:[NSString stringWithFormat:@"%d",spokeToSave.totalHeards] forKey:@"totalHeards"];
+    [obj setObject:spokeToSave.audioData forKey:@"audioData"];
+    [obj setObject:[NSString stringWithFormat:@"%d",spokeToSave.totalLikes] forKey:@"totalLikes"];
+    [obj setObject:spokeToSave.respokeToSpokeID forKey:@"respokeToSpokeID"];
+    [obj setObject:spokeToSave.ownerID forKey:@"ownerID"];
+    
+    [obj saveInBackground];
+    
+//    [self loadSpokesFromRemoteForUser:[[currentUser objectForKey:@"profile"] objectForKey:@"userID"]];
+}
+
+//-(void)updateTotalSpokeLike:(NSString*)spokeID
+//{
+//    PFQuery *query = [PFQuery queryWithClassName:@"spoke"];
+//    [query whereKey:<#(NSString *)#> equalTo:<#(id)#>];
+//    [query getObjectInBackgroundWithId:spokeID block:^(PFObject *spokeObj, NSError *error) {
+//        Spoke *tempObj = (Spoke*)spokeObj;//[self getSpokeWithID:spokeID];
+//        [spokeObj setObject:[NSString stringWithFormat:@"%d",tempObj.totalLikes] forKey:@"totalLikes"];
+//        [spokeObj saveInBackground];
+//    }];
+//}
+
+-(void)loadSpokesFromRemoteForUser:(NSString*)userID
+{
+    PFQuery *query = [PFQuery queryWithClassName:@"spoke"];
+    [query whereKey:@"ownerID" equalTo:userID];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error) {
+            // The find succeeded.
+            NSLog(@"Successfully retrieved %d scores.", objects.count);
+            // Do something with the found objects
+            for (PFObject *object in objects) {
+                NSLog(@"%@", object.objectId);
+            }
+        } else {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
+}
+
+-(Spoke*)getSpokeWithID:(NSString*)spokeID
+{
+    Spoke *spokeRequested = nil;
+    for(Spoke *temp in spokesArray)
+    {
+        if([temp.spokeID isEqualToString:spokeID])
+            spokeRequested = temp;
+    }
+    return spokeRequested;
+}
 //- (void)updateProfile {
 //    if ([[PFUser currentUser] objectForKey:@"profile"][@"location"]) {
 //        [self.rowDataArray replaceObjectAtIndex:0 withObject:[[PFUser currentUser] objectForKey:@"profile"][@"location"]];

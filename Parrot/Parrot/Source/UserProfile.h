@@ -24,5 +24,8 @@
 -(NSString*)getUserID;
 - (void)saveProfileLocal;
 - (void)loadProfileLocal;
+-(void)saveSpokesArrayRemote:(Spoke*)spokeToSave;
+-(void)updateTotalSpokeLike:(NSString*)spokeID;
+-(Spoke*)getSpokeWithID:(NSString*)spokeID;
 
 @end

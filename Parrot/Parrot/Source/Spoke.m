@@ -16,7 +16,6 @@
 @synthesize audioData;
 @synthesize totalLikes;
 @synthesize respokeToSpokeID;
-@synthesize audioFileName;
 
 - (id)init
 {
@@ -28,9 +27,33 @@
         totalHeards = 0;
         audioData = [[NSData alloc]init];
         respokeToSpokeID = @"";
-        audioFileName = @"";
 	}
 	return self;
+}
+
+- (void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:spokeID forKey:@"spokeID"];
+    [aCoder encodeObject:creationDate forKey:@"creationDate"];
+    [aCoder encodeInt:totalLikes forKey:@"totalLikes"];
+    [aCoder encodeInt:totalHeards forKey:@"totalHeards"];
+    [aCoder encodeObject:audioData forKey:@"audioData"];
+    [aCoder encodeObject:respokeToSpokeID forKey:@"respokeToSpokeID"];
+}
+
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    if (self = [super init])
+    {
+        spokeID = [aDecoder decodeObjectForKey:@"spokeID"];
+        creationDate = [aDecoder decodeObjectForKey:@"creationDate"];
+        totalLikes = [aDecoder decodeIntForKey:@"totalLikes"];
+        totalHeards = [aDecoder decodeIntForKey:@"totalHeards"];
+        audioData = [aDecoder decodeObjectForKey:@"audioData"];
+        respokeToSpokeID = [aDecoder decodeObjectForKey:@"respokeToSpokeID"];
+    }
+    
+    return self;
 }
 
 @end

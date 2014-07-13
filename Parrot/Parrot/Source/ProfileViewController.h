@@ -30,7 +30,9 @@
     IBOutlet UIView *playContainerView;
     IBOutlet UIButton *pausePlayButton;
   	NSTimer *updateTimer;
+    IBOutlet UIButton *likeButton;
 }
+@property (strong, nonatomic) IBOutlet UIButton *likeButton;
 @property (strong, nonatomic) NSTimer *updateTimer;
 @property (strong, nonatomic) IBOutlet UIView *playContainerView;
 @property (strong, nonatomic) IBOutlet UILabel *currentTimeLabel;
@@ -74,6 +76,7 @@
     UIImage *maskImage;
 }
 
+@property (strong, nonatomic) UserProfile *userProf;
 @property (strong, nonatomic) AVAudioPlayer *player;
 @property (strong, nonatomic) IBOutlet UIImageView *userImageView;
 @property (strong, nonatomic) IBOutlet UILabel *nameLabel;
