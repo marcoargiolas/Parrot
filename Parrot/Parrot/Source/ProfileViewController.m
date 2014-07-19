@@ -38,6 +38,7 @@
 @synthesize pausePlayButton;
 @synthesize likeButton;
 @synthesize currentSpoke;
+@synthesize wallVC;
 
 - (IBAction)playButtonPressed:(id)sender
 {

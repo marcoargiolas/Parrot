@@ -10,6 +10,7 @@
 #import "UserProfile.h"
 #import <AVFoundation/AVFoundation.h>
 #import "EZAudio.h"
+#import "WallViewController.h"
 
 @class ProfileViewController;
 @interface SpokeCell : UITableViewCell <AVAudioPlayerDelegate, AVAudioSessionDelegate,AVAudioRecorderDelegate>
@@ -32,8 +33,10 @@
   	NSTimer *updateTimer;
     IBOutlet UIButton *likeButton;
     Spoke *currentSpoke;
+    WallViewController *wallVC;
 }
 
+@property (strong, nonatomic) WallViewController *wallVC;
 @property (strong, nonatomic) Spoke *currentSpoke;
 @property (strong, nonatomic) IBOutlet UIButton *likeButton;
 @property (strong, nonatomic) NSTimer *updateTimer;

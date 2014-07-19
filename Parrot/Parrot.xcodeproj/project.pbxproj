@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DE1D8984197ACC0600B552B4 /* SpokeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE1D8983197ACC0600B552B4 /* SpokeCell.xib */; };
 		DE6388F619684748008D5B9D /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6388F519684748008D5B9D /* Utilities.m */; };
 		DE63890A19687EFF008D5B9D /* button_bar_options_enabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE6388F719687EFF008D5B9D /* button_bar_options_enabled@2x.png */; };
 		DE63890B19687EFF008D5B9D /* button_bar_pause_enabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE6388F819687EFF008D5B9D /* button_bar_pause_enabled@2x.png */; };
@@ -104,6 +105,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DE1D8983197ACC0600B552B4 /* SpokeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SpokeCell.xib; path = Parrot/Resources/Xib/SpokeCell.xib; sourceTree = "<group>"; };
 		DE6388F419684748008D5B9D /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utilities.h; path = Source/Utilities.h; sourceTree = "<group>"; };
 		DE6388F519684748008D5B9D /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Utilities.m; path = Source/Utilities.m; sourceTree = "<group>"; };
 		DE6388F719687EFF008D5B9D /* button_bar_options_enabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_bar_options_enabled@2x.png"; sourceTree = "<group>"; };
@@ -253,6 +255,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		DE1D8980197ACBB600B552B4 /* Xib */ = {
+			isa = PBXGroup;
+			children = (
+				DE1D8983197ACC0600B552B4 /* SpokeCell.xib */,
+			);
+			name = Xib;
+			sourceTree = "<group>";
+		};
 		DE9DFC5F1965FC0E00908ED7 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -420,6 +430,7 @@
 		DECADC011961EA6C0024D067 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DE1D8980197ACBB600B552B4 /* Xib */,
 				DECADC031961EBF40024D067 /* Images */,
 			);
 			name = Resources;
@@ -579,6 +590,7 @@
 				DEAA904D196356170036B6BF /* VERSION in Resources */,
 				DE63890F19687EFF008D5B9D /* button_big_play_enabled@2x.png in Resources */,
 				DE63891019687EFF008D5B9D /* button_big_replay_enabled@2x.png in Resources */,
+				DE1D8984197ACC0600B552B4 /* SpokeCell.xib in Resources */,
 				DECADBE51961EA300024D067 /* Images.xcassets in Resources */,
 				DE63891619687EFF008D5B9D /* button_nav_search_enabled@2x.png in Resources */,
 				DE63890E19687EFF008D5B9D /* button_big_like_enabled@2x.png in Resources */,

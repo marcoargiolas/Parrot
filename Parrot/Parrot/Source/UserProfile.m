@@ -144,9 +144,9 @@ static UserProfile *shared = nil;
             
             [currentUser setObject:currentProfile forKey:USER_PROFILE];
             [currentUser setObject:spokesArray forKey:USER_SPOKES_ARRAY];
-            
+//            [currentUser signUp];
 //            [currentUser saveInBackground];
-            
+
             [[NSNotificationCenter defaultCenter]postNotificationName:PROFILE_LOADED_FROM_FACEBOOK object:nil];
             [[NSUserDefaults standardUserDefaults] setObject:facebookID forKey:USER_ID];
             [self saveProfileLocal];
@@ -186,10 +186,11 @@ static UserProfile *shared = nil;
     [obj setObject:spokeToSave.respokeToSpokeID forKey:@"respokeToSpokeID"];
     [obj setObject:spokeToSave.ownerID forKey:@"ownerID"];
     [obj setObject:spokeToSave.listOfHeardsID forKey:@"listOfHeardsID"];
+    PFFile *ownerImage = [PFFile fileWithData:spokeToSave.ownerImageData];
+    [obj setObject:ownerImage forKey:@"ownerImageData"];
+    [obj setObject:spokeToSave.ownerName forKey:@"ownerName"];
     
     [obj saveInBackground];
-    
-//    [self loadSpokesFromRemoteForUser:[[currentUser objectForKey:@"profile"] objectForKey:@"userID"]];
 }
 
 -(void)updateTotalSpokeLike:(NSString*)spokeID
@@ -291,6 +292,48 @@ static UserProfile *shared = nil;
     }];
 }
 
+-(NSMutableArray*)loadAllSpokesFromRemote
+{
+    NSMutableArray *resultsArray = [[NSMutableArray alloc]init];
+    
+    PFQuery *query = [PFQuery queryWithClassName:@"spoke"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error)
+        {
+            // The find succeeded.
+            NSLog(@"Successfully retrieved %d scores.", objects.count);
+            
+            for (PFObject *object in objects)
+            {
+                NSLog(@"%@", object.objectId);
+                
+                Spoke *spokeObj = [[Spoke alloc]init];
+                spokeObj.ownerID = [object objectForKey:@"ownerID"];
+                spokeObj.spokeID = [object objectForKey:@"spokeID"];
+                spokeObj.creationDate = [object objectForKey:@"creationDate"];
+                spokeObj.respokeToSpokeID = [object objectForKey:@"respokeToSpokeID"];
+                spokeObj.totalHeards = [[object objectForKey:@"totalHeards"] intValue];
+                spokeObj.totalLikes = [[object objectForKey:@"totalLikes"] intValue];
+                spokeObj.listOfHeardsID = [object objectForKey:@"listOfHeardsID"];
+                spokeObj.audioData = [object objectForKey:@"audioData"];
+                spokeObj.ownerName = [object objectForKey:@"ownerName"];
+                PFFile *ownerImage = [object objectForKey:@"ownerImageData"];
+                spokeObj.ownerImageData = [ownerImage getData];
+
+                [resultsArray addObject:spokeObj];
+            }
+            
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"wallSpokesArrived" object:nil];
+        }
+        else
+        {
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
+    return resultsArray;
+}
+
+
 -(void)deleteSpoke:(Spoke*)spokeToDelete
 {
     PFQuery *query = [PFQuery queryWithClassName:@"spoke"];
@@ -333,6 +376,18 @@ static UserProfile *shared = nil;
     }
     return NO;
 }
+
+//// Sent to the delegate when a PFUser is signed up.
+//- (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user
+//{
+//    NSLog(@"SIGN UP");
+//}
+//
+//// Sent to the delegate when the sign up attempt fails.
+//- (void)signUpViewController:(PFSignUpViewController *)signUpController didFailToSignUpWithError:(NSError *)error {
+//    NSLog(@"Failed to sign up...");
+//}
+
 //- (void)updateProfile {
 //    if ([[PFUser currentUser] objectForKey:@"profile"][@"location"]) {
 //        [self.rowDataArray replaceObjectAtIndex:0 withObject:[[PFUser currentUser] objectForKey:@"profile"][@"location"]];

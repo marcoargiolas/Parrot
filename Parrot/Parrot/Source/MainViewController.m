@@ -156,7 +156,7 @@
     [profileContainerView setHidden:YES];
     [wallContainerView setHidden:NO];
     [searchContainerView setHidden:YES];
-
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"loadWallSpokes" object:nil];
 }
 
 - (IBAction)searchButtonPressed:(id)sender
@@ -186,4 +186,11 @@
     [searchContainerView setHidden:NO];
 }
 
+-(void)prepareForSegue:(UIStoryboardSegue*)segue sender:(id)sender
+{
+    if([segue.identifier isEqualToString:@"wallAction"])
+    {
+
+    }
+}
 @end

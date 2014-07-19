@@ -67,7 +67,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="zsF-Fe-dir" kind="embed" id="x5Z-AO-lg5"/>
+                                    <segue destination="zsF-Fe-dir" kind="embed" identifier="wallAction" id="x5Z-AO-lg5"/>
                                 </connections>
                             </containerView>
                             <containerView contentMode="scaleToFill" id="cHU-0u-zWT">
@@ -167,8 +167,22 @@
                     <view key="view" contentMode="scaleToFill" id="xZ9-CI-fLw">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="508"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" red="0.10166772289999999" green="0.76080197699999996" blue="0.12338350770000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="6F5-jX-V5D">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="508"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="zsF-Fe-dir" id="MfD-Dr-4Wo"/>
+                                    <outlet property="delegate" destination="zsF-Fe-dir" id="gGH-OY-SSg"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <connections>
+                        <outlet property="wallTableView" destination="6F5-jX-V5D" id="oxu-rX-Sjh"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0AT-nH-xjG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

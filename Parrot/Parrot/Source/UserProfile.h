@@ -10,7 +10,7 @@
 #import <Parse/Parse.h>
 #import "Spoke.h"
 
-@interface UserProfile : NSObject
+@interface UserProfile : NSObject <PFSignUpViewControllerDelegate>
 {
     PFUser *currentUser;
     NSMutableArray *spokesArray;
@@ -30,5 +30,6 @@
 -(void)updateTotalSpokeHeard:(NSString*)spokeID heardID:(NSString*)userHeardID;
 -(void)deleteSpoke:(Spoke*)spokeToDelete;
 -(BOOL)spokeAlreadyListened:(Spoke*)spokeToCheck;
+-(NSMutableArray*)loadAllSpokesFromRemote;
 
 @end

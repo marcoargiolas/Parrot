@@ -9,6 +9,7 @@
 #import "RecordViewController.h"
 #import "Utilities.h"
 #import "Spoke.h"
+#import "GlobalDefines.h"
 
 @interface RecordViewController ()
 
@@ -174,6 +175,8 @@
     
     NSURL *soundUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@.m4a", basePath, spokeObj.spokeID]];
     spokeObj.audioData = [[NSData alloc] initWithContentsOfURL:soundUrl options:NSDataReadingMappedIfSafe error:nil];
+    spokeObj.ownerName = [[prof.currentUser objectForKey:@"profile"] objectForKey:@"fullName"];
+    spokeObj.ownerImageData = [[prof.currentUser objectForKey:@"profile"] objectForKey:USER_IMAGE_DATA];
 
     [userProf.spokesArray addObject:spokeObj];
     [userProf saveProfileLocal];
