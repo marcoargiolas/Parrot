@@ -13,7 +13,7 @@
 
 #define kAudioFilePath @"EZAudioTest.m4a"
 
-@interface RecordViewController : UIViewController <AVAudioPlayerDelegate,EZMicrophoneDelegate, UIGestureRecognizerDelegate>
+@interface RecordViewController : UIViewController <AVAudioPlayerDelegate,EZMicrophoneDelegate, UIGestureRecognizerDelegate, AVAudioSessionDelegate>
 {
     NSString *spokeFileName;
     IBOutlet UIView *buttonsContainerView;
@@ -21,7 +21,11 @@
     UserProfile *userProf;
     IBOutlet UIView *hintContainerView;
     IBOutlet UIButton *saveButton;
+    BOOL startRecord;
+    AVAudioPlayer *player;
 }
+
+@property (nonatomic, assign) BOOL startRecord;
 /**
  Use a OpenGL based plot to visualize the data coming in
  */
@@ -66,6 +70,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *saveButton;
 @property (nonatomic,strong) AVAudioPlayer *audioPlayer;
 
+- (IBAction)recordButtonPressed:(id)sender;
 
 
 @end

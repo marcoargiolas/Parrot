@@ -13,7 +13,7 @@
 #import "WallViewController.h"
 #import "SpokeCell.h"
 
-@interface ProfileViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITabBarDelegate,EZAudioFileDelegate,EZOutputDataSource, AVAudioPlayerDelegate, AVAudioSessionDelegate,AVAudioRecorderDelegate>
+@interface ProfileViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITabBarDelegate,EZAudioFileDelegate,EZOutputDataSource, AVAudioPlayerDelegate, AVAudioSessionDelegate,AVAudioRecorderDelegate, UIGestureRecognizerDelegate>
 {
     UserProfile *userProf;
     NSMutableDictionary *profile;
@@ -30,6 +30,7 @@
     UIImage *maskImage;
     int currentPlayingTag;
     UIRefreshControl *refreshControl;
+    BOOL startRecord;
 }
 
 @property (nonatomic, assign) int currentPlayingTag;
@@ -40,6 +41,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *infoLabel;
 @property (strong, nonatomic) IBOutlet UITableView *spokesTableView;
 
+- (IBAction)recordButtonPressed:(id)sender;
 -(void)playSelectedAudio;
 
 @end

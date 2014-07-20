@@ -12,6 +12,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "Utilities.h"
 #import "Spoke.h"
+#import "RecordViewController.h"
 
 #define IMAGE_WIDTH 80
 @interface ProfileViewController ()
@@ -75,6 +76,9 @@
     [recordButton.layer setShadowOffset:CGSizeMake(0, 1.0)];
     
     [spokesTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+    [recordButton addGestureRecognizer:longPress];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -90,6 +94,7 @@
 
 -(void)viewWillDisappear:(BOOL)animated
 {
+    startRecord = NO;
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
     [player stop];
 }
@@ -133,16 +138,17 @@
     }
 }
 
-/*
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if ([segue.identifier isEqualToString:@"recordAction"])
+    {
+        RecordViewController *recordVC = [segue destinationViewController];
+        recordVC.startRecord = startRecord;
+        startRecord = NO;
+    }
 }
-*/
 
 #pragma mark UITableView delegate
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -158,7 +164,6 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"count %d",[userProf.spokesArray count]);
     return [userProf.spokesArray count];
 }
 
@@ -176,7 +181,6 @@
 {
     static NSString *cellIdentifier = @"spokeCellID";
     SpokeCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    [cell setBackgroundColor:[UIColor clearColor]];
     
     if (cell == nil)
     {
@@ -264,6 +268,8 @@
         [cell.playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
     }
     
+    [cell setBackgroundColor:[UIColor clearColor]];
+    
     return cell;
 }
 
@@ -288,6 +294,17 @@
         [spokesTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         [spokesTableView endUpdates];
     }
+}
+
+- (void)longPress:(UILongPressGestureRecognizer*)gesture
+{
+    startRecord = YES;
+    [self recordButtonPressed:nil];
+}
+
+- (IBAction)recordButtonPressed:(id)sender
+{
+    [self performSegueWithIdentifier:@"recordAction" sender:nil];
 }
 
 -(void)playSelectedAudio

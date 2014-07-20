@@ -22,6 +22,7 @@
 @synthesize recorder;
 @synthesize audioPlot;
 @synthesize saveButton;
+@synthesize startRecord;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -59,21 +60,22 @@
     [hintContainerView setFrame:CGRectMake(hintContainerView.frame.origin.x, buttonsContainerView.frame.origin.y - hintContainerView.frame.size.height, hintContainerView.frame.size.width, hintContainerView.frame.size.height)];
     
     userProf = [UserProfile sharedProfile];
-    
-//    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+    if(startRecord)
+    {
+        [self prepareToRecord];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
-//    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:)
                                                  name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
-//    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
-//    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
+    startRecord = NO;
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
 }
 
 -(UIStatusBarStyle)preferredStatusBarStyle
@@ -83,7 +85,7 @@
 
 - (void)dealloc
 {
-//    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -107,7 +109,7 @@
 {
     if ([[UIDevice currentDevice] proximityState] == YES)
     {
-        [self startRecording];
+        [self prepareToRecord];
     }
     else
     {
@@ -119,13 +121,33 @@
 {
     if (gesture.state == UIGestureRecognizerStateBegan)
     {
-        [self startRecording];
+        [self prepareToRecord];
     }
     else if ( gesture.state == UIGestureRecognizerStateEnded )
     {
         
         [self stopRecording];
     }
+}
+
+-(void)prepareToRecord
+{
+    [recordButton setSelected:YES];
+    NSURL *soundUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/startRecord.wav", [[NSBundle mainBundle] resourcePath]]];
+    
+    NSError *dataError;
+    NSData *soundData = [[NSData alloc] initWithContentsOfURL:soundUrl options:NSDataReadingMappedIfSafe error:&dataError];
+    if(dataError != nil)
+    {
+        NSLog(@"DATA ERROR %@", dataError);
+    }
+    
+    NSError *error;
+    player =[[AVAudioPlayer alloc] initWithData: soundData error: &error];
+    player.delegate = self;
+
+    [player prepareToPlay];
+    [player play];
 }
 
 - (void)startRecording
@@ -159,6 +181,8 @@
 - (void) stopRecording
 {
     NSLog(@"STOP RECORDING");
+    [self prepareToRecord];
+    [recordButton setSelected:NO];
     [self.microphone stopFetchingAudio];
     self.isRecording = NO;
     [saveButton setEnabled:YES];
@@ -167,12 +191,14 @@
 
 - (IBAction)cancelButtonPressed:(id)sender
 {
+    startRecord = NO;
     [self.microphone stopFetchingAudio];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)saveButtonPressed:(id)sender
 {
+    startRecord = NO;
     [self.recorder closeAudioFile];
     if(userProf.spokesArray == nil)
     {
@@ -235,13 +261,36 @@ withNumberOfChannels:(UInt32)numberOfChannels {
 /*
  Occurs when the audio player instance completes playback
  */
--(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag {
-    audioPlayer = nil;
+-(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
+    if(recordButton.selected)
+    {
+        NSLog(@"SELECTED");
+        [self startRecording];
+    }
+    else
+    {
+        NSLog(@"NON SELECTED");
+        
+    }
+        
+//    audioPlayer = nil;
 //    self.playingTextField.text = @"Finished Playing";
     
-    [self.microphone startFetchingAudio];
+//    [self.microphone startFetchingAudio];
 //    self.microphoneSwitch.on = YES;
 //    self.microphoneTextField.text = @"Microphone On";
 }
 
+- (IBAction)recordButtonPressed:(id)sender
+{
+    if (self.isRecording)
+    {
+        [self stopRecording];
+    }
+    else
+    {
+        [self prepareToRecord];
+    }
+}
 @end

@@ -192,7 +192,10 @@ static UserProfile *shared = nil;
     [obj setObject:ownerImage forKey:@"ownerImageData"];
     [obj setObject:spokeToSave.ownerName forKey:@"ownerName"];
     
-    [obj saveInBackground];
+    [obj saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error)
+    {
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"loadWallSpokes" object:nil];
+    }];
 }
 
 -(void)updateTotalSpokeLike:(NSString*)spokeID thanksID:(NSString*)userThanksID addLike:(BOOL)like

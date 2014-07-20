@@ -74,9 +74,9 @@ static NSString *currentSpokeID = nil;
         {
             if(hours>=12) days++;
             if(days==1)
-                dateString = [NSString stringWithFormat:NSLocalizedString(@"%d day", @""), days];
+                dateString = [NSString stringWithFormat:NSLocalizedString(@"%d day ago", @""), days];
             else
-                dateString = [NSString stringWithFormat:NSLocalizedString(@"%d days", @""), days];
+                dateString = [NSString stringWithFormat:NSLocalizedString(@"%d days ago", @""), days];
         }
         else
         {
@@ -87,23 +87,23 @@ static NSString *currentSpokeID = nil;
     {
         if(minutes>=30) hours++;
         if(hours==1)
-            dateString = [NSString stringWithFormat:NSLocalizedString(@"%d hour", @""), hours];
+            dateString = [NSString stringWithFormat:NSLocalizedString(@"%d hour ago", @""), hours];
         else
-            dateString = [NSString stringWithFormat:NSLocalizedString(@"%d hours", @""), hours];
+            dateString = [NSString stringWithFormat:NSLocalizedString(@"%d hours ago", @""), hours];
     }
     else if(minutes!=0)
     {
         if(minutes==1)
-            dateString = [NSString stringWithFormat:NSLocalizedString(@"%d min", @""), minutes];
+            dateString = [NSString stringWithFormat:NSLocalizedString(@"%d min ago", @""), minutes];
         else
-            dateString = [NSString stringWithFormat:NSLocalizedString(@"%d min", @""), minutes];
+            dateString = [NSString stringWithFormat:NSLocalizedString(@"%d min ago", @""), minutes];
     }
     else
     {
         if(seconds==1)
-            dateString = [NSString stringWithFormat:NSLocalizedString(@"%d sec", @""), seconds];
+            dateString = [NSString stringWithFormat:NSLocalizedString(@"%d sec ago", @""), seconds];
         else
-            dateString = [NSString stringWithFormat:NSLocalizedString(@"%d sec", @""), seconds];
+            dateString = [NSString stringWithFormat:NSLocalizedString(@"%d sec ago", @""), seconds];
     }
     return dateString;
 }

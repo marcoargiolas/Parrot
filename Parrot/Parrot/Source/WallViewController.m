@@ -11,6 +11,7 @@
 #import "UIImage+Additions.h"
 #import "GlobalDefines.h"
 #import "Utilities.h"
+#import "RecordViewController.h"
 
 #define IMAGE_WIDTH 80
 
@@ -24,6 +25,8 @@
 @synthesize currentPlayingTag;
 @synthesize player;
 @synthesize userProf;
+@synthesize buttonContainerView;
+@synthesize recordButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -48,16 +51,24 @@
     currentPlayingTag = -1;
     
     [wallTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    
+    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+    [recordButton addGestureRecognizer:longPress];
+
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     // Set up an observer for proximity changes
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
+//    if([wallSpokesArray count] > 0)
+//        wallSpokesArray = [Utilities orderByDate:wallSpokesArray];
+//    [wallTableView reloadData];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
+    startRecord = NO;
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
     [player stop];
 }
@@ -102,16 +113,17 @@
     }
 }
 
-/*
+
 #pragma mark - Navigation
 
-// In a storyboard-based application, you will often want to do a little preparation before navigation
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+    if ([segue.identifier isEqualToString:@"recordAction"])
+    {
+        RecordViewController *recordVC = [segue destinationViewController];
+        recordVC.startRecord = startRecord;
+    }
 }
-*/
 
 #pragma mark UITableView delegate
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
@@ -219,7 +231,7 @@
     [cell.spokeDateLabel setText:dateString];
     
     NSString *likeString = @"like";
-    if (spokeObj.totalLikes > 0)
+    if (spokeObj.totalLikes > 0 && [spokeObj.listOfThankersID containsObject:[userProf getUserID]])
         cell.likeButton.selected = YES;
     if (spokeObj.totalLikes > 1)
     {
@@ -243,24 +255,38 @@
 {
     
 }
-//
-//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    return YES;
-//}
-//
-//// Override to support editing the table view.
-//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    if (editingStyle == UITableViewCellEditingStyleDelete)
-//    {
-//        [wallTableView beginUpdates];
-//        [userProf deleteSpoke:[userProf.spokesArray objectAtIndex:indexPath.row]];
-//        [userProf.spokesArray removeObjectAtIndex:indexPath.row];
-//        [wallTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-//        [wallTableView endUpdates];
-//    }
-//}
+
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    Spoke *spokeObj = [wallSpokesArray objectAtIndex:indexPath.row];
+    if([spokeObj.ownerID isEqualToString:[userProf getUserID]])
+        return YES;
+    return NO;
+}
+
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete)
+    {
+        [wallTableView beginUpdates];
+        [userProf deleteSpoke:[wallSpokesArray objectAtIndex:indexPath.row]];
+        [wallSpokesArray removeObjectAtIndex:indexPath.row];
+        [wallTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [wallTableView endUpdates];
+    }
+}
+
+- (void)longPress:(UILongPressGestureRecognizer*)gesture
+{
+    startRecord = YES;
+    [self recordButtonPressed:nil];
+}
+
+- (IBAction)recordButtonPressed:(id)sender
+{
+    [self performSegueWithIdentifier:@"recordAction" sender:nil];
+}
 
 -(void)playSelectedAudio
 {

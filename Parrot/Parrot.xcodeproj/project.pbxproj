@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		DE1D8984197ACC0600B552B4 /* SpokeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE1D8983197ACC0600B552B4 /* SpokeCell.xib */; };
 		DE1D8987197AEFA900B552B4 /* SpokeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE1D8986197AEFA900B552B4 /* SpokeCell.m */; };
+		DE1D898A197C3D4200B552B4 /* button_main_record_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE1D8989197C3D4200B552B4 /* button_main_record_active@2x.png */; };
+		DE1D898C197C409300B552B4 /* startRecord.wav in Resources */ = {isa = PBXBuildFile; fileRef = DE1D898B197C409300B552B4 /* startRecord.wav */; };
 		DE6388F619684748008D5B9D /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6388F519684748008D5B9D /* Utilities.m */; };
 		DE63890A19687EFF008D5B9D /* button_bar_options_enabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE6388F719687EFF008D5B9D /* button_bar_options_enabled@2x.png */; };
 		DE63890B19687EFF008D5B9D /* button_bar_pause_enabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE6388F819687EFF008D5B9D /* button_bar_pause_enabled@2x.png */; };
@@ -109,6 +111,8 @@
 		DE1D8983197ACC0600B552B4 /* SpokeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SpokeCell.xib; path = Parrot/Resources/Xib/SpokeCell.xib; sourceTree = "<group>"; };
 		DE1D8985197AEFA900B552B4 /* SpokeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpokeCell.h; path = Source/SpokeCell.h; sourceTree = "<group>"; };
 		DE1D8986197AEFA900B552B4 /* SpokeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SpokeCell.m; path = Source/SpokeCell.m; sourceTree = "<group>"; };
+		DE1D8989197C3D4200B552B4 /* button_main_record_active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_main_record_active@2x.png"; sourceTree = "<group>"; };
+		DE1D898B197C409300B552B4 /* startRecord.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = startRecord.wav; path = Parrot/Resources/startRecord.wav; sourceTree = "<group>"; };
 		DE6388F419684748008D5B9D /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utilities.h; path = Source/Utilities.h; sourceTree = "<group>"; };
 		DE6388F519684748008D5B9D /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Utilities.m; path = Source/Utilities.m; sourceTree = "<group>"; };
 		DE6388F719687EFF008D5B9D /* button_bar_options_enabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_bar_options_enabled@2x.png"; sourceTree = "<group>"; };
@@ -445,6 +449,7 @@
 		DECADC011961EA6C0024D067 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				DE1D898B197C409300B552B4 /* startRecord.wav */,
 				DE1D8980197ACBB600B552B4 /* Xib */,
 				DECADC031961EBF40024D067 /* Images */,
 			);
@@ -454,6 +459,7 @@
 		DECADC031961EBF40024D067 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				DE1D8989197C3D4200B552B4 /* button_main_record_active@2x.png */,
 				DEF176F519717B9F003F15A0 /* handle_slider@2x.png */,
 				DE6389311968A5CE008D5B9D /* iphone_retina_splashscreen@2x.png */,
 				DE6389321968A5CE008D5B9D /* iphone_splashscreen@2x.png */,
@@ -597,6 +603,7 @@
 				DE63891B19687EFF008D5B9D /* button_record_confirm_enabled@2x.png in Resources */,
 				DE63891419687EFF008D5B9D /* button_nav_events_enabled@2x.png in Resources */,
 				DE63892D19689B3A008D5B9D /* arrow_bar_right@2x.png in Resources */,
+				DE1D898A197C3D4200B552B4 /* button_main_record_active@2x.png in Resources */,
 				DE63892619689A08008D5B9D /* button_nav_profile_selected@2x.png in Resources */,
 				DE63892419689A08008D5B9D /* button_big_like_selected@2x.png in Resources */,
 				DE63892C19689B3A008D5B9D /* arrow_bar_left@2x.png in Resources */,
@@ -604,6 +611,7 @@
 				DE63890F19687EFF008D5B9D /* button_big_play_enabled@2x.png in Resources */,
 				DE63891019687EFF008D5B9D /* button_big_replay_enabled@2x.png in Resources */,
 				DE1D8984197ACC0600B552B4 /* SpokeCell.xib in Resources */,
+				DE1D898C197C409300B552B4 /* startRecord.wav in Resources */,
 				DECADBE51961EA300024D067 /* Images.xcassets in Resources */,
 				DE63891619687EFF008D5B9D /* button_nav_search_enabled@2x.png in Resources */,
 				DE63890E19687EFF008D5B9D /* button_big_like_enabled@2x.png in Resources */,
