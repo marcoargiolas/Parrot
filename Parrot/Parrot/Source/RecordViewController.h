@@ -20,6 +20,7 @@
     IBOutlet UIButton *recordButton;
     UserProfile *userProf;
     IBOutlet UIView *hintContainerView;
+    IBOutlet UIButton *saveButton;
 }
 /**
  Use a OpenGL based plot to visualize the data coming in

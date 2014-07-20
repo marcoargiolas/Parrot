@@ -56,6 +56,8 @@
     [buttonsContainerView.layer setBorderWidth:0.3];
 
     [self profileButtonPressed:nil];
+    
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
 }
 
 -(UIStatusBarStyle)preferredStatusBarStyle
@@ -138,6 +140,12 @@
     [wallContainerView setHidden:YES];
     [searchContainerView setHidden:YES];
     
+    profileVC.spokesTableView.delegate = profileVC;
+    profileVC.spokesTableView.dataSource = profileVC;
+    
+    wallVC.wallTableView.delegate = nil;
+    wallVC.wallTableView.dataSource = nil;
+    
     [[NSNotificationCenter defaultCenter]postNotificationName:@"loadUserWall" object:nil];
 }
 
@@ -165,6 +173,13 @@
     [profileContainerView setHidden:YES];
     [wallContainerView setHidden:NO];
     [searchContainerView setHidden:YES];
+
+    profileVC.spokesTableView.delegate = nil;
+    profileVC.spokesTableView.dataSource = nil;
+    
+    wallVC.wallTableView.delegate = wallVC;
+    wallVC.wallTableView.dataSource = wallVC;
+    
     [[NSNotificationCenter defaultCenter]postNotificationName:@"loadWallSpokes" object:nil];
 }
 
@@ -197,9 +212,13 @@
 
 -(void)prepareForSegue:(UIStoryboardSegue*)segue sender:(id)sender
 {
+    if([segue.identifier isEqualToString:@"profileAction"])
+    {
+        profileVC = [segue destinationViewController];
+    }
     if([segue.identifier isEqualToString:@"wallAction"])
     {
-
+        wallVC = [segue destinationViewController];
     }
 }
 @end

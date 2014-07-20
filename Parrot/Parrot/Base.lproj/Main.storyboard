@@ -59,7 +59,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="hL7-ZH-Yb5" kind="embed" id="O2C-LL-0QG"/>
+                                    <segue destination="hL7-ZH-Yb5" kind="embed" identifier="profileAction" id="O2C-LL-0QG"/>
                                 </connections>
                             </containerView>
                             <containerView contentMode="scaleToFill" id="JyV-gr-snz">
@@ -574,7 +574,7 @@
                         <outlet property="cancelButton" destination="T5g-9V-fN6" id="plw-0g-IS7"/>
                         <outlet property="hintContainerView" destination="p6V-6X-7ZC" id="c55-yC-gG3"/>
                         <outlet property="recordButton" destination="Rhd-MM-XhJ" id="f0m-mW-biQ"/>
-                        <outlet property="saveButton" destination="XKL-Px-hGm" id="hd7-rC-MsX"/>
+                        <outlet property="saveButton" destination="XKL-Px-hGm" id="wbc-bT-q9t"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5DT-Cr-TqX" userLabel="First Responder" sceneMemberID="firstResponder"/>

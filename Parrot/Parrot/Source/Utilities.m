@@ -55,4 +55,57 @@ static NSString *currentSpokeID = nil;
     return [NSMutableArray arrayWithArray:sortedArray];
 }
 
++ (NSString*)getDateString:(NSDate*) date WithFormat:(NSDateFormatter*)dateFormatter
+{
+    NSString *dateString;
+    NSTimeInterval outdate = [date timeIntervalSinceDate:[NSDate date]];
+    int seconds = (int)fabs(outdate);
+    int minutes = seconds/60;
+    int hours = minutes/60;
+    int days = hours/24;
+    
+    seconds = seconds % 60;
+    minutes = minutes % 60;
+    hours = hours % 24;
+    
+    if(days!=0)
+    {
+        if(days<7)
+        {
+            if(hours>=12) days++;
+            if(days==1)
+                dateString = [NSString stringWithFormat:NSLocalizedString(@"%d day", @""), days];
+            else
+                dateString = [NSString stringWithFormat:NSLocalizedString(@"%d days", @""), days];
+        }
+        else
+        {
+            dateString = [dateFormatter stringFromDate:date];
+        }
+    }
+    else if(hours!=0)
+    {
+        if(minutes>=30) hours++;
+        if(hours==1)
+            dateString = [NSString stringWithFormat:NSLocalizedString(@"%d hour", @""), hours];
+        else
+            dateString = [NSString stringWithFormat:NSLocalizedString(@"%d hours", @""), hours];
+    }
+    else if(minutes!=0)
+    {
+        if(minutes==1)
+            dateString = [NSString stringWithFormat:NSLocalizedString(@"%d min", @""), minutes];
+        else
+            dateString = [NSString stringWithFormat:NSLocalizedString(@"%d min", @""), minutes];
+    }
+    else
+    {
+        if(seconds==1)
+            dateString = [NSString stringWithFormat:NSLocalizedString(@"%d sec", @""), seconds];
+        else
+            dateString = [NSString stringWithFormat:NSLocalizedString(@"%d sec", @""), seconds];
+    }
+    return dateString;
+}
+
 @end

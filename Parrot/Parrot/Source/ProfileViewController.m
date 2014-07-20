@@ -18,170 +18,6 @@
 
 @end
 
-//@implementation SpokeCell
-//
-//@synthesize playButton;
-//@synthesize profileVC;
-//@synthesize spokeContainerView;
-//@synthesize spokeImageView;
-//@synthesize spokeNameLabel;
-//@synthesize spokeDateLabel;
-//@synthesize heardLabel;
-//@synthesize respokeTotalLabel;
-//@synthesize likesLabel;
-//@synthesize gotoRespokeButton;
-//@synthesize totalTimeLabel;
-//@synthesize currentTimeLabel;
-//@synthesize spokeSlider;
-//@synthesize playContainerView;
-//@synthesize updateTimer;
-//@synthesize pausePlayButton;
-//@synthesize likeButton;
-//@synthesize currentSpoke;
-//@synthesize wallVC;
-//
-//- (IBAction)playButtonPressed:(id)sender
-//{
-//    if(profileVC.currentPlayingTag != playButton.tag)
-//    {
-//        profileVC.currentPlayingTag = playButton.tag;
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"spokeChanged" object:nil];
-//    }
-//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
-//    if(![profileVC.player isPlaying])
-//    {
-//        NSString *soundFilePath = currentSpoke.spokeID;
-//        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-//        NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
-//        
-//        NSURL *soundUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@.m4a", basePath, soundFilePath]];
-//        
-//        NSError *dataError;
-//        NSData *soundData = [[NSData alloc] initWithContentsOfURL:soundUrl options:NSDataReadingMappedIfSafe error:&dataError];
-//        if(dataError != nil)
-//        {
-//            NSLog(@"DATA ERROR %@", dataError);
-//        }
-//        
-//        NSError *error;
-//        AVAudioPlayer *newPlayer =[[AVAudioPlayer alloc] initWithData: soundData error: &error];
-//        newPlayer.delegate = self;
-//        
-//        profileVC.player = newPlayer;
-//        updateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
-//        
-//        spokeSlider.minimumValue = 0;
-//        spokeSlider.maximumValue = profileVC.player.duration;
-//        
-//        [profileVC playSelectedAudio];
-//        
-//        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changePlayButtonImage) name:PLAYBACK_STOP object:nil];
-//        [playButton removeFromSuperview];
-//        
-//        [playContainerView addSubview:spokeSlider];
-//        [playContainerView addSubview:currentTimeLabel];
-//        [playContainerView addSubview:pausePlayButton];
-//    }
-//}
-//
-//-(void)spokeChanged
-//{
-//    [self changePlayButtonImage];
-//    profileVC.player = nil;
-//    [pausePlayButton setSelected:NO];
-//}
-//
-//-(void)changePlayButtonImage
-//{
-//    [spokeSlider removeFromSuperview];
-//    [currentTimeLabel removeFromSuperview];
-//    [pausePlayButton removeFromSuperview];
-//    [playContainerView addSubview:playButton];
-//    [playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
-//    [profileVC.userProf updateTotalSpokeHeard:currentSpoke.spokeID heardID:[profileVC.userProf getUserID]];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHeardLabel) name:@"updateHeards" object:nil];
-//}
-//
-//-(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
-//{
-//    [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
-//}
-//
-//-(void)updateHeardLabel
-//{
-//    int totalHeard = currentSpoke.totalHeards;
-//    heardLabel.text = [NSString stringWithFormat:@"%d heard", totalHeard];
-//}
-//
-//
-//- (IBAction)gotoRespokeButtonPressed:(id)sender {
-//}
-//
-//- (IBAction)likeButtonPressed:(id)sender
-//{
-//    if(!likeButton.selected)
-//    {
-//        likeButton.selected = YES;
-//
-//        currentSpoke.totalLikes = currentSpoke.totalLikes + 1;
-//        [profileVC.userProf updateTotalSpokeLike:currentSpoke.spokeID];
-//    }
-//    else
-//    {
-//        likeButton.selected = NO;
-//        currentSpoke.totalLikes = currentSpoke.totalLikes - 1;
-//        [profileVC.userProf updateTotalSpokeLike:currentSpoke.spokeID];
-//    }
-//    
-//    NSString *likeString = @"like";
-//    if (currentSpoke.totalLikes > 1)
-//    {
-//        likeString = @"likes";
-//    }
-//
-//    likesLabel.text = [NSString stringWithFormat:@"%d %@", currentSpoke.totalLikes, likeString];
-//}
-//
-//- (IBAction)shareButtonPressed:(id)sender {
-//}
-//
-//- (IBAction)progressSliderMoved:(UISlider*)sender
-//{
-//    [profileVC.player pause];
-//    [pausePlayButton setSelected:YES];
-//    profileVC.player.currentTime = spokeSlider.value;
-//    profileVC.player.currentTime = sender.value;
-//    currentTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)profileVC.player.currentTime / 60, (int)profileVC.player.currentTime % 60, nil];
-//    spokeSlider.value = profileVC.player.currentTime;
-//}
-//
-//
-//- (void)updateSlider
-//{
-//    if(spokeSlider.tag == playButton.tag)
-//    {
-//        float progress = profileVC.player.currentTime;
-//        currentTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)profileVC.player.currentTime / 60, (int)profileVC.player.currentTime % 60, nil];
-//        [spokeSlider setValue:progress];
-//    }
-//}
-//
-//- (IBAction)pausePlayButtonPressed:(id)sender
-//{
-//    if(profileVC.player.playing)
-//    {
-//        [profileVC.player pause];
-//        [pausePlayButton setSelected:YES];
-//    }
-//    else
-//    {
-//        [profileVC.player play];
-//        [pausePlayButton setSelected:NO];
-//    }
-//}
-//
-//@end
-
 @implementation ProfileViewController
 
 @synthesize nameLabel;
@@ -237,13 +73,25 @@
     [recordButton.layer setShadowOpacity:1.0];
     [recordButton.layer setShadowRadius:3.0];
     [recordButton.layer setShadowOffset:CGSizeMake(0, 1.0)];
+    
+    [spokesTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    // Set up an observer for proximity changes
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
     if(refreshControl == nil)
         [self setupRefreshControl];
+    if([userProf.spokesArray count] > 0)
+        userProf.spokesArray = [Utilities orderByDate:userProf.spokesArray];
     [spokesTableView reloadData];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
+    [player stop];
 }
 
 -(void)reloadMySpokesArray
@@ -342,6 +190,7 @@
         cell.likesLabel.text = @"";
         cell.likeButton.selected = NO;
         cell.heardLabel.text = @"";
+        cell.spokeDateLabel.text = @"";
         [cell.playButton setImage:[UIImage imageNamed:@"button_big_play_enabled.png"] forState:UIControlStateNormal];
     }
     
@@ -395,7 +244,7 @@
     
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"dd MMM yyyy"];
-    [cell.spokeDateLabel setText:[format stringFromDate:spokeObj.creationDate]];
+    [cell.spokeDateLabel setText:[Utilities getDateString:spokeObj.creationDate WithFormat:format]];
     
     NSString *likeString = @"like";
     if (spokeObj.totalLikes > 0)
@@ -409,6 +258,7 @@
     
     cell.spokeSlider.tag = indexPath.row;
     
+    [cell.playContainerView addSubview:cell.playButton];
     if([userProf spokeAlreadyListened:spokeObj])
     {
         [cell.playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
@@ -449,6 +299,45 @@
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
     [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
+}
+
+- (void)sensorStateChange:(NSNotificationCenter *)notification
+{
+    AVAudioSession* session = [AVAudioSession sharedInstance];
+    
+    //error handling
+    BOOL success;
+    NSError* error;
+    
+    success = [session setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
+    
+    if (!success)
+        NSLog(@"AVAudioSession error setting category:%@",error);
+
+    if ([[UIDevice currentDevice] proximityState] == YES)
+    {
+        NSLog(@"ORECCHIO");
+        //get your app's audioSession singleton object
+        
+        //set the audioSession override
+        success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideNone
+                                             error:&error];
+    }
+    else
+    {
+        NSLog(@"SPEAKER");
+        success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+    }
+
+    if (!success)
+        NSLog(@"AVAudioSession error overrideOutputAudioPort:%@",error);
+    
+    //activate the audio session
+    success = [session setActive:YES error:&error];
+    if (!success)
+        NSLog(@"AVAudioSession error activating: %@",error);
+    else
+        NSLog(@"audioSession active");
 }
 
 @end

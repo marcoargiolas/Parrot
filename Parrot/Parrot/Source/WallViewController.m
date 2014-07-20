@@ -46,11 +46,20 @@
     maskImage = [UIImage ellipsedMaskFromRect:CGRectMake(0, 0, IMAGE_WIDTH, IMAGE_WIDTH) inSize:CGSizeMake(IMAGE_WIDTH, IMAGE_WIDTH)];
     
     currentPlayingTag = -1;
+    
+    [wallTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    // Set up an observer for proximity changes
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
+}
 
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
+    [player stop];
 }
 
 - (void)didReceiveMemoryWarning
@@ -135,7 +144,6 @@
 {
     static NSString *cellIdentifier = @"spokeCellID";
     SpokeCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier];
-    [cell setBackgroundColor:[UIColor clearColor]];
     
     if (cell == nil)
     {
@@ -149,6 +157,7 @@
         cell.likesLabel.text = @"";
         cell.likeButton.selected = NO;
         cell.heardLabel.text = @"";
+        cell.spokeDateLabel.text = @"";
         [cell.playButton setImage:[UIImage imageNamed:@"button_big_play_enabled.png"] forState:UIControlStateNormal];
     }
     
@@ -206,7 +215,8 @@
     
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"dd MMM yyyy"];
-    [cell.spokeDateLabel setText:[format stringFromDate:spokeObj.creationDate]];
+    NSString *dateString = [Utilities getDateString:spokeObj.creationDate WithFormat:format];
+    [cell.spokeDateLabel setText:dateString];
     
     NSString *likeString = @"like";
     if (spokeObj.totalLikes > 0)
@@ -220,6 +230,7 @@
     
     cell.spokeSlider.tag = indexPath.row;
     
+    [cell.playContainerView addSubview:cell.playButton];
     if([userProf spokeAlreadyListened:spokeObj])
     {
         [cell.playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
@@ -232,24 +243,24 @@
 {
     
 }
-
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return YES;
-}
-
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete)
-    {
-        [wallTableView beginUpdates];
-        [userProf deleteSpoke:[userProf.spokesArray objectAtIndex:indexPath.row]];
-        [userProf.spokesArray removeObjectAtIndex:indexPath.row];
-        [wallTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-        [wallTableView endUpdates];
-    }
-}
+//
+//- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    return YES;
+//}
+//
+//// Override to support editing the table view.
+//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    if (editingStyle == UITableViewCellEditingStyleDelete)
+//    {
+//        [wallTableView beginUpdates];
+//        [userProf deleteSpoke:[userProf.spokesArray objectAtIndex:indexPath.row]];
+//        [userProf.spokesArray removeObjectAtIndex:indexPath.row];
+//        [wallTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+//        [wallTableView endUpdates];
+//    }
+//}
 
 -(void)playSelectedAudio
 {
@@ -260,6 +271,45 @@
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
     [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
+}
+
+- (void)sensorStateChange:(NSNotificationCenter *)notification
+{
+    AVAudioSession* session = [AVAudioSession sharedInstance];
+    
+    //error handling
+    BOOL success;
+    NSError* error;
+    
+    success = [session setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
+    
+    if (!success)
+        NSLog(@"AVAudioSession error setting category:%@",error);
+    
+    if ([[UIDevice currentDevice] proximityState] == YES)
+    {
+        NSLog(@"ORECCHIO");
+        //get your app's audioSession singleton object
+        
+        //set the audioSession override
+        success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideNone
+                                             error:&error];
+    }
+    else
+    {
+        NSLog(@"SPEAKER");
+        success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+    }
+    
+    if (!success)
+        NSLog(@"AVAudioSession error overrideOutputAudioPort:%@",error);
+    
+    //activate the audio session
+    success = [session setActive:YES error:&error];
+    if (!success)
+        NSLog(@"AVAudioSession error activating: %@",error);
+    else
+        NSLog(@"audioSession active");
 }
 
 @end

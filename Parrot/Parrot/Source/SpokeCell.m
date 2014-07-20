@@ -43,19 +43,7 @@
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
         if(![profileVC.player isPlaying])
         {
-            NSString *soundFilePath = currentSpoke.spokeID;
-            NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-            NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
-            
-            NSURL *soundUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@.m4a", basePath, soundFilePath]];
-            
-            NSError *dataError;
-            NSData *soundData = [[NSData alloc] initWithContentsOfURL:soundUrl options:NSDataReadingMappedIfSafe error:&dataError];
-            if(dataError != nil)
-            {
-                NSLog(@"DATA ERROR %@", dataError);
-            }
-            
+            NSData *soundData = [[NSData alloc] initWithData:currentSpoke.audioData];
             NSError *error;
             AVAudioPlayer *newPlayer =[[AVAudioPlayer alloc] initWithData: soundData error: &error];
             newPlayer.delegate = self;
@@ -159,7 +147,7 @@
     {
         [wallVC.userProf updateTotalSpokeLike:currentSpoke.spokeID thanksID:[wallVC.userProf getUserID]addLike:!likeButton.selected];
     }
-    
+    likeButton.selected = !likeButton.selected;
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikes:) name:@"updateLikes" object:nil];
 }
 

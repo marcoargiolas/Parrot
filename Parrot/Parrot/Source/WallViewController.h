@@ -10,7 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "UserProfile.h"
 
-@interface WallViewController : UIViewController <AVAudioPlayerDelegate, AVAudioSessionDelegate,AVAudioRecorderDelegate>
+@interface WallViewController : UIViewController <AVAudioPlayerDelegate, AVAudioSessionDelegate,AVAudioRecorderDelegate, UITableViewDelegate, UITableViewDataSource>
 {
     UserProfile *userProf;
     IBOutlet UITableView *wallTableView;

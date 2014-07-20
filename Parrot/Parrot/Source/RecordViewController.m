@@ -21,6 +21,7 @@
 @synthesize audioPlayer;
 @synthesize recorder;
 @synthesize audioPlot;
+@synthesize saveButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -48,22 +49,32 @@
     /*
      Log out where the file is being written to within the app's documents directory
      */
- 
-    [self.microphone startFetchingAudio];
     
     [buttonsContainerView setFrame:CGRectMake(buttonsContainerView.frame.origin.x, self.view.frame.size.height - buttonsContainerView.frame.size.height, buttonsContainerView.frame.size.width, buttonsContainerView.frame.size.height)];
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
     [recordButton addGestureRecognizer:longPress];
     
+    [saveButton setEnabled:NO];
+    [saveButton setAlpha:0.2];
     [hintContainerView setFrame:CGRectMake(hintContainerView.frame.origin.x, buttonsContainerView.frame.origin.y - hintContainerView.frame.size.height, hintContainerView.frame.size.width, hintContainerView.frame.size.height)];
-    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
     
-    // Set up an observer for proximity changes
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:)
-                                                 name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
     userProf = [UserProfile sharedProfile];
+    
+//    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+//    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:)
+                                                 name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+//    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+//    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
+}
 
 -(UIStatusBarStyle)preferredStatusBarStyle
 {
@@ -72,7 +83,7 @@
 
 - (void)dealloc
 {
-    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+//    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
 }
 
 - (void)didReceiveMemoryWarning
@@ -120,6 +131,7 @@
 - (void)startRecording
 {
     NSLog(@"START RECORDING");
+    [self.microphone startFetchingAudio];
     [hintContainerView removeFromSuperview];
     if( self.audioPlayer )
     {
@@ -130,6 +142,7 @@
         self.audioPlayer = nil;
     }
     self.isRecording = YES;
+    
     /*
      Create the recorder
      */
@@ -148,6 +161,8 @@
     NSLog(@"STOP RECORDING");
     [self.microphone stopFetchingAudio];
     self.isRecording = NO;
+    [saveButton setEnabled:YES];
+    [saveButton setAlpha:1.0];
 }
 
 - (IBAction)cancelButtonPressed:(id)sender
@@ -181,6 +196,9 @@
     [userProf.spokesArray addObject:spokeObj];
     [userProf saveProfileLocal];
     [userProf saveSpokesArrayRemote:spokeObj];
+    
+    [saveButton setEnabled:NO];
+    [saveButton setAlpha:0.2];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 

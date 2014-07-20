@@ -16,5 +16,6 @@
 +(NSURL*)soundFilePathUrl;
 +(NSString*)soundFilePathString;
 +(NSMutableArray*)orderByDate:(NSMutableArray*)spokesArray;
++ (NSString*)getDateString:(NSDate*) date WithFormat:(NSDateFormatter*)dateFormatter;
 
 @end

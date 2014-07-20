@@ -7,6 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ProfileViewController.h"
+#import "SearchViewController.h"
+#import "WallViewController.h"
 
 @interface MainViewController : UIViewController <UIGestureRecognizerDelegate>
 {
@@ -21,6 +24,9 @@
     IBOutlet UIView *searchBackgroundView;
     
     IBOutlet UIView *buttonsContainerView;
+    ProfileViewController *profileVC;
+    WallViewController *wallVC;
+    SearchViewController *searchVC;
 }
 @property (strong, nonatomic) IBOutlet UIView *profileBackgroundView;
 @property (strong, nonatomic) IBOutlet UIView *wallBackgroundView;
