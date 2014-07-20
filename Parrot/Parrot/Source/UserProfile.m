@@ -270,15 +270,15 @@ static UserProfile *shared = nil;
                     [heardTempArray addObject:userHeardID];
                     [object setObject:heardTempArray forKey:@"listOfHeardsID"];
                     [object saveInBackground];
-                    if([userHeardID isEqualToString:[self getUserID]])
-                    {
-                        Spoke *tempSpoke = [self getSpokeWithID:spokeID];
-                        [spokesArray removeObject:[self getSpokeWithID:spokeID]];
-                        tempSpoke.totalHeards = 1;
-                        tempSpoke.listOfHeardsID = heardTempArray;
-                        [spokesArray addObject:tempSpoke];
-                        [self saveProfileLocal];
-                    }
+//                    if([userHeardID isEqualToString:[self getUserID]])
+//                    {
+//                        Spoke *tempSpoke = [self getSpokeWithID:spokeID];
+//                        [spokesArray removeObject:[self getSpokeWithID:spokeID]];
+//                        tempSpoke.totalHeards = 1;
+//                        tempSpoke.listOfHeardsID = heardTempArray;
+//                        [spokesArray addObject:tempSpoke];
+//                        [self saveProfileLocal];
+//                    }
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateHeards" object:self userInfo:nil];
                     break;
                 }
