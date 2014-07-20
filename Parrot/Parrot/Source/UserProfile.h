@@ -25,11 +25,12 @@
 - (void)saveProfileLocal;
 - (void)loadProfileLocal;
 -(void)saveSpokesArrayRemote:(Spoke*)spokeToSave;
--(void)updateTotalSpokeLike:(NSString*)spokeID;
+-(void)updateTotalSpokeLike:(NSString*)spokeID thanksID:(NSString*)userThanksID addLike:(BOOL)like;
 -(Spoke*)getSpokeWithID:(NSString*)spokeID;
 -(void)updateTotalSpokeHeard:(NSString*)spokeID heardID:(NSString*)userHeardID;
 -(void)deleteSpoke:(Spoke*)spokeToDelete;
 -(BOOL)spokeAlreadyListened:(Spoke*)spokeToCheck;
 -(NSMutableArray*)loadAllSpokesFromRemote;
+-(NSMutableArray*)loadSpokesFromRemoteForUser:(NSString*)userID;
 
 @end

@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		DE1D8984197ACC0600B552B4 /* SpokeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE1D8983197ACC0600B552B4 /* SpokeCell.xib */; };
+		DE1D8987197AEFA900B552B4 /* SpokeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE1D8986197AEFA900B552B4 /* SpokeCell.m */; };
 		DE6388F619684748008D5B9D /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6388F519684748008D5B9D /* Utilities.m */; };
 		DE63890A19687EFF008D5B9D /* button_bar_options_enabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE6388F719687EFF008D5B9D /* button_bar_options_enabled@2x.png */; };
 		DE63890B19687EFF008D5B9D /* button_bar_pause_enabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE6388F819687EFF008D5B9D /* button_bar_pause_enabled@2x.png */; };
@@ -106,6 +107,8 @@
 
 /* Begin PBXFileReference section */
 		DE1D8983197ACC0600B552B4 /* SpokeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SpokeCell.xib; path = Parrot/Resources/Xib/SpokeCell.xib; sourceTree = "<group>"; };
+		DE1D8985197AEFA900B552B4 /* SpokeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpokeCell.h; path = Source/SpokeCell.h; sourceTree = "<group>"; };
+		DE1D8986197AEFA900B552B4 /* SpokeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SpokeCell.m; path = Source/SpokeCell.m; sourceTree = "<group>"; };
 		DE6388F419684748008D5B9D /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utilities.h; path = Source/Utilities.h; sourceTree = "<group>"; };
 		DE6388F519684748008D5B9D /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Utilities.m; path = Source/Utilities.m; sourceTree = "<group>"; };
 		DE6388F719687EFF008D5B9D /* button_bar_options_enabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_bar_options_enabled@2x.png"; sourceTree = "<group>"; };
@@ -263,6 +266,15 @@
 			name = Xib;
 			sourceTree = "<group>";
 		};
+		DE1D8988197AF22A00B552B4 /* Wall */ = {
+			isa = PBXGroup;
+			children = (
+				DEAA901B196350A40036B6BF /* WallViewController.h */,
+				DEAA901C196350A40036B6BF /* WallViewController.m */,
+			);
+			name = Wall;
+			sourceTree = "<group>";
+		};
 		DE9DFC5F1965FC0E00908ED7 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -280,6 +292,8 @@
 			children = (
 				DE9DFC641966062300908ED7 /* Spoke.h */,
 				DE9DFC651966062300908ED7 /* Spoke.m */,
+				DE1D8985197AEFA900B552B4 /* SpokeCell.h */,
+				DE1D8986197AEFA900B552B4 /* SpokeCell.m */,
 			);
 			name = Spoke;
 			sourceTree = "<group>";
@@ -386,6 +400,7 @@
 		DECADBD21961EA300024D067 /* Parrot */ = {
 			isa = PBXGroup;
 			children = (
+				DE1D8988197AF22A00B552B4 /* Wall */,
 				DE9DFC631966060600908ED7 /* Spoke */,
 				DE9DFC5F1965FC0E00908ED7 /* Utilities */,
 				DEAA904E196356A00036B6BF /* Profile */,
@@ -487,8 +502,6 @@
 				DECADC091961EC160024D067 /* AppDelegate.m */,
 				DECADC2A1961EEF50024D067 /* MainViewController.h */,
 				DECADC2B1961EEF50024D067 /* MainViewController.m */,
-				DEAA901B196350A40036B6BF /* WallViewController.h */,
-				DEAA901C196350A40036B6BF /* WallViewController.m */,
 				DEAA901E196350B20036B6BF /* SearchViewController.h */,
 				DEAA901F196350B20036B6BF /* SearchViewController.m */,
 			);
@@ -657,6 +670,7 @@
 				DEAA9020196350B20036B6BF /* SearchViewController.m in Sources */,
 				DE9DFC661966062300908ED7 /* Spoke.m in Sources */,
 				DEAA9051196356C70036B6BF /* RecordViewController.m in Sources */,
+				DE1D8987197AEFA900B552B4 /* SpokeCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

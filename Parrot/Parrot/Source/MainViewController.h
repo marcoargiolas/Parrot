@@ -19,10 +19,13 @@
     IBOutlet UIView *profileBackgroundView;
     IBOutlet UIView *wallBackgroundView;
     IBOutlet UIView *searchBackgroundView;
+    
+    IBOutlet UIView *buttonsContainerView;
 }
 @property (strong, nonatomic) IBOutlet UIView *profileBackgroundView;
 @property (strong, nonatomic) IBOutlet UIView *wallBackgroundView;
 @property (strong, nonatomic) IBOutlet UIView *searchBackgroundView;
+@property (strong, nonatomic) IBOutlet UIView *buttonsContainerView;
 
 @property (strong, nonatomic) IBOutlet UIView *profileContainerView;
 @property (strong, nonatomic) IBOutlet UIView *wallContainerView;

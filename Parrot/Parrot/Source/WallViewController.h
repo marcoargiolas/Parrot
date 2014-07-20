@@ -18,7 +18,14 @@
     int currentPlayingTag;
     NSMutableArray *wallSpokesArray;
     UIImage *maskImage;
+    UIRefreshControl *refreshControl;
 }
+
+@property (strong, nonatomic) UserProfile *userProf;
+@property (nonatomic, assign) int currentPlayingTag;
 @property (strong, nonatomic) IBOutlet UITableView *wallTableView;
+@property (strong, nonatomic) AVAudioPlayer *player;
+
+-(void)playSelectedAudio;
 
 @end

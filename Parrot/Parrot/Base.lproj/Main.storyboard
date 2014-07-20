@@ -145,6 +145,7 @@
                     <navigationItem key="navigationItem" id="fLc-eC-pzb"/>
                     <simulatedStatusBarMetrics key="simulatedStatusBarMetrics" statusBarStyle="lightContent"/>
                     <connections>
+                        <outlet property="buttonsContainerView" destination="0JV-oX-iXd" id="VLF-EC-2NH"/>
                         <outlet property="profileBackgroundView" destination="W12-ou-C5D" id="NiS-Yk-4tk"/>
                         <outlet property="profileButton" destination="Orr-H4-rhD" id="iML-cW-43i"/>
                         <outlet property="profileContainerView" destination="avT-et-zaJ" id="XS3-xI-87c"/>
@@ -171,7 +172,7 @@
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="6F5-jX-V5D">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="508"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <outlet property="dataSource" destination="zsF-Fe-dir" id="MfD-Dr-4Wo"/>
                                     <outlet property="delegate" destination="zsF-Fe-dir" id="gGH-OY-SSg"/>

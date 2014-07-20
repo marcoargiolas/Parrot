@@ -186,6 +186,7 @@ static UserProfile *shared = nil;
     [obj setObject:spokeToSave.respokeToSpokeID forKey:@"respokeToSpokeID"];
     [obj setObject:spokeToSave.ownerID forKey:@"ownerID"];
     [obj setObject:spokeToSave.listOfHeardsID forKey:@"listOfHeardsID"];
+    [obj setObject:spokeToSave.listOfThankersID forKey:@"listOfThankersID"];
     PFFile *ownerImage = [PFFile fileWithData:spokeToSave.ownerImageData];
     [obj setObject:ownerImage forKey:@"ownerImageData"];
     [obj setObject:spokeToSave.ownerName forKey:@"ownerName"];
@@ -193,19 +194,45 @@ static UserProfile *shared = nil;
     [obj saveInBackground];
 }
 
--(void)updateTotalSpokeLike:(NSString*)spokeID
+-(void)updateTotalSpokeLike:(NSString*)spokeID thanksID:(NSString*)userThanksID addLike:(BOOL)like
 {
     PFQuery *query = [PFQuery queryWithClassName:@"spoke"];
     [query whereKey:@"spokeID" equalTo:spokeID];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error)
         {
-            Spoke *tempSpoke = [self getSpokeWithID:spokeID];
             for (PFObject *object in objects)
             {
-                [object setObject:[NSString stringWithFormat:@"%d",tempSpoke.totalLikes] forKey:@"totalLikes"];
+                NSMutableArray *thanksTempArray = [object objectForKey:@"listOfThankersID"];
+                if(thanksTempArray == nil)
+                {
+                    thanksTempArray = [[NSMutableArray alloc]init];
+                }
+                int totalLikes = [[object objectForKey:@"totalLikes"] intValue];
+                if(like)
+                {
+                    [thanksTempArray addObject:userThanksID];
+                    totalLikes = totalLikes + 1;
+                }
+                else
+                {
+                    [thanksTempArray removeObject:userThanksID];
+                    totalLikes = totalLikes - 1;
+                }
+                
+                [object setObject:[NSString stringWithFormat:@"%d",totalLikes] forKey:@"totalLikes"];
+                
+
+                [object setObject:thanksTempArray forKey:@"listOfThankersID"];
                 [object saveInBackground];
-                [self saveProfileLocal];
+                
+                NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+                NSMutableDictionary* userInfo = [NSMutableDictionary dictionary];
+                [userInfo setObject:[NSNumber numberWithBool:like] forKey:@"like"];
+                [userInfo setObject:[NSNumber numberWithInt:totalLikes] forKey:@"totalLikes"];
+                [nc postNotificationName:@"updateLikes" object:self userInfo:userInfo];
+                
+                break;
             }
         }
         else
@@ -225,43 +252,31 @@ static UserProfile *shared = nil;
         {
             for (PFObject *object in objects)
             {
-                Spoke *tempSpoke = [self getSpokeWithID:spokeID];
                 NSMutableArray *heardTempArray = [object objectForKey:@"listOfHeardsID"];
-                if([heardTempArray count] == 0)
+
+                if(![heardTempArray containsObject:[self getUserID]])
                 {
-                    [object setObject:@"1" forKey:@"totalHeards"];
+                    int totalHeards = [[object objectForKey:@"totalHeards"] intValue];
+                    totalHeards = totalHeards + 1;
+                    [object setObject:[NSString stringWithFormat:@"%d",totalHeards] forKey:@"totalHeards"];
+                    if(heardTempArray == nil)
+                    {
+                        heardTempArray = [[NSMutableArray alloc]init];
+                    }
                     [heardTempArray addObject:userHeardID];
                     [object setObject:heardTempArray forKey:@"listOfHeardsID"];
                     [object saveInBackground];
-                    [spokesArray removeObject:[self getSpokeWithID:spokeID]];
-                    tempSpoke.totalHeards = 1;
-                    tempSpoke.listOfHeardsID = heardTempArray;
-                    [spokesArray addObject:tempSpoke];
-                    [self saveProfileLocal];
-                    
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateHeards" object:self userInfo:nil];
-                }
-                else
-                {
-                    for(int i = 0; i < [heardTempArray count]; i++)
+                    if([userHeardID isEqualToString:[self getUserID]])
                     {
-                        if(![[heardTempArray objectAtIndex:i] isEqualToString:userHeardID])
-                        {
-                            int totalHeards = [[object objectForKey:@"totalHeards"] intValue];
-                            totalHeards = totalHeards + 1;
-                            [object setObject:[NSString stringWithFormat:@"%d",totalHeards] forKey:@"totalHeards"];
-                            [heardTempArray addObject:userHeardID];
-                            [object setObject:heardTempArray forKey:@"listOfHeardsID"];
-                            [object saveInBackground];
-                            [spokesArray removeObject:[self getSpokeWithID:spokeID]];
-                            tempSpoke.totalHeards = totalHeards;
-                            tempSpoke.listOfHeardsID = heardTempArray;
-                            [spokesArray addObject:tempSpoke];
-                            [self saveProfileLocal];
-                            [[NSNotificationCenter defaultCenter] postNotificationName:@"updateHeards" object:self userInfo:nil];
-                            break;
-                        }
+                        Spoke *tempSpoke = [self getSpokeWithID:spokeID];
+                        [spokesArray removeObject:[self getSpokeWithID:spokeID]];
+                        tempSpoke.totalHeards = 1;
+                        tempSpoke.listOfHeardsID = heardTempArray;
+                        [spokesArray addObject:tempSpoke];
+                        [self saveProfileLocal];
                     }
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateHeards" object:self userInfo:nil];
+                    break;
                 }
             }
         }
@@ -273,23 +288,27 @@ static UserProfile *shared = nil;
     }];
 }
 
--(void)loadSpokesFromRemoteForUser:(NSString*)userID
+-(NSMutableArray*)loadSpokesFromRemoteForUser:(NSString*)userID
 {
+    NSMutableArray *resultsArray = [[NSMutableArray alloc]init];
     PFQuery *query = [PFQuery queryWithClassName:@"spoke"];
     [query whereKey:@"ownerID" equalTo:userID];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
-        if (!error) {
-            // The find succeeded.
-            NSLog(@"Successfully retrieved %d scores.", objects.count);
-            // Do something with the found objects
-            for (PFObject *object in objects) {
-                NSLog(@"%@", object.objectId);
+        if (!error)
+        {
+            for (PFObject *object in objects)
+            {
+                [resultsArray addObject:[self spokeObjectfromPFObject:object]];
             }
-        } else {
-            // Log details of the failure
+
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"userWallSpokesArrived" object:nil];
+        }
+        else
+        {
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
     }];
+    return resultsArray;
 }
 
 -(NSMutableArray*)loadAllSpokesFromRemote
@@ -300,27 +319,9 @@ static UserProfile *shared = nil;
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error)
         {
-            // The find succeeded.
-            NSLog(@"Successfully retrieved %d scores.", objects.count);
-            
             for (PFObject *object in objects)
             {
-                NSLog(@"%@", object.objectId);
-                
-                Spoke *spokeObj = [[Spoke alloc]init];
-                spokeObj.ownerID = [object objectForKey:@"ownerID"];
-                spokeObj.spokeID = [object objectForKey:@"spokeID"];
-                spokeObj.creationDate = [object objectForKey:@"creationDate"];
-                spokeObj.respokeToSpokeID = [object objectForKey:@"respokeToSpokeID"];
-                spokeObj.totalHeards = [[object objectForKey:@"totalHeards"] intValue];
-                spokeObj.totalLikes = [[object objectForKey:@"totalLikes"] intValue];
-                spokeObj.listOfHeardsID = [object objectForKey:@"listOfHeardsID"];
-                spokeObj.audioData = [object objectForKey:@"audioData"];
-                spokeObj.ownerName = [object objectForKey:@"ownerName"];
-                PFFile *ownerImage = [object objectForKey:@"ownerImageData"];
-                spokeObj.ownerImageData = [ownerImage getData];
-
-                [resultsArray addObject:spokeObj];
+                [resultsArray addObject:[self spokeObjectfromPFObject:object]];
             }
             
             [[NSNotificationCenter defaultCenter]postNotificationName:@"wallSpokesArrived" object:nil];
@@ -377,6 +378,24 @@ static UserProfile *shared = nil;
     return NO;
 }
 
+-(Spoke*)spokeObjectfromPFObject:(PFObject*)object
+{
+    Spoke *spokeObj = [[Spoke alloc]init];
+    spokeObj.ownerID = [object objectForKey:@"ownerID"];
+    spokeObj.spokeID = [object objectForKey:@"spokeID"];
+    spokeObj.creationDate = [object objectForKey:@"creationDate"];
+    spokeObj.respokeToSpokeID = [object objectForKey:@"respokeToSpokeID"];
+    spokeObj.totalHeards = [[object objectForKey:@"totalHeards"] intValue];
+    spokeObj.totalLikes = [[object objectForKey:@"totalLikes"] intValue];
+    spokeObj.listOfHeardsID = [object objectForKey:@"listOfHeardsID"];
+    spokeObj.listOfThankersID = [object objectForKey:@"listOfThankersID"];
+    spokeObj.audioData = [object objectForKey:@"audioData"];
+    spokeObj.ownerName = [object objectForKey:@"ownerName"];
+    PFFile *ownerImage = [object objectForKey:@"ownerImageData"];
+    spokeObj.ownerImageData = [ownerImage getData];
+
+    return spokeObj;
+}
 //// Sent to the delegate when a PFUser is signed up.
 //- (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user
 //{

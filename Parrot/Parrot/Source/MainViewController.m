@@ -48,6 +48,13 @@
     [self.view addGestureRecognizer:swipeRight];
     swipeRight.delegate = self;
     
+    [buttonsContainerView.layer setShadowColor:[UIColor blackColor].CGColor];
+    [buttonsContainerView.layer setShadowOpacity:0.3];
+    [buttonsContainerView.layer setShadowRadius:0];
+    [buttonsContainerView.layer setShadowOffset:CGSizeMake(0, 1.0)];
+    [buttonsContainerView.layer setBorderColor:[UIColor colorWithRed:150.000/255.000 green:150.000/255.000 blue:150.000/255.000 alpha:1.0].CGColor];
+    [buttonsContainerView.layer setBorderWidth:0.3];
+
     [self profileButtonPressed:nil];
 }
 
@@ -130,6 +137,8 @@
     [profileContainerView setHidden:NO];
     [wallContainerView setHidden:YES];
     [searchContainerView setHidden:YES];
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"loadUserWall" object:nil];
 }
 
 - (IBAction)wallButtonPressed:(id)sender

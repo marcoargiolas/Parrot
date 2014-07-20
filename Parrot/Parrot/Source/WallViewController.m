@@ -10,6 +10,7 @@
 #import "ProfileViewController.h"
 #import "UIImage+Additions.h"
 #import "GlobalDefines.h"
+#import "Utilities.h"
 
 #define IMAGE_WIDTH 80
 
@@ -20,6 +21,9 @@
 @implementation WallViewController
 
 @synthesize wallTableView;
+@synthesize currentPlayingTag;
+@synthesize player;
+@synthesize userProf;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -35,7 +39,7 @@
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSpokeArray) name:@"loadWallSpokes" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadWallTableView) name:@"wallSpokesArrived" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHeardLabel:) name:@"updateHeards" object:nil];
+    
     [super viewDidLoad];
     userProf = [UserProfile sharedProfile];
     
@@ -57,13 +61,38 @@
 
 -(void)reloadSpokeArray
 {
+    [refreshControl beginRefreshing];
     wallSpokesArray = [userProf loadAllSpokesFromRemote];
 }
 
 -(void)reloadWallTableView
 {
+    wallSpokesArray = [Utilities orderByDate:wallSpokesArray];
     [wallTableView reloadData];
+    [refreshControl endRefreshing];
+    if(refreshControl == nil)
+        [self setupRefreshControl];
 }
+
+#pragma mark -
+#pragma mark UIRefreshControl
+- (void)setupRefreshControl
+{
+    refreshControl = [[UIRefreshControl alloc]init];
+    [refreshControl addTarget:self action:@selector(reloadSpokeArray) forControlEvents:UIControlEventValueChanged];
+    [refreshControl setBounds:CGRectMake(refreshControl.frame.origin.x, refreshControl.frame.origin.y + 10, refreshControl.frame.size.width, refreshControl.frame.size.height)];
+    [refreshControl setTintColor:[UIColor whiteColor]];
+    [wallTableView addSubview:refreshControl];
+}
+
+- (void) checkRefreshControl
+{
+    if(refreshControl.isRefreshing)
+    {
+        [refreshControl endRefreshing];
+    }
+}
+
 /*
 #pragma mark - Navigation
 
@@ -195,7 +224,7 @@
     {
         [cell.playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
     }
-    
+    [cell setBackgroundColor:[UIColor clearColor]];
     return cell;
 }
 
@@ -222,9 +251,15 @@
     }
 }
 
--(void)updateHeardLabel:(NSNotification*)notification
+-(void)playSelectedAudio
 {
-    
+    [player prepareToPlay];
+    [player play];
+}
+
+-(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
+    [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
 }
 
 @end

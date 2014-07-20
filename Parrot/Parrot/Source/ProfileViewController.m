@@ -18,169 +18,169 @@
 
 @end
 
-@implementation SpokeCell
-
-@synthesize playButton;
-@synthesize profileVC;
-@synthesize spokeContainerView;
-@synthesize spokeImageView;
-@synthesize spokeNameLabel;
-@synthesize spokeDateLabel;
-@synthesize heardLabel;
-@synthesize respokeTotalLabel;
-@synthesize likesLabel;
-@synthesize gotoRespokeButton;
-@synthesize totalTimeLabel;
-@synthesize currentTimeLabel;
-@synthesize spokeSlider;
-@synthesize playContainerView;
-@synthesize updateTimer;
-@synthesize pausePlayButton;
-@synthesize likeButton;
-@synthesize currentSpoke;
-@synthesize wallVC;
-
-- (IBAction)playButtonPressed:(id)sender
-{
-    if(profileVC.currentPlayingTag != playButton.tag)
-    {
-        profileVC.currentPlayingTag = playButton.tag;
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"spokeChanged" object:nil];
-    }
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
-    if(![profileVC.player isPlaying])
-    {
-        NSString *soundFilePath = currentSpoke.spokeID;
-        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-        NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
-        
-        NSURL *soundUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@.m4a", basePath, soundFilePath]];
-        
-        NSError *dataError;
-        NSData *soundData = [[NSData alloc] initWithContentsOfURL:soundUrl options:NSDataReadingMappedIfSafe error:&dataError];
-        if(dataError != nil)
-        {
-            NSLog(@"DATA ERROR %@", dataError);
-        }
-        
-        NSError *error;
-        AVAudioPlayer *newPlayer =[[AVAudioPlayer alloc] initWithData: soundData error: &error];
-        newPlayer.delegate = self;
-        
-        profileVC.player = newPlayer;
-        updateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
-        
-        spokeSlider.minimumValue = 0;
-        spokeSlider.maximumValue = profileVC.player.duration;
-        
-        [profileVC playSelectedAudio];
-        
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changePlayButtonImage) name:PLAYBACK_STOP object:nil];
-        [playButton removeFromSuperview];
-        
-        [playContainerView addSubview:spokeSlider];
-        [playContainerView addSubview:currentTimeLabel];
-        [playContainerView addSubview:pausePlayButton];
-    }
-}
-
--(void)spokeChanged
-{
-    [self changePlayButtonImage];
-    profileVC.player = nil;
-    [pausePlayButton setSelected:NO];
-}
-
--(void)changePlayButtonImage
-{
-    [spokeSlider removeFromSuperview];
-    [currentTimeLabel removeFromSuperview];
-    [pausePlayButton removeFromSuperview];
-    [playContainerView addSubview:playButton];
-    [playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
-    [profileVC.userProf updateTotalSpokeHeard:currentSpoke.spokeID heardID:[profileVC.userProf getUserID]];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHeardLabel) name:@"updateHeards" object:nil];
-}
-
--(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
-{
-    [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
-}
-
--(void)updateHeardLabel
-{
-    int totalHeard = currentSpoke.totalHeards;
-    heardLabel.text = [NSString stringWithFormat:@"%d heard", totalHeard];
-}
-
-
-- (IBAction)gotoRespokeButtonPressed:(id)sender {
-}
-
-- (IBAction)likeButtonPressed:(id)sender
-{
-    if(!likeButton.selected)
-    {
-        likeButton.selected = YES;
-
-        currentSpoke.totalLikes = currentSpoke.totalLikes + 1;
-        [profileVC.userProf updateTotalSpokeLike:currentSpoke.spokeID];
-    }
-    else
-    {
-        likeButton.selected = NO;
-        currentSpoke.totalLikes = currentSpoke.totalLikes - 1;
-        [profileVC.userProf updateTotalSpokeLike:currentSpoke.spokeID];
-    }
-    
-    NSString *likeString = @"like";
-    if (currentSpoke.totalLikes > 1)
-    {
-        likeString = @"likes";
-    }
-
-    likesLabel.text = [NSString stringWithFormat:@"%d %@", currentSpoke.totalLikes, likeString];
-}
-
-- (IBAction)shareButtonPressed:(id)sender {
-}
-
-- (IBAction)progressSliderMoved:(UISlider*)sender
-{
-    [profileVC.player pause];
-    [pausePlayButton setSelected:YES];
-    profileVC.player.currentTime = spokeSlider.value;
-    profileVC.player.currentTime = sender.value;
-    currentTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)profileVC.player.currentTime / 60, (int)profileVC.player.currentTime % 60, nil];
-    spokeSlider.value = profileVC.player.currentTime;
-}
-
-
-- (void)updateSlider
-{
-    if(spokeSlider.tag == playButton.tag)
-    {
-        float progress = profileVC.player.currentTime;
-        currentTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)profileVC.player.currentTime / 60, (int)profileVC.player.currentTime % 60, nil];
-        [spokeSlider setValue:progress];
-    }
-}
-
-- (IBAction)pausePlayButtonPressed:(id)sender
-{
-    if(profileVC.player.playing)
-    {
-        [profileVC.player pause];
-        [pausePlayButton setSelected:YES];
-    }
-    else
-    {
-        [profileVC.player play];
-        [pausePlayButton setSelected:NO];
-    }
-}
-
-@end
+//@implementation SpokeCell
+//
+//@synthesize playButton;
+//@synthesize profileVC;
+//@synthesize spokeContainerView;
+//@synthesize spokeImageView;
+//@synthesize spokeNameLabel;
+//@synthesize spokeDateLabel;
+//@synthesize heardLabel;
+//@synthesize respokeTotalLabel;
+//@synthesize likesLabel;
+//@synthesize gotoRespokeButton;
+//@synthesize totalTimeLabel;
+//@synthesize currentTimeLabel;
+//@synthesize spokeSlider;
+//@synthesize playContainerView;
+//@synthesize updateTimer;
+//@synthesize pausePlayButton;
+//@synthesize likeButton;
+//@synthesize currentSpoke;
+//@synthesize wallVC;
+//
+//- (IBAction)playButtonPressed:(id)sender
+//{
+//    if(profileVC.currentPlayingTag != playButton.tag)
+//    {
+//        profileVC.currentPlayingTag = playButton.tag;
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"spokeChanged" object:nil];
+//    }
+//    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
+//    if(![profileVC.player isPlaying])
+//    {
+//        NSString *soundFilePath = currentSpoke.spokeID;
+//        NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+//        NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
+//        
+//        NSURL *soundUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@.m4a", basePath, soundFilePath]];
+//        
+//        NSError *dataError;
+//        NSData *soundData = [[NSData alloc] initWithContentsOfURL:soundUrl options:NSDataReadingMappedIfSafe error:&dataError];
+//        if(dataError != nil)
+//        {
+//            NSLog(@"DATA ERROR %@", dataError);
+//        }
+//        
+//        NSError *error;
+//        AVAudioPlayer *newPlayer =[[AVAudioPlayer alloc] initWithData: soundData error: &error];
+//        newPlayer.delegate = self;
+//        
+//        profileVC.player = newPlayer;
+//        updateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
+//        
+//        spokeSlider.minimumValue = 0;
+//        spokeSlider.maximumValue = profileVC.player.duration;
+//        
+//        [profileVC playSelectedAudio];
+//        
+//        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changePlayButtonImage) name:PLAYBACK_STOP object:nil];
+//        [playButton removeFromSuperview];
+//        
+//        [playContainerView addSubview:spokeSlider];
+//        [playContainerView addSubview:currentTimeLabel];
+//        [playContainerView addSubview:pausePlayButton];
+//    }
+//}
+//
+//-(void)spokeChanged
+//{
+//    [self changePlayButtonImage];
+//    profileVC.player = nil;
+//    [pausePlayButton setSelected:NO];
+//}
+//
+//-(void)changePlayButtonImage
+//{
+//    [spokeSlider removeFromSuperview];
+//    [currentTimeLabel removeFromSuperview];
+//    [pausePlayButton removeFromSuperview];
+//    [playContainerView addSubview:playButton];
+//    [playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
+//    [profileVC.userProf updateTotalSpokeHeard:currentSpoke.spokeID heardID:[profileVC.userProf getUserID]];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHeardLabel) name:@"updateHeards" object:nil];
+//}
+//
+//-(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+//{
+//    [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
+//}
+//
+//-(void)updateHeardLabel
+//{
+//    int totalHeard = currentSpoke.totalHeards;
+//    heardLabel.text = [NSString stringWithFormat:@"%d heard", totalHeard];
+//}
+//
+//
+//- (IBAction)gotoRespokeButtonPressed:(id)sender {
+//}
+//
+//- (IBAction)likeButtonPressed:(id)sender
+//{
+//    if(!likeButton.selected)
+//    {
+//        likeButton.selected = YES;
+//
+//        currentSpoke.totalLikes = currentSpoke.totalLikes + 1;
+//        [profileVC.userProf updateTotalSpokeLike:currentSpoke.spokeID];
+//    }
+//    else
+//    {
+//        likeButton.selected = NO;
+//        currentSpoke.totalLikes = currentSpoke.totalLikes - 1;
+//        [profileVC.userProf updateTotalSpokeLike:currentSpoke.spokeID];
+//    }
+//    
+//    NSString *likeString = @"like";
+//    if (currentSpoke.totalLikes > 1)
+//    {
+//        likeString = @"likes";
+//    }
+//
+//    likesLabel.text = [NSString stringWithFormat:@"%d %@", currentSpoke.totalLikes, likeString];
+//}
+//
+//- (IBAction)shareButtonPressed:(id)sender {
+//}
+//
+//- (IBAction)progressSliderMoved:(UISlider*)sender
+//{
+//    [profileVC.player pause];
+//    [pausePlayButton setSelected:YES];
+//    profileVC.player.currentTime = spokeSlider.value;
+//    profileVC.player.currentTime = sender.value;
+//    currentTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)profileVC.player.currentTime / 60, (int)profileVC.player.currentTime % 60, nil];
+//    spokeSlider.value = profileVC.player.currentTime;
+//}
+//
+//
+//- (void)updateSlider
+//{
+//    if(spokeSlider.tag == playButton.tag)
+//    {
+//        float progress = profileVC.player.currentTime;
+//        currentTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)profileVC.player.currentTime / 60, (int)profileVC.player.currentTime % 60, nil];
+//        [spokeSlider setValue:progress];
+//    }
+//}
+//
+//- (IBAction)pausePlayButtonPressed:(id)sender
+//{
+//    if(profileVC.player.playing)
+//    {
+//        [profileVC.player pause];
+//        [pausePlayButton setSelected:YES];
+//    }
+//    else
+//    {
+//        [profileVC.player play];
+//        [pausePlayButton setSelected:NO];
+//    }
+//}
+//
+//@end
 
 @implementation ProfileViewController
 
@@ -203,7 +203,8 @@
 
 - (void)viewDidLoad
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHeardLabel:) name:@"updateHeards" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMySpokesArray) name:@"loadUserWall" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMyWallTableView) name:@"userWallSpokesArrived" object:nil];
     [super viewDidLoad];
     userProf = [UserProfile sharedProfile];
     profile = [userProf.currentUser objectForKey:USER_PROFILE];
@@ -240,14 +241,48 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    userProf.spokesArray = [Utilities orderByDate:userProf.spokesArray];
+    if(refreshControl == nil)
+        [self setupRefreshControl];
     [spokesTableView reloadData];
+}
+
+-(void)reloadMySpokesArray
+{
+    [refreshControl beginRefreshing];
+    userProf.spokesArray = [userProf loadSpokesFromRemoteForUser:[userProf getUserID]];
+}
+
+-(void)reloadMyWallTableView
+{
+    userProf.spokesArray = [Utilities orderByDate:userProf.spokesArray];
+    [userProf saveProfileLocal];
+    [spokesTableView reloadData];
+    [refreshControl endRefreshing];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark -
+#pragma mark UIRefreshControl
+- (void)setupRefreshControl
+{
+    refreshControl = [[UIRefreshControl alloc]init];
+    [refreshControl addTarget:self action:@selector(reloadMySpokesArray) forControlEvents:UIControlEventValueChanged];
+    [refreshControl setBounds:CGRectMake(refreshControl.frame.origin.x, refreshControl.frame.origin.y + 10, refreshControl.frame.size.width, refreshControl.frame.size.height)];
+    [refreshControl setTintColor:[UIColor whiteColor]];
+    [spokesTableView addSubview:refreshControl];
+}
+
+- (void) checkRefreshControl
+{
+    if(refreshControl.isRefreshing)
+    {
+        [refreshControl endRefreshing];
+    }
 }
 
 /*
@@ -275,6 +310,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+    NSLog(@"count %d",[userProf.spokesArray count]);
     return [userProf.spokesArray count];
 }
 
@@ -413,11 +449,6 @@
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
     [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
-}
-
--(void)updateHeardLabel:(NSNotification*)notification
-{
-
 }
 
 @end
