@@ -35,8 +35,10 @@
     IBOutlet UIButton *likeButton;
     Spoke *currentSpoke;
     WallViewController *wallVC;
+    AVAudioPlayer *spokePlayer;
 }
 
+@property (strong, nonatomic) AVAudioPlayer *spokePlayer;
 @property (strong, nonatomic) WallViewController *wallVC;
 @property (strong, nonatomic) Spoke *currentSpoke;
 @property (strong, nonatomic) IBOutlet UIButton *likeButton;

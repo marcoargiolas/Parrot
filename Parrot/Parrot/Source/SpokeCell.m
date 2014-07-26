@@ -30,15 +30,17 @@
 @synthesize likeButton;
 @synthesize currentSpoke;
 @synthesize wallVC;
+@synthesize spokePlayer;
 
 - (IBAction)playButtonPressed:(id)sender
 {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"spokeChanged" object:nil];
+    NSLog(@"PLAY BUTTON PRESSED");
     if(profileVC != nil)
     {
         if(profileVC.currentPlayingTag != playButton.tag)
         {
             profileVC.currentPlayingTag = (int)playButton.tag;
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"spokeChanged" object:nil];
         }
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
         if(![profileVC.player isPlaying])
@@ -69,23 +71,17 @@
         if(wallVC.currentPlayingTag != playButton.tag)
         {
             wallVC.currentPlayingTag = (int)playButton.tag;
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"spokeChanged" object:nil];
         }
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
         if(![wallVC.player isPlaying])
         {
-            NSData *soundData = [[NSData alloc] initWithData:currentSpoke.audioData];
-            NSError *error;
-            AVAudioPlayer *newPlayer =[[AVAudioPlayer alloc] initWithData: soundData error: &error];
-            newPlayer.delegate = self;
-            
-            wallVC.player = newPlayer;
+            wallVC.player = spokePlayer;
             updateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
             
             spokeSlider.minimumValue = 0;
             spokeSlider.maximumValue = wallVC.player.duration;
             
-            [wallVC playSelectedAudio];
+            [wallVC.player play];
             
             [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changePlayButtonImage) name:PLAYBACK_STOP object:nil];
             [playButton removeFromSuperview];
@@ -99,17 +95,28 @@
 
 -(void)spokeChanged
 {
+    NSLog(@"SPOKE CHANGED");
     [self changePlayButtonImage];
     if(profileVC != nil)
+    {
+        [profileVC.player stop];
+        profileVC.player.currentTime = 0;
         profileVC.player = nil;
-    else if(wallVC != nil)
-        wallVC.player = nil;
+    }
     
+    else if(wallVC != nil)
+    {
+        [wallVC.player stop];
+        wallVC.player.currentTime = 0;
+        wallVC.player = nil;
+    }
     [pausePlayButton setSelected:NO];
 }
 
 -(void)changePlayButtonImage
 {
+    NSLog(@"CHANGE PLAY BUTTON IMAGE");
+    [updateTimer invalidate];
     [spokeSlider removeFromSuperview];
     [currentTimeLabel removeFromSuperview];
     [pausePlayButton removeFromSuperview];
@@ -124,11 +131,13 @@
 
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
+    NSLog(@"AUDIO PLAYER DID FINISH");
     [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
 }
 
 -(void)updateHeardLabel
 {
+    NSLog(@"UPDATE HEARD LABEL");
     int totalHeard = currentSpoke.totalHeards + 1;
     heardLabel.text = [NSString stringWithFormat:@"%d heard", totalHeard];
 }
@@ -139,6 +148,7 @@
 
 - (IBAction)likeButtonPressed:(id)sender
 {
+    NSLog(@"LIKE BUTTON PRESSED");
     if(profileVC != nil)
     {
         [profileVC.userProf updateTotalSpokeLike:currentSpoke.spokeID thanksID:[profileVC.userProf getUserID]addLike:!likeButton.selected];
@@ -153,6 +163,7 @@
 
 -(void)updateLikes:(NSNotification*)notification
 {
+    NSLog(@"UPDATE LIKES");
     NSDictionary* userInfo = notification.userInfo;
     BOOL like = [[userInfo objectForKey:@"like"] boolValue];
 
@@ -171,6 +182,7 @@
 
 - (IBAction)progressSliderMoved:(UISlider*)sender
 {
+    NSLog(@"PROGRESS SLIDER MOVED");
     if(profileVC != nil)
     {
         [profileVC.player pause];
@@ -213,6 +225,7 @@
 
 - (IBAction)pausePlayButtonPressed:(id)sender
 {
+    NSLog(@"PAUSE PLAY BUTTON PRESSED");
     if(profileVC != nil)
     {
         if(profileVC.player.playing)
@@ -231,11 +244,13 @@
         if(wallVC.player.playing)
         {
             [wallVC.player pause];
+            wallVC.playerInPause = YES;
             [pausePlayButton setSelected:YES];
         }
         else
         {
             [wallVC.player play];
+            wallVC.playerInPause = NO;
             [pausePlayButton setSelected:NO];
         }
     }

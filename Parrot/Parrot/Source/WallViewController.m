@@ -27,6 +27,7 @@
 @synthesize userProf;
 @synthesize buttonContainerView;
 @synthesize recordButton;
+@synthesize playerInPause;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -170,7 +171,12 @@
         cell.likeButton.selected = NO;
         cell.heardLabel.text = @"";
         cell.spokeDateLabel.text = @"";
-        [cell.playButton setImage:[UIImage imageNamed:@"button_big_play_enabled.png"] forState:UIControlStateNormal];
+        cell.spokePlayer = nil;
+        [cell.playContainerView addSubview:cell.playButton];
+        [cell.spokeSlider removeFromSuperview];
+        [cell.currentTimeLabel removeFromSuperview];
+        [cell.pausePlayButton removeFromSuperview];
+        [cell.pausePlayButton setSelected:NO];
     }
     
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -178,7 +184,7 @@
     cell.playButton.tag = indexPath.row;
     
     Spoke *spokeObj = [wallSpokesArray objectAtIndex:indexPath.row];
-    
+
     NSData *img_data = spokeObj.ownerImageData;
     UIImage *userImageLoad = [UIImage imageWithData:img_data];
     if(userImageLoad != nil)
@@ -208,10 +214,9 @@
     NSError *error;
     AVAudioPlayer *newPlayer =[[AVAudioPlayer alloc] initWithData: soundData error: &error];
     newPlayer.delegate = self;
-    
-    player = newPlayer;
-    
-    cell.totalTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)player.duration / 60, (int)player.duration % 60, nil];
+    cell.spokePlayer = newPlayer;
+
+    cell.totalTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)cell.spokePlayer.duration / 60, (int)cell.spokePlayer.duration % 60, nil];
     
     [cell.spokeContainerView.layer setShadowColor:[UIColor blackColor].CGColor];
     [cell.spokeContainerView.layer setShadowOpacity:0.3];
@@ -221,9 +226,6 @@
     [cell.spokeContainerView.layer setBorderWidth:0.3];
     
     [cell.spokeSlider setThumbImage:[UIImage imageNamed:@"handle_slider.png"] forState:UIControlStateNormal];
-    [cell.spokeSlider removeFromSuperview];
-    [cell.currentTimeLabel removeFromSuperview];
-    [cell.pausePlayButton removeFromSuperview];
     
     NSDateFormatter *format = [[NSDateFormatter alloc] init];
     [format setDateFormat:@"dd MMM yyyy"];
@@ -242,11 +244,29 @@
     
     cell.spokeSlider.tag = indexPath.row;
     
-    [cell.playContainerView addSubview:cell.playButton];
-    if([userProf spokeAlreadyListened:spokeObj])
+    if(([player isPlaying] || playerInPause) && [[player data]isEqualToData:[cell.spokePlayer data]])
     {
-        [cell.playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
+        [cell.playContainerView addSubview:cell.spokeSlider];
+        [cell.playContainerView addSubview:cell.currentTimeLabel];
+        [cell.playContainerView addSubview:cell.pausePlayButton];
+        [cell.playButton removeFromSuperview];
+        if(playerInPause)
+            [cell.pausePlayButton setSelected:YES];
+        else
+            [cell.pausePlayButton setSelected:NO];
     }
+    else
+    {
+        [cell.spokeSlider removeFromSuperview];
+        [cell.currentTimeLabel removeFromSuperview];
+        [cell.pausePlayButton removeFromSuperview];
+
+        if([userProf spokeAlreadyListened:spokeObj])
+            [cell.playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
+        else
+            [cell.playButton setImage:[UIImage imageNamed:@"button_big_play_enabled.png"] forState:UIControlStateNormal];
+    }
+
     [cell setBackgroundColor:[UIColor clearColor]];
     return cell;
 }

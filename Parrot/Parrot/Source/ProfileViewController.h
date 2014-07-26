@@ -31,8 +31,10 @@
     int currentPlayingTag;
     UIRefreshControl *refreshControl;
     BOOL startRecord;
+    BOOL playerInPause;
 }
 
+@property (nonatomic, assign) BOOL playerInPause;
 @property (nonatomic, assign) int currentPlayingTag;
 @property (strong, nonatomic) UserProfile *userProf;
 @property (strong, nonatomic) AVAudioPlayer *player;

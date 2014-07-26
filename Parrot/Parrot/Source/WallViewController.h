@@ -22,8 +22,10 @@
     IBOutlet UIView *buttonContainerView;
     IBOutlet UIButton *recordButton;
     BOOL startRecord;
+    BOOL playerInPause;
 }
 
+@property (nonatomic, assign) BOOL playerInPause;
 @property (strong, nonatomic) IBOutlet UIButton *recordButton;
 @property (strong, nonatomic) IBOutlet UIView *buttonContainerView;
 @property (strong, nonatomic) UserProfile *userProf;
