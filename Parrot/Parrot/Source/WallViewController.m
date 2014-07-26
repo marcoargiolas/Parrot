@@ -28,6 +28,7 @@
 @synthesize buttonContainerView;
 @synthesize recordButton;
 @synthesize playerInPause;
+@synthesize wallSpokesArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -52,6 +53,8 @@
     currentPlayingTag = -1;
     
     [wallTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
+    
+    [buttonContainerView setFrame:CGRectMake(buttonContainerView.frame.origin.x, self.view.frame.size.height - 65 - buttonContainerView.frame.size.height, buttonContainerView.frame.size.width, buttonContainerView.frame.size.height)];
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
     [recordButton addGestureRecognizer:longPress];
@@ -204,6 +207,7 @@
     }
   
     cell.currentSpoke = spokeObj;
+    cell.currentSpokeIndex = indexPath.row;
     NSError *dataError;
     NSData *soundData = [[NSData alloc] initWithData:spokeObj.audioData];
     if(dataError != nil)
@@ -233,6 +237,7 @@
     [cell.spokeDateLabel setText:dateString];
     
     NSString *likeString = @"like";
+    NSLog(@"total likes %d for USER %@", [spokeObj.listOfThankersID count], spokeObj.ownerName);
     if (spokeObj.totalLikes > 0 && [spokeObj.listOfThankersID containsObject:[userProf getUserID]])
         cell.likeButton.selected = YES;
     if (spokeObj.totalLikes > 1)

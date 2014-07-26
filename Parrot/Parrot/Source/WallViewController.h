@@ -25,6 +25,7 @@
     BOOL playerInPause;
 }
 
+@property (nonatomic, strong) NSMutableArray *wallSpokesArray;
 @property (nonatomic, assign) BOOL playerInPause;
 @property (strong, nonatomic) IBOutlet UIButton *recordButton;
 @property (strong, nonatomic) IBOutlet UIView *buttonContainerView;

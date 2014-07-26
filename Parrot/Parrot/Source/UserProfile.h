@@ -25,7 +25,7 @@
 - (void)saveProfileLocal;
 - (void)loadProfileLocal;
 -(void)saveSpokesArrayRemote:(Spoke*)spokeToSave;
--(void)updateTotalSpokeLike:(NSString*)spokeID thanksID:(NSString*)userThanksID addLike:(BOOL)like;
+-(void)updateTotalSpokeLike:(NSString*)spokeID thanksID:(NSString*)userThanksID addLike:(BOOL)like totalLikes:(int)totalLikes;
 -(Spoke*)getSpokeWithID:(NSString*)spokeID;
 -(void)updateTotalSpokeHeard:(NSString*)spokeID heardID:(NSString*)userHeardID;
 -(void)deleteSpoke:(Spoke*)spokeToDelete;

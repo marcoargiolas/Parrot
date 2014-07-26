@@ -32,8 +32,12 @@
     UIRefreshControl *refreshControl;
     BOOL startRecord;
     BOOL playerInPause;
+    BOOL myProfile;
+    NSMutableArray *currentSpokenArray;
 }
 
+@property (nonatomic, strong) NSMutableArray *currentSpokenArray;
+@property (nonatomic, assign) BOOL myProfile;
 @property (nonatomic, assign) BOOL playerInPause;
 @property (nonatomic, assign) int currentPlayingTag;
 @property (strong, nonatomic) UserProfile *userProf;

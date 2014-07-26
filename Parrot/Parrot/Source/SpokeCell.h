@@ -36,8 +36,10 @@
     Spoke *currentSpoke;
     WallViewController *wallVC;
     AVAudioPlayer *spokePlayer;
+    int currentSpokeIndex;
 }
 
+@property (assign, nonatomic) int currentSpokeIndex;
 @property (strong, nonatomic) AVAudioPlayer *spokePlayer;
 @property (strong, nonatomic) WallViewController *wallVC;
 @property (strong, nonatomic) Spoke *currentSpoke;

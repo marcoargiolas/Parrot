@@ -142,7 +142,7 @@
     
     profileVC.spokesTableView.delegate = profileVC;
     profileVC.spokesTableView.dataSource = profileVC;
-    
+    profileVC.myProfile = YES;
     wallVC.wallTableView.delegate = nil;
     wallVC.wallTableView.dataSource = nil;
     

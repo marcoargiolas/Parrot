@@ -31,6 +31,7 @@
 @synthesize currentSpoke;
 @synthesize wallVC;
 @synthesize spokePlayer;
+@synthesize currentSpokeIndex;
 
 - (IBAction)playButtonPressed:(id)sender
 {
@@ -149,32 +150,80 @@
 - (IBAction)likeButtonPressed:(id)sender
 {
     NSLog(@"LIKE BUTTON PRESSED");
+    
+//    int totalLikes = currentSpoke.totalLikes;
+//    if(!likeButton.selected)
+//    {
+//        totalLikes = totalLikes + 1;
+//    }
+//    else
+//    {
+//        totalLikes = totalLikes - 1;
+//    }
+//    currentSpoke.totalLikes = totalLikes;
+
+    if(currentSpoke.listOfThankersID == nil)
+    {
+        currentSpoke.listOfThankersID = [[NSMutableArray alloc]init];
+    }
+    
+    
     if(profileVC != nil)
     {
-        [profileVC.userProf updateTotalSpokeLike:currentSpoke.spokeID thanksID:[profileVC.userProf getUserID]addLike:!likeButton.selected];
+        if(!likeButton.selected)
+        {
+            if(![currentSpoke.listOfThankersID containsObject:[profileVC.userProf getUserID]])
+                [currentSpoke.listOfThankersID addObject:[profileVC.userProf getUserID]];
+        }
+        else
+        {
+            if([currentSpoke.listOfThankersID containsObject:[profileVC.userProf getUserID]])
+                [currentSpoke.listOfThankersID removeObject:[profileVC.userProf getUserID]];
+        }
+
+        [profileVC.currentSpokenArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
+        [profileVC.userProf updateTotalSpokeLike:currentSpoke.spokeID thanksID:[profileVC.userProf getUserID]addLike:!likeButton.selected totalLikes:[currentSpoke.listOfThankersID count]];
     }
     else if (wallVC != nil)
     {
-        [wallVC.userProf updateTotalSpokeLike:currentSpoke.spokeID thanksID:[wallVC.userProf getUserID]addLike:!likeButton.selected];
+        if(!likeButton.selected)
+        {
+            if(![currentSpoke.listOfThankersID containsObject:[wallVC.userProf getUserID]])
+                [currentSpoke.listOfThankersID addObject:[wallVC.userProf getUserID]];
+        }
+        else
+        {
+            if([currentSpoke.listOfThankersID containsObject:[wallVC.userProf getUserID]])
+                [currentSpoke.listOfThankersID removeObject:[wallVC.userProf getUserID]];
+        }
+
+        currentSpoke.totalLikes = [currentSpoke.listOfThankersID count];
+        [wallVC.wallSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
+        [wallVC.userProf updateTotalSpokeLike:currentSpoke.spokeID thanksID:[wallVC.userProf getUserID]addLike:!likeButton.selected totalLikes:[currentSpoke.listOfThankersID count]];
     }
     likeButton.selected = !likeButton.selected;
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikes:) name:@"updateLikes" object:nil];
+    
+    if([currentSpoke.listOfThankersID count] <= 1)
+        likesLabel.text = [NSString stringWithFormat:@"%d like", [currentSpoke.listOfThankersID count]];
+    else
+        likesLabel.text = [NSString stringWithFormat:@"%d likes", [currentSpoke.listOfThankersID count]];
+//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikes:) name:@"updateLikes" object:nil];
 }
 
 -(void)updateLikes:(NSNotification*)notification
 {
-    NSLog(@"UPDATE LIKES");
-    NSDictionary* userInfo = notification.userInfo;
-    BOOL like = [[userInfo objectForKey:@"like"] boolValue];
-
-    [likeButton setSelected:like];
-    int totalLikes = [[userInfo objectForKey:@"totalLikes"] intValue];
-    
-    if(totalLikes <= 1)
-        likesLabel.text = [NSString stringWithFormat:@"%d like", totalLikes];
-    else
-        likesLabel.text = [NSString stringWithFormat:@"%d likes", totalLikes];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"updateLikes" object:nil];
+//    NSLog(@"UPDATE LIKES");
+//    NSDictionary* userInfo = notification.userInfo;
+//    BOOL like = [[userInfo objectForKey:@"like"] boolValue];
+//
+//    [likeButton setSelected:like];
+//    int totalLikes = [[userInfo objectForKey:@"totalLikes"] intValue];
+//    
+////    if(totalLikes <= 1)
+////        likesLabel.text = [NSString stringWithFormat:@"%d like", totalLikes];
+////    else
+////        likesLabel.text = [NSString stringWithFormat:@"%d likes", totalLikes];
+//    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"updateLikes" object:nil];
 }
 
 - (IBAction)shareButtonPressed:(id)sender {

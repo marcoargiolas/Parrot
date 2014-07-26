@@ -28,6 +28,9 @@
 @synthesize player;
 @synthesize userProf;
 @synthesize currentPlayingTag;
+@synthesize myProfile;
+@synthesize playerInPause;
+@synthesize currentSpokenArray;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -83,12 +86,20 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    if(currentSpokenArray == nil)
+    {
+        currentSpokenArray = [[NSMutableArray alloc]init];
+    }
+    if (myProfile)
+    {
+        currentSpokenArray = userProf.spokesArray;
+    }
     // Set up an observer for proximity changes
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
     if(refreshControl == nil)
         [self setupRefreshControl];
-    if([userProf.spokesArray count] > 0)
-        userProf.spokesArray = [Utilities orderByDate:userProf.spokesArray];
+    if([currentSpokenArray count] > 0)
+        currentSpokenArray = [Utilities orderByDate:currentSpokenArray];
     [spokesTableView reloadData];
 }
 
@@ -102,12 +113,12 @@
 -(void)reloadMySpokesArray
 {
     [refreshControl beginRefreshing];
-    userProf.spokesArray = [userProf loadSpokesFromRemoteForUser:[userProf getUserID]];
+    currentSpokenArray = [userProf loadSpokesFromRemoteForUser:[userProf getUserID]];
 }
 
 -(void)reloadMyWallTableView
 {
-    userProf.spokesArray = [Utilities orderByDate:userProf.spokesArray];
+    currentSpokenArray = [Utilities orderByDate:currentSpokenArray];
     [userProf saveProfileLocal];
     [spokesTableView reloadData];
     [refreshControl endRefreshing];
@@ -164,7 +175,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [userProf.spokesArray count];
+    return [currentSpokenArray count];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -216,16 +227,11 @@
         [cell.spokeImageView setImage:userImageLoad];
     }
     
-    Spoke *spokeObj = [userProf.spokesArray objectAtIndex:indexPath.row];
+    Spoke *spokeObj = [currentSpokenArray objectAtIndex:indexPath.row];
     cell.currentSpoke = spokeObj;
-    NSString *soundFilePath = spokeObj.spokeID;
-    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
-    NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
-    
-    NSURL *soundUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/%@.m4a", basePath, soundFilePath]];
-    
+
     NSError *dataError;
-    NSData *soundData = [[NSData alloc] initWithContentsOfURL:soundUrl options:NSDataReadingMappedIfSafe error:&dataError];
+    NSData *soundData = [[NSData alloc] initWithData:spokeObj.audioData];
     if(dataError != nil)
     {
         NSLog(@"DATA ERROR %@", dataError);
@@ -234,8 +240,9 @@
     NSError *error;
     AVAudioPlayer *newPlayer =[[AVAudioPlayer alloc] initWithData: soundData error: &error];
     newPlayer.delegate = self;
-    
+
     cell.spokePlayer = newPlayer;
+    cell.currentSpokeIndex = indexPath.row;
     
     cell.totalTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)cell.spokePlayer.duration / 60, (int)cell.spokePlayer.duration % 60, nil];
 
@@ -256,7 +263,7 @@
     [cell.spokeDateLabel setText:[Utilities getDateString:spokeObj.creationDate WithFormat:format]];
     
     NSString *likeString = @"like";
-    if (spokeObj.totalLikes > 0)
+    if (spokeObj.totalLikes > 0 && [spokeObj.listOfThankersID containsObject:[userProf getUserID]])
         cell.likeButton.selected = YES;
     if (spokeObj.totalLikes > 1)
     {
@@ -310,8 +317,8 @@
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
         [spokesTableView beginUpdates];
-        [userProf deleteSpoke:[userProf.spokesArray objectAtIndex:indexPath.row]];
-        [userProf.spokesArray removeObjectAtIndex:indexPath.row];
+        [userProf deleteSpoke:[currentSpokenArray objectAtIndex:indexPath.row]];
+        [currentSpokenArray removeObjectAtIndex:indexPath.row];
         [spokesTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         [spokesTableView endUpdates];
     }

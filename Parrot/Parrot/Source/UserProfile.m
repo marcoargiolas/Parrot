@@ -198,7 +198,7 @@ static UserProfile *shared = nil;
     }];
 }
 
--(void)updateTotalSpokeLike:(NSString*)spokeID thanksID:(NSString*)userThanksID addLike:(BOOL)like
+-(void)updateTotalSpokeLike:(NSString*)spokeID thanksID:(NSString*)userThanksID addLike:(BOOL)like totalLikes:(int)totalLikes
 {
     PFQuery *query = [PFQuery queryWithClassName:@"spoke"];
     [query whereKey:@"spokeID" equalTo:spokeID];
@@ -212,21 +212,20 @@ static UserProfile *shared = nil;
                 {
                     thanksTempArray = [[NSMutableArray alloc]init];
                 }
-                int totalLikes = [[object objectForKey:@"totalLikes"] intValue];
-                if(like)
+                NSLog(@"THANKS ARRAY %@", thanksTempArray);
+                int remoteTotalLikes = [[object objectForKey:@"totalLikes"] intValue];
+                if(remoteTotalLikes < totalLikes)
                 {
                     [thanksTempArray addObject:userThanksID];
-                    totalLikes = totalLikes + 1;
                 }
                 else
                 {
                     [thanksTempArray removeObject:userThanksID];
-                    totalLikes = totalLikes - 1;
                 }
                 
-                [object setObject:[NSString stringWithFormat:@"%d",totalLikes] forKey:@"totalLikes"];
+                [object setObject:[NSString stringWithFormat:@"%d",[thanksTempArray count]] forKey:@"totalLikes"];
                 
-
+                NSLog(@"THANKS ARRAY DOPO %@", thanksTempArray);
                 [object setObject:thanksTempArray forKey:@"listOfThankersID"];
                 [object saveInBackground];
                 
@@ -243,6 +242,7 @@ static UserProfile *shared = nil;
         {
             // Log details of the failure
             NSLog(@"Error: %@ %@", error, [error userInfo]);
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"updateLikesError" object:nil];
         }
     }];
 }
