@@ -94,8 +94,7 @@
     {
         currentSpokenArray = userProf.spokesArray;
     }
-    // Set up an observer for proximity changes
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
+
     if(refreshControl == nil)
         [self setupRefreshControl];
     if([currentSpokenArray count] > 0)
@@ -106,7 +105,6 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     startRecord = NO;
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
     [player stop];
 }
 
@@ -337,13 +335,17 @@
 
 -(void)playSelectedAudio
 {
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
     [player prepareToPlay];
     [player play];
 }
 
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
     [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
 }
 
 - (void)sensorStateChange:(NSNotificationCenter *)notification

@@ -56,8 +56,6 @@
     [buttonsContainerView.layer setBorderWidth:0.3];
 
     [self profileButtonPressed:nil];
-    
-    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
 }
 
 -(UIStatusBarStyle)preferredStatusBarStyle

@@ -46,8 +46,6 @@
         MainViewController *controller = [storyBoard  instantiateViewControllerWithIdentifier:@"MainViewController"];
         self.window.rootViewController = controller;
     }
-
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
    
