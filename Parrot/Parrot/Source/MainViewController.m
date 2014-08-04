@@ -143,7 +143,7 @@
     profileVC.myProfile = YES;
     wallVC.wallTableView.delegate = nil;
     wallVC.wallTableView.dataSource = nil;
-    
+
     [[NSNotificationCenter defaultCenter]postNotificationName:@"loadUserWall" object:nil];
 }
 

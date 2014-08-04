@@ -120,6 +120,15 @@
     [userProf saveProfileLocal];
     [spokesTableView reloadData];
     [refreshControl endRefreshing];
+    [totalSpokensLabel setText:[NSString stringWithFormat:@"%d", [currentSpokenArray count]]];
+    if ([currentSpokenArray count] > 1)
+    {
+        [totalSpokensSubLabel setText:@"Spokens"];
+    }
+    else
+    {
+        [totalSpokensSubLabel setText:@"Spoken"];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -335,7 +344,6 @@
 
 -(void)playSelectedAudio
 {
-    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
     [player prepareToPlay];
     [player play];

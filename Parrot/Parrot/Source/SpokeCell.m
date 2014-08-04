@@ -124,10 +124,23 @@
     [playContainerView addSubview:playButton];
     [playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
     if(profileVC != nil)
+    {
+        if(![currentSpoke.listOfHeardsID containsObject:[profileVC.userProf getUserID]])
+            [currentSpoke.listOfHeardsID addObject:[profileVC.userProf getUserID]];
+
         [profileVC.userProf updateTotalSpokeHeard:currentSpoke.spokeID heardID:[profileVC.userProf getUserID]];
+    }
     else if(wallVC != nil)
+    {
+        if(![currentSpoke.listOfHeardsID containsObject:[wallVC.userProf getUserID]])
+            [currentSpoke.listOfHeardsID addObject:[wallVC.userProf getUserID]];
+
         [wallVC.userProf updateTotalSpokeHeard:currentSpoke.spokeID heardID:[wallVC.userProf getUserID]];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateHeardLabel) name:@"updateHeards" object:nil];
+    }
+
+    int totalHeard = [currentSpoke.listOfHeardsID count];
+    currentSpoke.totalHeards = totalHeard;
+    heardLabel.text = [NSString stringWithFormat:@"%d heard", totalHeard];
 }
 
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag

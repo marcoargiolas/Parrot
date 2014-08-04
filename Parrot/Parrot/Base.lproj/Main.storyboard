@@ -292,7 +292,7 @@
                                         <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="12"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="123" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="MeB-N4-ckX">
+                                    <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="MeB-N4-ckX">
                                         <rect key="frame" x="252" y="1" width="29" height="21"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" name="HelveticaNeue-Bold" family="Helvetica Neue" pointSize="15"/>
@@ -346,6 +346,8 @@
                         <outlet property="nameLabel" destination="JjY-qL-koW" id="OxF-Jf-tOy"/>
                         <outlet property="recordButton" destination="ETe-RO-KyH" id="Dwa-CM-9sD"/>
                         <outlet property="spokesTableView" destination="hcI-rR-wGp" id="yKx-k2-gat"/>
+                        <outlet property="totalSpokensLabel" destination="MeB-N4-ckX" id="IoS-ku-JZf"/>
+                        <outlet property="totalSpokensSubLabel" destination="e22-Vn-8wK" id="5J0-0I-6OC"/>
                         <outlet property="userImageView" destination="WRJ-C4-I6O" id="g3N-dG-hwS"/>
                         <segue destination="xDD-zM-2Cp" kind="modal" identifier="recordAction" id="XMF-2W-9to"/>
                     </connections>

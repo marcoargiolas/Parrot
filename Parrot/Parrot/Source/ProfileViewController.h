@@ -34,6 +34,8 @@
     BOOL playerInPause;
     BOOL myProfile;
     NSMutableArray *currentSpokenArray;
+    IBOutlet UILabel *totalSpokensLabel;
+    IBOutlet UILabel *totalSpokensSubLabel;
 }
 
 @property (nonatomic, strong) NSMutableArray *currentSpokenArray;
