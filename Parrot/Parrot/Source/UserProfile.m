@@ -86,7 +86,7 @@ static UserProfile *shared = nil;
 {
     if(currentUser == nil)
     {
-        currentUser = [[PFUser alloc]init];
+        currentUser = [PFUser currentUser];
         spokesArray = [[NSMutableArray alloc]init];
     }
     // Send request to Facebook
@@ -105,11 +105,15 @@ static UserProfile *shared = nil;
             
             NSMutableDictionary *currentProfile = [[NSMutableDictionary alloc] init];
             
-            if (facebookID) {
+            if (facebookID)
+            {
                 currentProfile[USER_ID] = facebookID;
             }
-            
-            if (userData[@"name"]) {
+
+            NSString *userName;
+            if (userData[@"name"])
+            {
+                userName = userData[@"name"];
                 currentProfile[USER_FULL_NAME] = userData[@"name"];
             }
             
@@ -129,26 +133,35 @@ static UserProfile *shared = nil;
                 currentProfile[USER_RELATIONSHIP] = userData[@"relationship_status"];
             }
             
+            NSString *bio;
             if (userData[@"bio"])
             {
+                bio = userData[@"bio"];
                 currentProfile[USER_BIO] = userData[@"bio"];
             }
             
+            NSData *imageData;
             if ([pictureURL absoluteString])
             {
                 NSURL *imageUrl = [NSURL URLWithString:[pictureURL absoluteString]];
-                NSData *imageData = [[NSData alloc]initWithContentsOfURL:imageUrl];
+                imageData = [[NSData alloc]initWithContentsOfURL:imageUrl];
                 
                 currentProfile[USER_IMAGE_DATA] = imageData;
             }
             
             [currentUser setObject:currentProfile forKey:USER_PROFILE];
             [currentUser setObject:spokesArray forKey:USER_SPOKES_ARRAY];
-//            [currentUser signUp];
-//            [currentUser saveInBackground];
+            [currentUser setObject:userName forKey:@"fullName"];
+            if([bio length] > 0)
+                [currentUser setObject:bio forKey:@"bio"];
+            PFFile *ownerImage = [PFFile fileWithData:imageData];
+            [currentUser setObject:ownerImage forKey:@"userImage"];
 
+
+            [currentUser saveInBackground];
+//            [self updateProfile];
             [[NSNotificationCenter defaultCenter]postNotificationName:PROFILE_LOADED_FROM_FACEBOOK object:nil];
-            [[NSUserDefaults standardUserDefaults] setObject:facebookID forKey:USER_ID];
+            [[NSUserDefaults standardUserDefaults] setObject:[currentUser objectId] forKey:USER_ID];
             [self saveProfileLocal];
         }
         else if ([[[[error userInfo] objectForKey:@"error"] objectForKey:@"type"]
@@ -167,7 +180,7 @@ static UserProfile *shared = nil;
 
 -(NSString*)getUserID
 {
-    return [NSString stringWithFormat:@"%@",[[currentUser objectForKey:USER_PROFILE] objectForKey:USER_ID]];
+    return [[PFUser currentUser]objectId];
 }
 
 -(void)saveProfileRemote
@@ -305,7 +318,8 @@ static UserProfile *shared = nil;
                 [resultsArray addObject:[self spokeObjectfromPFObject:object]];
             }
 
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"userWallSpokesArrived" object:nil];
+            NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:resultsArray forKey:SPOKEN_ARRAY_ARRIVED];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"userWallSpokesArrived" object:nil userInfo:userInfo];
         }
         else
         {
@@ -402,17 +416,17 @@ static UserProfile *shared = nil;
     return spokeObj;
 }
 //// Sent to the delegate when a PFUser is signed up.
-//- (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user
-//{
-//    NSLog(@"SIGN UP");
-//}
-//
-//// Sent to the delegate when the sign up attempt fails.
-//- (void)signUpViewController:(PFSignUpViewController *)signUpController didFailToSignUpWithError:(NSError *)error {
-//    NSLog(@"Failed to sign up...");
-//}
+- (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user
+{
+    NSLog(@"SIGN UP");
+}
 
-//- (void)updateProfile {
+// Sent to the delegate when the sign up attempt fails.
+- (void)signUpViewController:(PFSignUpViewController *)signUpController didFailToSignUpWithError:(NSError *)error {
+    NSLog(@"Failed to sign up...");
+}
+
+- (void)updateProfile {
 //    if ([[PFUser currentUser] objectForKey:@"profile"][@"location"]) {
 //        [self.rowDataArray replaceObjectAtIndex:0 withObject:[[PFUser currentUser] objectForKey:@"profile"][@"location"]];
 //    }
@@ -451,6 +465,6 @@ static UserProfile *shared = nil;
 //            NSLog(@"Failed to download picture");
 //        }
 //    }
-//}
+}
 
 @end

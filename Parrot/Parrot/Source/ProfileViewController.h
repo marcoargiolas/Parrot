@@ -36,8 +36,17 @@
     NSMutableArray *currentSpokenArray;
     IBOutlet UILabel *totalSpokensLabel;
     IBOutlet UILabel *totalSpokensSubLabel;
+    IBOutlet UIButton *settingsButton;
+    BOOL userProfile;
+    NSString *userId;
+    NSString *userName;
 }
 
+@property (strong, nonatomic) NSString *userName;
+@property (strong, nonatomic) NSString *userId;
+@property (strong, nonatomic) UIImage *userImageLoad;
+@property (strong, nonatomic) IBOutlet UIButton *settingsButton;
+@property (assign, nonatomic) BOOL userProfile;
 @property (nonatomic, strong) NSMutableArray *currentSpokenArray;
 @property (nonatomic, assign) BOOL myProfile;
 @property (nonatomic, assign) BOOL playerInPause;
@@ -51,5 +60,6 @@
 
 - (IBAction)recordButtonPressed:(id)sender;
 -(void)playSelectedAudio;
+- (IBAction)settingsButtonPressed:(id)sender;
 
 @end

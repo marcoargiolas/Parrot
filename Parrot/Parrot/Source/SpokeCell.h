@@ -16,10 +16,10 @@
 
 @interface SpokeCell : UITableViewCell <AVAudioPlayerDelegate, AVAudioSessionDelegate,AVAudioRecorderDelegate>
 {
+    IBOutlet UIButton *spokeImageButton;
     ProfileViewController *profileVC;
     IBOutlet UIView *spokeContainerView;
     IBOutlet UIButton *playButton;
-    IBOutlet UIImageView *spokeImageView;
     IBOutlet UILabel *spokeNameLabel;
     IBOutlet UILabel *respokeTotalLabel;
     IBOutlet UIButton *gotoRespokeButton;
@@ -39,6 +39,7 @@
     int currentSpokeIndex;
 }
 
+@property (strong, nonatomic) IBOutlet UIButton *spokeImageButton;
 @property (assign, nonatomic) int currentSpokeIndex;
 @property (strong, nonatomic) AVAudioPlayer *spokePlayer;
 @property (strong, nonatomic) WallViewController *wallVC;
@@ -55,7 +56,6 @@
 @property (strong, nonatomic) IBOutlet UILabel *heardLabel;
 @property (strong, nonatomic) IBOutlet UILabel *likesLabel;
 @property (strong, nonatomic) IBOutlet UILabel *spokeNameLabel;
-@property (strong, nonatomic) IBOutlet UIImageView *spokeImageView;
 @property (strong, nonatomic) IBOutlet UIButton *playButton;
 @property (strong, nonatomic) ProfileViewController *profileVC;
 @property (strong, nonatomic) IBOutlet UILabel *spokeDateLabel;
@@ -67,5 +67,6 @@
 - (IBAction)shareButtonPressed:(id)sender;
 - (IBAction)progressSliderMoved:(UISlider*)sender;
 - (IBAction)pausePlayButtonPressed:(id)sender;
+- (IBAction)spokeImageButtonPressed:(id)sender;
 
 @end

@@ -207,7 +207,7 @@
 
     UserProfile *prof = [UserProfile sharedProfile];
     Spoke *spokeObj = [[Spoke alloc]init];
-    spokeObj.ownerID = [[prof.currentUser objectForKey: @"profile"] objectForKey:@"userID"];
+    spokeObj.ownerID = [userProf getUserID];
     spokeObj.spokeID = [Utilities soundFilePathString];
     spokeObj.creationDate = [NSDate date];
 

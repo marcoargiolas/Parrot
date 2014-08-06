@@ -124,6 +124,15 @@
         RecordViewController *recordVC = [segue destinationViewController];
         recordVC.startRecord = startRecord;
     }
+    else if ([segue.identifier isEqualToString:@"userProfileAction"])
+    {
+        ProfileViewController *profileVC = [segue destinationViewController];
+        SpokeCell *cell = (SpokeCell*)sender;
+        profileVC.userProfile = YES;
+        profileVC.userImageLoad = [UIImage imageWithData:cell.currentSpoke.ownerImageData];
+        profileVC.userName = [NSString stringWithFormat:@"%@ %@",cell.currentSpoke.ownerName, cell.currentSpoke.ownerSurname];
+        profileVC.userId = cell.currentSpoke.ownerID;
+    }
 }
 
 #pragma mark UITableView delegate
@@ -165,7 +174,7 @@
     }
     else
     {
-        cell.spokeImageView.image = nil;
+        [cell.spokeImageButton setImage:nil forState:UIControlStateNormal];
         cell.spokeNameLabel.text = @"";
         cell.likesLabel.text = @"";
         cell.likeButton.selected = NO;
@@ -190,19 +199,11 @@
     if(userImageLoad != nil)
     {
         CGFloat scale = [UIScreen mainScreen].scale;
-        userImageLoad = [userImageLoad roundedImageWithSize:CGSizeMake(cell.spokeImageView.frame.size.width*scale, cell.spokeImageView.frame.size.height*scale) andMaskImage:maskImage];
-        [cell.spokeImageView setImage:userImageLoad];
+        [cell.spokeImageButton setBackgroundImage:[userImageLoad roundedImageWithSize:CGSizeMake(cell.spokeImageButton.frame.size.width*scale, cell.spokeImageButton.frame.size.height*scale) andMaskImage:maskImage] forState:UIControlStateNormal];
     }
 
     [cell.spokeNameLabel setText:spokeObj.ownerName];
     
-    if(userImageLoad != nil)
-    {
-        CGFloat scale = [UIScreen mainScreen].scale;
-        userImageLoad = [userImageLoad roundedImageWithSize:CGSizeMake(cell.spokeImageView.frame.size.width*scale, cell.spokeImageView.frame.size.height*scale) andMaskImage:maskImage];
-        [cell.spokeImageView setImage:userImageLoad];
-    }
-  
     cell.currentSpoke = spokeObj;
     cell.currentSpokeIndex = indexPath.row;
     NSError *dataError;
@@ -312,7 +313,6 @@
 
 -(void)playSelectedAudio
 {
-    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
     [player prepareToPlay];
     [player play];
@@ -320,7 +320,6 @@
 
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
-    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
     [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
 }

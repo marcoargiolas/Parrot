@@ -10,7 +10,7 @@
 #import <Parse/Parse.h>
 #import "Spoke.h"
 
-@interface UserProfile : NSObject <PFSignUpViewControllerDelegate>
+@interface UserProfile : NSObject <PFSignUpViewControllerDelegate, PFLogInViewControllerDelegate>
 {
     PFUser *currentUser;
     NSMutableArray *spokesArray;

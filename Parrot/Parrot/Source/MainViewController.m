@@ -174,7 +174,7 @@
 
     profileVC.spokesTableView.delegate = nil;
     profileVC.spokesTableView.dataSource = nil;
-    
+    profileVC.myProfile = NO;
     wallVC.wallTableView.delegate = wallVC;
     wallVC.wallTableView.dataSource = wallVC;
     
@@ -202,7 +202,7 @@
     [profileButton setSelected:NO];
     [wallButton setSelected:NO];
     [searchButton setSelected:YES];
-    
+    profileVC.myProfile = NO;
     [profileContainerView setHidden:YES];
     [wallContainerView setHidden:YES];
     [searchContainerView setHidden:NO];
@@ -214,9 +214,9 @@
     {
         profileVC = [segue destinationViewController];
     }
-    if([segue.identifier isEqualToString:@"wallAction"])
-    {
-        wallVC = [segue destinationViewController];
-    }
+//    else if([segue.identifier isEqualToString:@"wallAction"])
+//    {
+//        wallVC = [segue destinationViewController];
+//    }
 }
 @end

@@ -31,6 +31,11 @@
 @synthesize myProfile;
 @synthesize playerInPause;
 @synthesize currentSpokenArray;
+@synthesize userProfile;
+@synthesize settingsButton;
+@synthesize userId;
+@synthesize userImageLoad;
+@synthesize userName;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -44,25 +49,37 @@
 - (void)viewDidLoad
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMySpokesArray) name:@"loadUserWall" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMyWallTableView) name:@"userWallSpokesArrived" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMyWallTableView:) name:@"userWallSpokesArrived" object:nil];
     [super viewDidLoad];
     userProf = [UserProfile sharedProfile];
     profile = [userProf.currentUser objectForKey:USER_PROFILE];
     
+    NSString *name;
+    NSString *info;
+    if (!userProfile)
+    {
+        name = [profile objectForKey:USER_FULL_NAME];
+        info = [profile objectForKey:USER_BIO];
+        userId = [userProf getUserID];
+    }
+    else
+    {
+        [self.navigationController setNavigationBarHidden:YES];
+    }
     currentPlayingTag = -1;
     
     maskImage = [UIImage ellipsedMaskFromRect:CGRectMake(0, 0, IMAGE_WIDTH, IMAGE_WIDTH) inSize:CGSizeMake(IMAGE_WIDTH, IMAGE_WIDTH)];
     NSData *img_data = [profile objectForKey:USER_IMAGE_DATA];
-    userImageLoad = [UIImage imageWithData:img_data];
+    if(!userProfile)
+        userImageLoad = [UIImage imageWithData:img_data];
     if(userImageLoad != nil)
     {
         CGFloat scale = [UIScreen mainScreen].scale;
-        userImageLoad = [userImageLoad roundedImageWithSize:CGSizeMake(userImageView.frame.size.width*scale, userImageView.frame.size.height*scale) andMaskImage:maskImage];
-        [userImageView setImage:userImageLoad];
+        [userImageView setImage:[userImageLoad roundedImageWithSize:CGSizeMake(userImageView.frame.size.width*scale, userImageView.frame.size.height*scale) andMaskImage:maskImage]];
     }
-
-    [nameLabel setText:[profile objectForKey:USER_FULL_NAME]];
-    [infoLabel setText:[profile objectForKey:USER_BIO]];
+    
+    [nameLabel setText:name];
+    [infoLabel setText:info];
     
     [buttonContainerView setFrame:CGRectMake(buttonContainerView.frame.origin.x, self.view.frame.size.height - 65 - buttonContainerView.frame.size.height, buttonContainerView.frame.size.width, buttonContainerView.frame.size.height)];
     
@@ -82,24 +99,19 @@
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
     [recordButton addGestureRecognizer:longPress];
-}
-
--(void)viewWillAppear:(BOOL)animated
-{
+    
     if(currentSpokenArray == nil)
     {
         currentSpokenArray = [[NSMutableArray alloc]init];
     }
-    if (myProfile)
-    {
-        currentSpokenArray = userProf.spokesArray;
-    }
-
+    
     if(refreshControl == nil)
         [self setupRefreshControl];
-    if([currentSpokenArray count] > 0)
-        currentSpokenArray = [Utilities orderByDate:currentSpokenArray];
-    [spokesTableView reloadData];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self reloadMySpokesArray];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -111,12 +123,14 @@
 -(void)reloadMySpokesArray
 {
     [refreshControl beginRefreshing];
-    currentSpokenArray = [userProf loadSpokesFromRemoteForUser:[userProf getUserID]];
+    
+    currentSpokenArray = [userProf loadSpokesFromRemoteForUser:userId];
 }
 
--(void)reloadMyWallTableView
+-(void)reloadMyWallTableView:(NSNotification*)notification
 {
-    currentSpokenArray = [Utilities orderByDate:currentSpokenArray];
+    NSMutableArray *spokenArrived = (NSMutableArray*)[[notification userInfo]objectForKey:SPOKEN_ARRAY_ARRIVED];
+    currentSpokenArray = [Utilities orderByDate:spokenArrived];
     [userProf saveProfileLocal];
     [spokesTableView reloadData];
     [refreshControl endRefreshing];
@@ -207,7 +221,7 @@
     }
     else
     {
-        cell.spokeImageView.image = nil;
+        [cell.spokeImageButton setBackgroundImage:nil forState:UIControlStateNormal];
         cell.spokeNameLabel.text = @"";
         cell.likesLabel.text = @"";
         cell.likeButton.selected = NO;
@@ -230,8 +244,7 @@
     if(userImageLoad != nil)
     {
         CGFloat scale = [UIScreen mainScreen].scale;
-        userImageLoad = [userImageLoad roundedImageWithSize:CGSizeMake(cell.spokeImageView.frame.size.width*scale, cell.spokeImageView.frame.size.height*scale) andMaskImage:maskImage];
-        [cell.spokeImageView setImage:userImageLoad];
+        [cell.spokeImageButton setBackgroundImage:[userImageLoad roundedImageWithSize:CGSizeMake(cell.spokeImageButton.frame.size.width*scale, cell.spokeImageButton.frame.size.height*scale) andMaskImage:maskImage] forState:UIControlStateNormal];
     }
     
     Spoke *spokeObj = [currentSpokenArray objectAtIndex:indexPath.row];
@@ -270,7 +283,7 @@
     [cell.spokeDateLabel setText:[Utilities getDateString:spokeObj.creationDate WithFormat:format]];
     
     NSString *likeString = @"like";
-    if (spokeObj.totalLikes > 0 && [spokeObj.listOfThankersID containsObject:[userProf getUserID]])
+    if (spokeObj.totalLikes > 0 && [spokeObj.listOfThankersID containsObject:userId] && userProfile)
         cell.likeButton.selected = YES;
     if (spokeObj.totalLikes > 1)
     {
@@ -349,9 +362,11 @@
     [player play];
 }
 
+- (IBAction)settingsButtonPressed:(id)sender {
+}
+
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
-    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
     [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
 }

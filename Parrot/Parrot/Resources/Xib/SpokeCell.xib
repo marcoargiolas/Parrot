@@ -17,10 +17,6 @@
                         <rect key="frame" x="6" y="6" width="308" height="135"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="fkN-LJ-1tn">
-                                <rect key="frame" x="4" y="4" width="42" height="42"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </imageView>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="w2e-Jm-3n6">
                                 <rect key="frame" x="50" y="6" width="197" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -140,6 +136,16 @@
                                 <rect key="frame" x="221" y="113" width="13" height="13"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMinY="YES"/>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3gD-Wp-Zsd">
+                                <rect key="frame" x="4" y="4" width="42" height="42"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="spokeImageButtonPressed:" destination="Pse-9K-7U7" eventType="touchUpInside" id="teU-BV-wR5"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
@@ -159,7 +165,7 @@
                 <outlet property="respokeTotalLabel" destination="eQK-0P-27s" id="2Ge-Zj-JA3"/>
                 <outlet property="spokeContainerView" destination="RdI-4m-eJ8" id="cTr-5d-xra"/>
                 <outlet property="spokeDateLabel" destination="f5l-By-fle" id="HgT-ee-IAZ"/>
-                <outlet property="spokeImageView" destination="fkN-LJ-1tn" id="gGx-64-rZW"/>
+                <outlet property="spokeImageButton" destination="3gD-Wp-Zsd" id="FGa-PD-109"/>
                 <outlet property="spokeNameLabel" destination="w2e-Jm-3n6" id="pYF-rC-4Vv"/>
                 <outlet property="spokeSlider" destination="Nwr-jW-usR" id="RuO-Yo-uWD"/>
                 <outlet property="totalTimeLabel" destination="SqO-Ir-vXR" id="ytu-KS-Qdj"/>

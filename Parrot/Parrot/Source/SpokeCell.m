@@ -14,7 +14,6 @@
 @synthesize playButton;
 @synthesize profileVC;
 @synthesize spokeContainerView;
-@synthesize spokeImageView;
 @synthesize spokeNameLabel;
 @synthesize spokeDateLabel;
 @synthesize heardLabel;
@@ -32,9 +31,11 @@
 @synthesize wallVC;
 @synthesize spokePlayer;
 @synthesize currentSpokeIndex;
+@synthesize spokeImageButton;
 
 - (IBAction)playButtonPressed:(id)sender
 {
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"spokeChanged" object:nil];
     NSLog(@"PLAY BUTTON PRESSED");
     if(profileVC != nil)
@@ -126,14 +127,21 @@
     if(profileVC != nil)
     {
         if(![currentSpoke.listOfHeardsID containsObject:[profileVC.userProf getUserID]])
+        {
+            [profileVC.currentSpokenArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
             [currentSpoke.listOfHeardsID addObject:[profileVC.userProf getUserID]];
+        }
 
         [profileVC.userProf updateTotalSpokeHeard:currentSpoke.spokeID heardID:[profileVC.userProf getUserID]];
     }
     else if(wallVC != nil)
     {
         if(![currentSpoke.listOfHeardsID containsObject:[wallVC.userProf getUserID]])
+        {
+            [wallVC.wallSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
             [currentSpoke.listOfHeardsID addObject:[wallVC.userProf getUserID]];
+        }
+        
 
         [wallVC.userProf updateTotalSpokeHeard:currentSpoke.spokeID heardID:[wallVC.userProf getUserID]];
     }
@@ -146,6 +154,7 @@
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
     NSLog(@"AUDIO PLAYER DID FINISH");
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
     [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
 }
 
@@ -294,11 +303,13 @@
         {
             [profileVC.player pause];
             [pausePlayButton setSelected:YES];
+            [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
         }
         else
         {
             [profileVC.player play];
             [pausePlayButton setSelected:NO];
+            [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
         }
     }
     else if(wallVC != nil)
@@ -308,14 +319,23 @@
             [wallVC.player pause];
             wallVC.playerInPause = YES;
             [pausePlayButton setSelected:YES];
+            [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
         }
         else
         {
             [wallVC.player play];
             wallVC.playerInPause = NO;
             [pausePlayButton setSelected:NO];
+            [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
         }
     }
 }
 
+- (IBAction)spokeImageButtonPressed:(id)sender
+{
+    if(wallVC != nil)
+    {
+        [wallVC performSegueWithIdentifier:@"userProfileAction" sender:self];
+    }
+}
 @end

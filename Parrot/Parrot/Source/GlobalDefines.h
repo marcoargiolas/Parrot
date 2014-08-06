@@ -10,7 +10,7 @@
 #import <UIKit/UIKit.h>
 
 #define PROFILE_LOADED_FROM_FACEBOOK    @"profileLoadedFromFacebook"
-#define USER_ID                         @"userID"
+#define USER_ID                         @"userId"
 #define USER_FULL_NAME                  @"fullName"
 #define USER_LOCATION                   @"location"
 #define USER_GENDER                     @"gender"
@@ -22,3 +22,4 @@
 #define USER_SPOKES_ARRAY               @"userSpokesArray"
 #define CURRENT_USER                    @"currentUser"
 #define PLAYBACK_STOP                   @"playbackStop"
+#define SPOKEN_ARRAY_ARRIVED            @"spokenArrayArrived"

@@ -44,7 +44,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-56" y="156"/>
+            <point key="canvasLocation" x="-512" y="169"/>
         </scene>
         <!--Main View Controller-->
         <scene sceneID="i3Z-9j-mDG">
@@ -67,7 +67,7 @@
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="zsF-Fe-dir" kind="embed" identifier="wallAction" id="x5Z-AO-lg5"/>
+                                    <segue destination="cLG-dV-dkl" kind="embed" identifier="wallAction" id="x5Z-AO-lg5"/>
                                 </connections>
                             </containerView>
                             <containerView contentMode="scaleToFill" id="cHU-0u-zWT">
@@ -159,7 +159,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z5l-yL-qSW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="753" y="156"/>
+            <point key="canvasLocation" x="721" y="176"/>
         </scene>
         <!--Wall View Controller-->
         <scene sceneID="hGK-Lv-RSV">
@@ -199,16 +199,18 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="2nv-ik-kmz"/>
                     <connections>
                         <outlet property="buttonContainerView" destination="0hm-6l-oyC" id="4Oe-HK-jNg"/>
                         <outlet property="recordButton" destination="yhY-2f-akm" id="gPe-7w-3xX"/>
                         <outlet property="wallTableView" destination="6F5-jX-V5D" id="oxu-rX-Sjh"/>
                         <segue destination="xDD-zM-2Cp" kind="modal" identifier="recordAction" id="m8n-cx-Fg4"/>
+                        <segue destination="hL7-ZH-Yb5" kind="push" identifier="userProfileAction" id="9ut-6b-UIC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0AT-nH-xjG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1362" y="161"/>
+            <point key="canvasLocation" x="2096" y="236"/>
         </scene>
         <!--Search View Controller-->
         <scene sceneID="SaT-Nu-a7S">
@@ -260,6 +262,9 @@
                                         <state key="normal" image="button_profile_settings.png">
                                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
+                                        <connections>
+                                            <action selector="settingsButtonPressed:" destination="hL7-ZH-Yb5" eventType="touchUpInside" id="FjR-Fg-tZp"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
@@ -338,6 +343,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <toolbarItems/>
+                    <navigationItem key="navigationItem" id="1z7-NT-LYK"/>
                     <connections>
                         <outlet property="buttonContainerView" destination="esD-iD-eoB" id="1tr-Gm-lbC"/>
                         <outlet property="contactsContainerView" destination="Epo-eg-mAT" id="LHy-QO-Ta4"/>
@@ -345,6 +351,7 @@
                         <outlet property="infoLabel" destination="crH-XU-6Yc" id="AI3-xe-WQL"/>
                         <outlet property="nameLabel" destination="JjY-qL-koW" id="OxF-Jf-tOy"/>
                         <outlet property="recordButton" destination="ETe-RO-KyH" id="Dwa-CM-9sD"/>
+                        <outlet property="settingsButton" destination="gDK-eT-1TE" id="veI-Tk-c4D"/>
                         <outlet property="spokesTableView" destination="hcI-rR-wGp" id="yKx-k2-gat"/>
                         <outlet property="totalSpokensLabel" destination="MeB-N4-ckX" id="IoS-ku-JZf"/>
                         <outlet property="totalSpokensSubLabel" destination="e22-Vn-8wK" id="5J0-0I-6OC"/>
@@ -448,18 +455,23 @@
             </objects>
             <point key="canvasLocation" x="1832" y="-994"/>
         </scene>
-        <!--View Controller-->
-        <scene sceneID="Nil-tP-veL">
+        <!--Navigation Controller-->
+        <scene sceneID="q0V-pj-xSF">
             <objects>
-                <viewController id="HVk-Fs-huo" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="bF2-Ag-Y8t">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                    </view>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="rST-9X-UEY" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="cLG-dV-dkl" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Rkc-J4-FED">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="zsF-Fe-dir" kind="relationship" relationship="rootViewController" id="YnC-qa-06y"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Yrv-xA-scL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="1314" y="176"/>
         </scene>
     </scenes>
     <resources>
@@ -484,6 +496,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="m8n-cx-Fg4"/>
+        <segue reference="9ut-6b-UIC"/>
+        <segue reference="XMF-2W-9to"/>
     </inferredMetricsTieBreakers>
 </document>
