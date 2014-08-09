@@ -330,6 +330,7 @@
 #pragma mark UITableView delegate
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
+    //TABLE VIEW HEADER FIXED
     CGFloat sectionHeaderHeight = respokenHeader.frame.size.height;
     if (scrollView.contentOffset.y<=sectionHeaderHeight&&scrollView.contentOffset.y>=0)
     {
