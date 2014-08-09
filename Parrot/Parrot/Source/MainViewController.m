@@ -7,6 +7,34 @@
 //
 
 #import "MainViewController.h"
+#import "ParrotNavigationController.h"
+
+@implementation actionBarView
+
+@synthesize profileButton;
+@synthesize profileBackgroundView;
+@synthesize wallButton;
+@synthesize wallBackgroundView;
+@synthesize searchButton;
+@synthesize searchBackgroundView;
+@synthesize mainVC;
+
+- (IBAction)profileButtonPressed:(id)sender
+{
+    [mainVC profileButtonPressed:sender];
+}
+
+- (IBAction)wallButtonPressed:(id)sender
+{
+    [mainVC wallButtonPressed:sender];
+}
+
+- (IBAction)searchButtonPressed:(id)sender
+{
+    [mainVC searchButtonPressed:sender];
+}
+
+@end
 
 @interface MainViewController ()
 
@@ -20,6 +48,7 @@
 @synthesize profileBackgroundView;
 @synthesize wallBackgroundView;
 @synthesize searchBackgroundView;
+@synthesize actionView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -33,9 +62,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [profileContainerView setFrame:CGRectMake(profileContainerView.frame.origin.x, profileContainerView.frame.origin.y, profileContainerView.frame.size.width, [UIScreen mainScreen].bounds.size.height - 60)];
-    [wallContainerView setFrame:CGRectMake(wallContainerView.frame.origin.x, wallContainerView.frame.origin.y, wallContainerView.frame.size.width, [UIScreen mainScreen].bounds.size.height - 60)];
-    [searchContainerView setFrame:CGRectMake(searchContainerView.frame.origin.x, searchContainerView.frame.origin.y, searchContainerView.frame.size.width, [UIScreen mainScreen].bounds.size.height - 60)];
+    [profileContainerView setFrame:CGRectMake(profileContainerView.frame.origin.x, profileContainerView.frame.origin.y, profileContainerView.frame.size.width, [UIScreen mainScreen].bounds.size.height)];
+    [wallContainerView setFrame:CGRectMake(wallContainerView.frame.origin.x, wallContainerView.frame.origin.y, wallContainerView.frame.size.width, [UIScreen mainScreen].bounds.size.height)];
+    [searchContainerView setFrame:CGRectMake(searchContainerView.frame.origin.x, searchContainerView.frame.origin.y, searchContainerView.frame.size.width, [UIScreen mainScreen].bounds.size.height)];
     
 
     UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft:)];
@@ -55,7 +84,19 @@
     [buttonsContainerView.layer setBorderColor:[UIColor colorWithRed:150.000/255.000 green:150.000/255.000 blue:150.000/255.000 alpha:1.0].CGColor];
     [buttonsContainerView.layer setBorderWidth:0.3];
 
+    actionView = [[[NSBundle mainBundle] loadNibNamed:@"actionBar" owner:self options:nil] objectAtIndex:0];
+    actionView.mainVC = self;
+    profileVC.mainVC = self;
+    wallVC.mainVC = self;
     [self profileButtonPressed:nil];
+        
+    [self.navigationController.navigationBar addSubview:actionView];
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    [self.navigationController.navigationBar addSubview:actionView];
+    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"background_navbar@2x.png"] forBarMetrics:UIBarMetricsDefault];
 }
 
 -(UIStatusBarStyle)preferredStatusBarStyle
@@ -82,14 +123,14 @@
 
 -(void) swipeRight:(UISwipeGestureRecognizer *) recognizer
 {
-    if(profileButton.selected)
+    if(actionView.profileButton.selected)
         return;
-    if(wallButton.selected)
+    if(actionView.wallButton.selected)
     {
         [self profileButtonPressed:nil];
         return;
     }
-    if(searchButton.selected)
+    if(actionView.searchButton.selected)
     {
         [self wallButtonPressed:nil];
         return;
@@ -98,41 +139,41 @@
 
 -(void) swipeLeft:(UISwipeGestureRecognizer *) recognizer
 {
-    if(profileButton.selected)
+    if(actionView.profileButton.selected)
     {
         [self wallButtonPressed:nil];
         return;
     }
-    if(wallButton.selected)
+    if(actionView.wallButton.selected)
     {
         [self searchButtonPressed:nil];
         return;
     }
-    if(searchButton.selected)
+    if(actionView.searchButton.selected)
         return;
 }
 
 - (IBAction)profileButtonPressed:(id)sender
 {
-    if (profileButton.selected)
+    if (actionView.profileButton.selected)
     {
         return;
     }
-    
+
     [UIView animateWithDuration:.25
                      animations:^{
                          [profileContainerView setFrame:CGRectMake(0, profileContainerView.frame.origin.y, profileContainerView.frame.size.width, profileContainerView.frame.size.height)];
                          [wallContainerView setFrame:CGRectMake(self.view.frame.size.width, wallContainerView.frame.origin.y, wallContainerView.frame.size.width, wallContainerView.frame.size.height)];
                          [searchContainerView setFrame:CGRectMake(2 * self.view.frame.size.width, searchContainerView.frame.origin.y, searchContainerView.frame.size.width, searchContainerView.frame.size.height)];
-                         [profileBackgroundView setBackgroundColor:[UIColor blackColor]];
-                         [wallBackgroundView setBackgroundColor:[UIColor whiteColor]];
-                         [searchBackgroundView setBackgroundColor:[UIColor whiteColor]];
+                         [actionView.profileBackgroundView setBackgroundColor:[UIColor blackColor]];
+                         [actionView.wallBackgroundView setBackgroundColor:[UIColor whiteColor]];
+                         [actionView.searchBackgroundView setBackgroundColor:[UIColor whiteColor]];
                      }
      ];
     
-    [profileButton setSelected:YES];
-    [wallButton setSelected:NO];
-    [searchButton setSelected:NO];
+    [actionView.profileButton setSelected:YES];
+    [actionView.wallButton setSelected:NO];
+    [actionView.searchButton setSelected:NO];
     
     [profileContainerView setHidden:NO];
     [wallContainerView setHidden:YES];
@@ -149,7 +190,7 @@
 
 - (IBAction)wallButtonPressed:(id)sender
 {
-    if (wallButton.selected)
+    if (actionView.wallButton.selected)
     {
         return;
     }
@@ -159,14 +200,14 @@
                          [profileContainerView setFrame:CGRectMake(-self.view.frame.size.width, profileContainerView.frame.origin.y, profileContainerView.frame.size.width, profileContainerView.frame.size.height)];
                          [wallContainerView setFrame:CGRectMake(0, wallContainerView.frame.origin.y, wallContainerView.frame.size.width, wallContainerView.frame.size.height)];
                          [searchContainerView setFrame:CGRectMake(self.view.frame.size.width, searchContainerView.frame.origin.y, searchContainerView.frame.size.width, searchContainerView.frame.size.height)];
-                         [profileBackgroundView setBackgroundColor:[UIColor whiteColor]];
-                         [wallBackgroundView setBackgroundColor:[UIColor blackColor]];
-                         [searchBackgroundView setBackgroundColor:[UIColor whiteColor]];
+                         [actionView.profileBackgroundView setBackgroundColor:[UIColor whiteColor]];
+                         [actionView.wallBackgroundView setBackgroundColor:[UIColor blackColor]];
+                         [actionView.searchBackgroundView setBackgroundColor:[UIColor whiteColor]];
                      }
      ];
-    [profileButton setSelected:NO];
-    [wallButton setSelected:YES];
-    [searchButton setSelected:NO];
+    [actionView.profileButton setSelected:NO];
+    [actionView.wallButton setSelected:YES];
+    [actionView.searchButton setSelected:NO];
     
     [profileContainerView setHidden:YES];
     [wallContainerView setHidden:NO];
@@ -183,7 +224,7 @@
 
 - (IBAction)searchButtonPressed:(id)sender
 {
-    if (searchButton.selected)
+    if (actionView.searchButton.selected)
     {
         return;
     }
@@ -193,15 +234,15 @@
                          [profileContainerView setFrame:CGRectMake(-2 *self.view.frame.size.width, profileContainerView.frame.origin.y, profileContainerView.frame.size.width, profileContainerView.frame.size.height)];
                          [wallContainerView setFrame:CGRectMake(-self.view.frame.size.width, wallContainerView.frame.origin.y, wallContainerView.frame.size.width, wallContainerView.frame.size.height)];
                          [searchContainerView setFrame:CGRectMake(0, searchContainerView.frame.origin.y, searchContainerView.frame.size.width, searchContainerView.frame.size.height)];
-                         [profileBackgroundView setBackgroundColor:[UIColor whiteColor]];
-                         [wallBackgroundView setBackgroundColor:[UIColor whiteColor]];
-                         [searchBackgroundView setBackgroundColor:[UIColor blackColor]];
+                         [actionView.profileBackgroundView setBackgroundColor:[UIColor whiteColor]];
+                         [actionView.wallBackgroundView setBackgroundColor:[UIColor whiteColor]];
+                         [actionView.searchBackgroundView setBackgroundColor:[UIColor blackColor]];
                      }
      ];
     
-    [profileButton setSelected:NO];
-    [wallButton setSelected:NO];
-    [searchButton setSelected:YES];
+    [actionView.profileButton setSelected:NO];
+    [actionView.wallButton setSelected:NO];
+    [actionView.searchButton setSelected:YES];
     profileVC.myProfile = NO;
     [profileContainerView setHidden:YES];
     [wallContainerView setHidden:YES];
@@ -214,9 +255,43 @@
     {
         profileVC = [segue destinationViewController];
     }
-//    else if([segue.identifier isEqualToString:@"wallAction"])
-//    {
-//        wallVC = [segue destinationViewController];
-//    }
+    else if([segue.identifier isEqualToString:@"wallAction"])
+    {
+        wallVC = [[[segue destinationViewController] viewControllers] objectAtIndex:0];
+    }
+    else if ([segue.identifier isEqualToString:@"userProfileAction"])
+    {
+        [actionView removeFromSuperview];
+        ProfileViewController *profVC = [segue destinationViewController];
+        profVC.userProfile = YES;
+        profVC.userImageLoad = [UIImage imageWithData:currentSpokeChoose.ownerImageData];
+        profVC.userName = [NSString stringWithFormat:@"%@ %@",currentSpokeChoose.ownerName, currentSpokeChoose.ownerSurname];
+        profVC.userId = currentSpokeChoose.ownerID;
+        currentSpokeChoose = nil;
+    }
+    else if ([segue.identifier isEqualToString:@"respokenAction"])
+    {
+        [actionView removeFromSuperview];
+        RespokenViewController *respokenVC = [segue destinationViewController];
+        respokenVC.userImageLoad = [UIImage imageWithData:currentSpokeChoose.ownerImageData];
+        respokenVC.userName = [NSString stringWithFormat:@"%@ %@",currentSpokeChoose.ownerName, currentSpokeChoose.ownerSurname];
+        respokenVC.userId = currentSpokeChoose.ownerID;
+        respokenVC.currentSpoke = currentSpokeChoose;
+        
+        currentSpokeChoose = nil;
+    }
 }
+
+-(void)openUserProfile:(Spoke*)sender
+{
+    currentSpokeChoose = (Spoke*)sender;
+    [self performSegueWithIdentifier:@"userProfileAction" sender:nil];
+}
+
+-(void)openRespokenView:(Spoke*)sender
+{
+    currentSpokeChoose = (Spoke*)sender;
+    [self performSegueWithIdentifier:@"respokenAction" sender:nil];
+}
+
 @end

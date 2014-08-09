@@ -12,6 +12,7 @@
 #import "GlobalDefines.h"
 #import "Utilities.h"
 #import "RecordViewController.h"
+#import "MainViewController.h"
 
 #define IMAGE_WIDTH 80
 
@@ -29,6 +30,7 @@
 @synthesize recordButton;
 @synthesize playerInPause;
 @synthesize wallSpokesArray;
+@synthesize mainVC;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -63,6 +65,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    [self.navigationController setNavigationBarHidden:YES];
 //    if([wallSpokesArray count] > 0)
 //        wallSpokesArray = [Utilities orderByDate:wallSpokesArray];
 //    [wallTableView reloadData];
@@ -124,15 +127,16 @@
         RecordViewController *recordVC = [segue destinationViewController];
         recordVC.startRecord = startRecord;
     }
-    else if ([segue.identifier isEqualToString:@"userProfileAction"])
-    {
-        ProfileViewController *profileVC = [segue destinationViewController];
-        SpokeCell *cell = (SpokeCell*)sender;
-        profileVC.userProfile = YES;
-        profileVC.userImageLoad = [UIImage imageWithData:cell.currentSpoke.ownerImageData];
-        profileVC.userName = [NSString stringWithFormat:@"%@ %@",cell.currentSpoke.ownerName, cell.currentSpoke.ownerSurname];
-        profileVC.userId = cell.currentSpoke.ownerID;
-    }
+}
+
+-(void)openUserProfile:(Spoke*)sender
+{
+    [mainVC openUserProfile:sender];
+}
+
+-(void)openRespokenView:(Spoke*)sender
+{
+    [mainVC openRespokenView:sender];
 }
 
 #pragma mark UITableView delegate
@@ -175,7 +179,7 @@
     else
     {
         [cell.spokeImageButton setImage:nil forState:UIControlStateNormal];
-        cell.spokeNameLabel.text = @"";
+        [cell.spokeNameButton setTitle:@"" forState:UIControlStateNormal];
         cell.likesLabel.text = @"";
         cell.likeButton.selected = NO;
         cell.heardLabel.text = @"";
@@ -202,7 +206,7 @@
         [cell.spokeImageButton setBackgroundImage:[userImageLoad roundedImageWithSize:CGSizeMake(cell.spokeImageButton.frame.size.width*scale, cell.spokeImageButton.frame.size.height*scale) andMaskImage:maskImage] forState:UIControlStateNormal];
     }
 
-    [cell.spokeNameLabel setText:spokeObj.ownerName];
+    [cell.spokeNameButton setTitle:spokeObj.ownerName forState:UIControlStateNormal];
     
     cell.currentSpoke = spokeObj;
     cell.currentSpokeIndex = indexPath.row;
@@ -236,7 +240,7 @@
     
     NSString *likeString = @"like";
     NSLog(@"total likes %d for USER %@", [spokeObj.listOfThankersID count], spokeObj.ownerName);
-    if (spokeObj.totalLikes > 0 && [spokeObj.listOfThankersID containsObject:[userProf getUserID]])
+    if ([spokeObj.listOfThankersID containsObject:[userProf getUserID]])
         cell.likeButton.selected = YES;
     if (spokeObj.totalLikes > 1)
     {

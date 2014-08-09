@@ -32,5 +32,7 @@
 -(BOOL)spokeAlreadyListened:(Spoke*)spokeToCheck;
 -(NSMutableArray*)loadAllSpokesFromRemote;
 -(NSMutableArray*)loadSpokesFromRemoteForUser:(NSString*)userID;
+-(void)loadBioFromRemoteForUser:(NSString*)userID;
+-(void)respokenForSpokeID:(NSString*)spokeID;
 
 @end

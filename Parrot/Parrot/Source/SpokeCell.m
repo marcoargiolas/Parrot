@@ -14,7 +14,6 @@
 @synthesize playButton;
 @synthesize profileVC;
 @synthesize spokeContainerView;
-@synthesize spokeNameLabel;
 @synthesize spokeDateLabel;
 @synthesize heardLabel;
 @synthesize respokeTotalLabel;
@@ -32,6 +31,8 @@
 @synthesize spokePlayer;
 @synthesize currentSpokeIndex;
 @synthesize spokeImageButton;
+@synthesize spokeNameButton;
+@synthesize respokenVC;
 
 - (IBAction)playButtonPressed:(id)sender
 {
@@ -93,6 +94,31 @@
             [playContainerView addSubview:pausePlayButton];
         }
     }
+    else if(respokenVC != nil)
+    {
+        if(respokenVC.currentPlayingTag != playButton.tag)
+        {
+            respokenVC.currentPlayingTag = (int)playButton.tag;
+        }
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
+        if(![respokenVC.player isPlaying])
+        {
+            respokenVC.player = spokePlayer;
+            updateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
+            
+            spokeSlider.minimumValue = 0;
+            spokeSlider.maximumValue = respokenVC.player.duration;
+            
+            [respokenVC.player play];
+            
+            [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changePlayButtonImage) name:PLAYBACK_STOP object:nil];
+            [playButton removeFromSuperview];
+            
+            [playContainerView addSubview:spokeSlider];
+            [playContainerView addSubview:currentTimeLabel];
+            [playContainerView addSubview:pausePlayButton];
+        }
+    }
 }
 
 -(void)spokeChanged
@@ -105,13 +131,19 @@
         profileVC.player.currentTime = 0;
         profileVC.player = nil;
     }
-    
     else if(wallVC != nil)
     {
         [wallVC.player stop];
         wallVC.player.currentTime = 0;
         wallVC.player = nil;
     }
+    else if(respokenVC != nil)
+    {
+        [respokenVC.player stop];
+        respokenVC.player.currentTime = 0;
+        respokenVC.player = nil;
+    }
+
     [pausePlayButton setSelected:NO];
 }
 
@@ -145,7 +177,17 @@
 
         [wallVC.userProf updateTotalSpokeHeard:currentSpoke.spokeID heardID:[wallVC.userProf getUserID]];
     }
-
+    else if(respokenVC != nil)
+    {
+        if(![currentSpoke.listOfHeardsID containsObject:[respokenVC.userProf getUserID]])
+        {
+            [respokenVC.wallSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
+            [currentSpoke.listOfHeardsID addObject:[respokenVC.userProf getUserID]];
+        }
+        
+        
+        [respokenVC.userProf updateTotalSpokeHeard:currentSpoke.spokeID heardID:[respokenVC.userProf getUserID]];
+    }
     int totalHeard = [currentSpoke.listOfHeardsID count];
     currentSpoke.totalHeards = totalHeard;
     heardLabel.text = [NSString stringWithFormat:@"%d heard", totalHeard];
@@ -166,7 +208,20 @@
 }
 
 
-- (IBAction)gotoRespokeButtonPressed:(id)sender {
+- (IBAction)gotoRespokeButtonPressed:(id)sender
+{
+    if(profileVC != nil)
+    {
+        [profileVC openRespokenView:currentSpoke];
+    }
+    if(wallVC != nil)
+    {
+        [wallVC openRespokenView:currentSpoke];
+    }
+    if(respokenVC != nil)
+    {
+        NSLog(@"APRO I SETTINGS PER I CONTENUTI");
+    }
 }
 
 - (IBAction)likeButtonPressed:(id)sender
@@ -188,7 +243,6 @@
     {
         currentSpoke.listOfThankersID = [[NSMutableArray alloc]init];
     }
-    
     
     if(profileVC != nil)
     {
@@ -222,6 +276,23 @@
         currentSpoke.totalLikes = [currentSpoke.listOfThankersID count];
         [wallVC.wallSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
         [wallVC.userProf updateTotalSpokeLike:currentSpoke.spokeID thanksID:[wallVC.userProf getUserID]addLike:!likeButton.selected totalLikes:[currentSpoke.listOfThankersID count]];
+    }
+    else if (respokenVC != nil)
+    {
+        if(!likeButton.selected)
+        {
+            if(![currentSpoke.listOfThankersID containsObject:[respokenVC.userProf getUserID]])
+                [currentSpoke.listOfThankersID addObject:[respokenVC.userProf getUserID]];
+        }
+        else
+        {
+            if([currentSpoke.listOfThankersID containsObject:[respokenVC.userProf getUserID]])
+                [currentSpoke.listOfThankersID removeObject:[respokenVC.userProf getUserID]];
+        }
+        
+        currentSpoke.totalLikes = [currentSpoke.listOfThankersID count];
+        [respokenVC.wallSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
+        [respokenVC.userProf updateTotalSpokeLike:currentSpoke.spokeID thanksID:[respokenVC.userProf getUserID]addLike:!likeButton.selected totalLikes:[currentSpoke.listOfThankersID count]];
     }
     likeButton.selected = !likeButton.selected;
     
@@ -272,8 +343,16 @@
         currentTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)wallVC.player.currentTime / 60, (int)wallVC.player.currentTime % 60, nil];
         spokeSlider.value = wallVC.player.currentTime;
     }
+    else if(respokenVC != nil)
+    {
+        [respokenVC.player pause];
+        [pausePlayButton setSelected:YES];
+        respokenVC.player.currentTime = spokeSlider.value;
+        respokenVC.player.currentTime = sender.value;
+        currentTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)respokenVC.player.currentTime / 60, (int)respokenVC.player.currentTime % 60, nil];
+        spokeSlider.value = respokenVC.player.currentTime;
+    }
 }
-
 
 - (void)updateSlider
 {
@@ -289,6 +368,12 @@
         {
             float progress = wallVC.player.currentTime;
             currentTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)wallVC.player.currentTime / 60, (int)wallVC.player.currentTime % 60, nil];
+            [spokeSlider setValue:progress];
+        }
+        else if(respokenVC != nil)
+        {
+            float progress = respokenVC.player.currentTime;
+            currentTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)respokenVC.player.currentTime / 60, (int)respokenVC.player.currentTime % 60, nil];
             [spokeSlider setValue:progress];
         }
     }
@@ -329,13 +414,47 @@
             [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
         }
     }
+    else if(respokenVC != nil)
+    {
+        if(respokenVC.player.playing)
+        {
+            [respokenVC.player pause];
+            respokenVC.playerInPause = YES;
+            [pausePlayButton setSelected:YES];
+            [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+        }
+        else
+        {
+            [respokenVC.player play];
+            respokenVC.playerInPause = NO;
+            [pausePlayButton setSelected:NO];
+            [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+        }
+    }
 }
 
 - (IBAction)spokeImageButtonPressed:(id)sender
 {
     if(wallVC != nil)
     {
-        [wallVC performSegueWithIdentifier:@"userProfileAction" sender:self];
+        [wallVC openUserProfile:currentSpoke];
+    }
+    else if(respokenVC != nil)
+    {
+        [respokenVC openUserProfile:currentSpoke];
     }
 }
+
+- (IBAction)spokeNameButtonPressed:(id)sender
+{
+    if(wallVC != nil)
+    {
+        [wallVC openUserProfile:currentSpoke];
+    }
+    else if(respokenVC != nil)
+    {
+        [respokenVC openUserProfile:currentSpoke];
+    }
+}
+
 @end

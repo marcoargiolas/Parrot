@@ -319,7 +319,7 @@ static UserProfile *shared = nil;
             }
 
             NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:resultsArray forKey:SPOKEN_ARRAY_ARRIVED];
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"userWallSpokesArrived" object:nil userInfo:userInfo];
+            [[NSNotificationCenter defaultCenter]postNotificationName:USER_WALL_SPOKEN_ARRIVED object:nil userInfo:userInfo];
         }
         else
         {
@@ -328,6 +328,57 @@ static UserProfile *shared = nil;
     }];
     return resultsArray;
 }
+
+-(void)loadBioFromRemoteForUser:(NSString*)userID
+{
+    __block NSString *resultString = @"";
+    PFQuery *query = [PFQuery queryWithClassName:@"User"];
+    [query whereKey:@"objectId" equalTo:userID];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error)
+        {
+            for (PFObject *object in objects)
+            {
+                if([object objectForKey:@"bio"] != nil)
+                    resultString = [object objectForKey:@"bio"];
+           
+            }
+            
+            NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:resultString forKey:BIO_ARRIVED];
+            [[NSNotificationCenter defaultCenter]postNotificationName:BIO_LOADED object:nil userInfo:userInfo];
+        }
+        else
+        {
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
+}
+
+-(void)respokenForSpokeID:(NSString*)spokeID
+{
+     __block NSMutableArray *resultsArray = [[NSMutableArray alloc]init];
+    PFQuery *query = [PFQuery queryWithClassName:@"spoke"];
+    [query whereKey:@"respokeToSpokeID" equalTo:spokeID];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error)
+        {
+            for (PFObject *object in objects)
+            {
+                [resultsArray addObject:[self spokeObjectfromPFObject:object]];
+            }
+            
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"wallSpokesArrived" object:nil];
+            
+            NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:resultsArray forKey:RESPOKEN_ARRAY];
+            [[NSNotificationCenter defaultCenter]postNotificationName:RESPOKEN_ARRAY_ARRIVED object:nil userInfo:userInfo];
+        }
+        else
+        {
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
+}
+
 
 -(NSMutableArray*)loadAllSpokesFromRemote
 {

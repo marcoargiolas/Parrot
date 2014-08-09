@@ -12,6 +12,7 @@
 #import "UserProfile.h"
 #import "MainViewController.h"
 #import "GlobalDefines.h"
+#import "ParrotNavigationController.h"
 
 @implementation AppDelegate
 
@@ -43,7 +44,8 @@
         [[UserProfile sharedProfile]loadProfileLocal];
         UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
         
-        MainViewController *controller = [storyBoard  instantiateViewControllerWithIdentifier:@"MainViewController"];
+        ParrotNavigationController *controller = [storyBoard  instantiateViewControllerWithIdentifier:@"ParrotNavigationController"];
+        [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"background_navbar@2x.png"] forBarMetrics:UIBarMetricsDefault];
         self.window.rootViewController = controller;
     }
     

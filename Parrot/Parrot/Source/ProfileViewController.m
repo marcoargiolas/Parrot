@@ -13,6 +13,8 @@
 #import "Utilities.h"
 #import "Spoke.h"
 #import "RecordViewController.h"
+#import "ParrotNavigationController.h"
+#import "MainViewController.h"
 
 #define IMAGE_WIDTH 80
 @interface ProfileViewController ()
@@ -36,6 +38,7 @@
 @synthesize userId;
 @synthesize userImageLoad;
 @synthesize userName;
+@synthesize mainVC;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -49,7 +52,7 @@
 - (void)viewDidLoad
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMySpokesArray) name:@"loadUserWall" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMyWallTableView:) name:@"userWallSpokesArrived" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMyWallTableView:) name:USER_WALL_SPOKEN_ARRIVED object:nil];
     [super viewDidLoad];
     userProf = [UserProfile sharedProfile];
     profile = [userProf.currentUser objectForKey:USER_PROFILE];
@@ -64,7 +67,32 @@
     }
     else
     {
-        [self.navigationController setNavigationBarHidden:YES];
+        name = userName;
+        info = @"Info";
+        [userProf loadBioFromRemoteForUser:userId];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadInfoLabel:) name:BIO_LOADED object:nil];
+        [buttonContainerView removeFromSuperview];
+        [settingsButton setImage:nil forState:UIControlStateNormal];
+        [settingsButton setTitle:@"Follow" forState:UIControlStateNormal];
+        [settingsButton setFrame:CGRectMake(250, 25, 59, 21)];
+        [settingsButton setBackgroundColor:[UIColor whiteColor]];
+        [settingsButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [settingsButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+        settingsButton.layer.cornerRadius = 2;
+        [settingsButton.layer setShadowRadius:2.0];
+        [settingsButton.layer setBorderWidth:1];
+
+        [headerContainerView setBackgroundColor:[UIColor whiteColor]];
+        [nameLabel setTextColor:[UIColor blackColor]];
+        [infoLabel setTextColor:[UIColor blackColor]];
+        
+        
+        self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+        self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+        self.navigationItem.title = @"Profile";
+        self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
+        [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+        [self.navigationController.navigationBar setBackgroundColor:[UIColor blackColor]];
     }
     currentPlayingTag = -1;
     
@@ -145,6 +173,12 @@
     }
 }
 
+-(void)reloadInfoLabel:(NSNotification*)notification
+{
+    NSString *infoString = (NSString*)[[notification userInfo]objectForKey:BIO_ARRIVED];
+    [infoLabel setText:infoString];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -222,7 +256,7 @@
     else
     {
         [cell.spokeImageButton setBackgroundImage:nil forState:UIControlStateNormal];
-        cell.spokeNameLabel.text = @"";
+        [cell.spokeNameButton setTitle:@"" forState:UIControlStateNormal];
         cell.likesLabel.text = @"";
         cell.likeButton.selected = NO;
         cell.heardLabel.text = @"";
@@ -239,7 +273,7 @@
     cell.profileVC = self;
     cell.playButton.tag = indexPath.row;
     
-    [cell.spokeNameLabel setText:nameLabel.text];
+    [cell.spokeNameButton setTitle:nameLabel.text forState:UIControlStateNormal];
 
     if(userImageLoad != nil)
     {
@@ -283,7 +317,7 @@
     [cell.spokeDateLabel setText:[Utilities getDateString:spokeObj.creationDate WithFormat:format]];
     
     NSString *likeString = @"like";
-    if (spokeObj.totalLikes > 0 && [spokeObj.listOfThankersID containsObject:userId] && userProfile)
+    if ([spokeObj.listOfThankersID containsObject:[userProf getUserID]])
         cell.likeButton.selected = YES;
     if (spokeObj.totalLikes > 1)
     {
@@ -408,6 +442,16 @@
         NSLog(@"AVAudioSession error activating: %@",error);
     else
         NSLog(@"audioSession active");
+}
+
+-(void)openUserProfile:(Spoke*)sender
+{
+    [mainVC openUserProfile:sender];
+}
+
+-(void)openRespokenView:(Spoke*)sender
+{
+    [mainVC openRespokenView:sender];
 }
 
 @end

@@ -23,6 +23,7 @@
 @synthesize audioPlot;
 @synthesize saveButton;
 @synthesize startRecord;
+@synthesize respokenSpoke;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -218,7 +219,11 @@
     spokeObj.audioData = [[NSData alloc] initWithContentsOfURL:soundUrl options:NSDataReadingMappedIfSafe error:nil];
     spokeObj.ownerName = [[prof.currentUser objectForKey:@"profile"] objectForKey:@"fullName"];
     spokeObj.ownerImageData = [[prof.currentUser objectForKey:@"profile"] objectForKey:USER_IMAGE_DATA];
-
+    
+    if(respokenSpoke != nil)
+    {
+        spokeObj.respokeToSpokeID = respokenSpoke.spokeID;
+    }
     [userProf.spokesArray addObject:spokeObj];
     [userProf saveProfileLocal];
     [userProf saveSpokesArrayRemote:spokeObj];

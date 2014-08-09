@@ -95,6 +95,11 @@
 		DECADC291961EE3D0024D067 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DECADC281961EE3D0024D067 /* LoginViewController.m */; };
 		DECADC2C1961EEF50024D067 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DECADC2B1961EEF50024D067 /* MainViewController.m */; };
 		DEF176F619717B9F003F15A0 /* handle_slider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF176F519717B9F003F15A0 /* handle_slider@2x.png */; };
+		DEF8192F19962EBD00D086A7 /* ParrotNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF8192E19962EBD00D086A7 /* ParrotNavigationController.m */; };
+		DEF819311996592B00D086A7 /* background_navbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF819301996592B00D086A7 /* background_navbar@2x.png */; };
+		DEF819361996AEBD00D086A7 /* RespokenViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF819351996AEBD00D086A7 /* RespokenViewController.m */; };
+		DEF819381996AF6000D086A7 /* RespokenHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DEF819371996AF6000D086A7 /* RespokenHeaderView.xib */; };
+		DEF8193A1996AFAA00D086A7 /* actionBar.xib in Resources */ = {isa = PBXBuildFile; fileRef = DEF819391996AFAA00D086A7 /* actionBar.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -224,6 +229,13 @@
 		DECADC2A1961EEF50024D067 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = Source/MainViewController.h; sourceTree = "<group>"; };
 		DECADC2B1961EEF50024D067 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = Source/MainViewController.m; sourceTree = "<group>"; };
 		DEF176F519717B9F003F15A0 /* handle_slider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "handle_slider@2x.png"; sourceTree = "<group>"; };
+		DEF8192D19962EBD00D086A7 /* ParrotNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ParrotNavigationController.h; path = Source/ParrotNavigationController.h; sourceTree = "<group>"; };
+		DEF8192E19962EBD00D086A7 /* ParrotNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ParrotNavigationController.m; path = Source/ParrotNavigationController.m; sourceTree = "<group>"; };
+		DEF819301996592B00D086A7 /* background_navbar@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "background_navbar@2x.png"; sourceTree = "<group>"; };
+		DEF819341996AEBD00D086A7 /* RespokenViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RespokenViewController.h; path = Source/RespokenViewController.h; sourceTree = "<group>"; };
+		DEF819351996AEBD00D086A7 /* RespokenViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RespokenViewController.m; path = Source/RespokenViewController.m; sourceTree = "<group>"; };
+		DEF819371996AF6000D086A7 /* RespokenHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = RespokenHeaderView.xib; path = Parrot/Resources/Xib/RespokenHeaderView.xib; sourceTree = "<group>"; };
+		DEF819391996AFAA00D086A7 /* actionBar.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = actionBar.xib; path = Parrot/Resources/Xib/actionBar.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -265,7 +277,9 @@
 		DE1D8980197ACBB600B552B4 /* Xib */ = {
 			isa = PBXGroup;
 			children = (
+				DEF819391996AFAA00D086A7 /* actionBar.xib */,
 				DE1D8983197ACC0600B552B4 /* SpokeCell.xib */,
+				DEF819371996AF6000D086A7 /* RespokenHeaderView.xib */,
 			);
 			name = Xib;
 			sourceTree = "<group>";
@@ -275,6 +289,8 @@
 			children = (
 				DEAA901B196350A40036B6BF /* WallViewController.h */,
 				DEAA901C196350A40036B6BF /* WallViewController.m */,
+				DEF819341996AEBD00D086A7 /* RespokenViewController.h */,
+				DEF819351996AEBD00D086A7 /* RespokenViewController.m */,
 			);
 			name = Wall;
 			sourceTree = "<group>";
@@ -459,6 +475,7 @@
 		DECADC031961EBF40024D067 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				DEF819301996592B00D086A7 /* background_navbar@2x.png */,
 				DE1D8989197C3D4200B552B4 /* button_main_record_active@2x.png */,
 				DEF176F519717B9F003F15A0 /* handle_slider@2x.png */,
 				DE6389311968A5CE008D5B9D /* iphone_retina_splashscreen@2x.png */,
@@ -510,6 +527,8 @@
 				DECADC2B1961EEF50024D067 /* MainViewController.m */,
 				DEAA901E196350B20036B6BF /* SearchViewController.h */,
 				DEAA901F196350B20036B6BF /* SearchViewController.m */,
+				DEF8192D19962EBD00D086A7 /* ParrotNavigationController.h */,
+				DEF8192E19962EBD00D086A7 /* ParrotNavigationController.m */,
 			);
 			name = Start;
 			sourceTree = "<group>";
@@ -603,9 +622,11 @@
 				DE63891B19687EFF008D5B9D /* button_record_confirm_enabled@2x.png in Resources */,
 				DE63891419687EFF008D5B9D /* button_nav_events_enabled@2x.png in Resources */,
 				DE63892D19689B3A008D5B9D /* arrow_bar_right@2x.png in Resources */,
+				DEF819311996592B00D086A7 /* background_navbar@2x.png in Resources */,
 				DE1D898A197C3D4200B552B4 /* button_main_record_active@2x.png in Resources */,
 				DE63892619689A08008D5B9D /* button_nav_profile_selected@2x.png in Resources */,
 				DE63892419689A08008D5B9D /* button_big_like_selected@2x.png in Resources */,
+				DEF819381996AF6000D086A7 /* RespokenHeaderView.xib in Resources */,
 				DE63892C19689B3A008D5B9D /* arrow_bar_left@2x.png in Resources */,
 				DEAA904D196356170036B6BF /* VERSION in Resources */,
 				DE63890F19687EFF008D5B9D /* button_big_play_enabled@2x.png in Resources */,
@@ -616,6 +637,7 @@
 				DE63891619687EFF008D5B9D /* button_nav_search_enabled@2x.png in Resources */,
 				DE63890E19687EFF008D5B9D /* button_big_like_enabled@2x.png in Resources */,
 				DE63891119687EFF008D5B9D /* button_big_share_enabled@2x.png in Resources */,
+				DEF8193A1996AFAA00D086A7 /* actionBar.xib in Resources */,
 				DE63890B19687EFF008D5B9D /* button_bar_pause_enabled@2x.png in Resources */,
 				DE63891719687EFF008D5B9D /* button_player_pause_enabled@2x.png in Resources */,
 				DE63891E196893E2008D5B9D /* arrow_hint@2x.png in Resources */,
@@ -654,6 +676,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEF819361996AEBD00D086A7 /* RespokenViewController.m in Sources */,
 				DEAA904A196356170036B6BF /* EZRecorder.m in Sources */,
 				DEAA9044196356170036B6BF /* EZAudioPlot.m in Sources */,
 				DEAA9043196356170036B6BF /* EZAudioPlayer.m in Sources */,
@@ -661,6 +684,7 @@
 				DEAA9045196356170036B6BF /* EZAudioPlotGL.m in Sources */,
 				DEAA9046196356170036B6BF /* EZAudioPlotGLKViewController.m in Sources */,
 				DEAA9048196356170036B6BF /* EZOutput.m in Sources */,
+				DEF8192F19962EBD00D086A7 /* ParrotNavigationController.m in Sources */,
 				DE9DFC621965FC3200908ED7 /* UIImage+Additions.m in Sources */,
 				DEAA9040196356170036B6BF /* AEFloatConverter.m in Sources */,
 				DEAA904B196356170036B6BF /* TPCircularBuffer.c in Sources */,

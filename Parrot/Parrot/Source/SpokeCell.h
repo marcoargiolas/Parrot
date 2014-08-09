@@ -11,8 +11,11 @@
 #import <AVFoundation/AVFoundation.h>
 #import "ProfileViewController.h"
 #import "WallViewController.h"
+#import "RespokenViewController.h"
 
 @class ProfileViewController;
+@class WallViewController;
+@class RespokenViewController;
 
 @interface SpokeCell : UITableViewCell <AVAudioPlayerDelegate, AVAudioSessionDelegate,AVAudioRecorderDelegate>
 {
@@ -20,7 +23,6 @@
     ProfileViewController *profileVC;
     IBOutlet UIView *spokeContainerView;
     IBOutlet UIButton *playButton;
-    IBOutlet UILabel *spokeNameLabel;
     IBOutlet UILabel *respokeTotalLabel;
     IBOutlet UIButton *gotoRespokeButton;
     IBOutlet UILabel *spokeDateLabel;
@@ -37,8 +39,11 @@
     WallViewController *wallVC;
     AVAudioPlayer *spokePlayer;
     int currentSpokeIndex;
+    IBOutlet UIButton *spokeNameButton;
+    RespokenViewController *respokenVC;
 }
 
+@property (strong, nonatomic) RespokenViewController *respokenVC;
 @property (strong, nonatomic) IBOutlet UIButton *spokeImageButton;
 @property (assign, nonatomic) int currentSpokeIndex;
 @property (strong, nonatomic) AVAudioPlayer *spokePlayer;
@@ -55,11 +60,12 @@
 @property (strong, nonatomic) IBOutlet UIView *spokeContainerView;
 @property (strong, nonatomic) IBOutlet UILabel *heardLabel;
 @property (strong, nonatomic) IBOutlet UILabel *likesLabel;
-@property (strong, nonatomic) IBOutlet UILabel *spokeNameLabel;
 @property (strong, nonatomic) IBOutlet UIButton *playButton;
+@property (strong, nonatomic) IBOutlet UIButton *spokeNameButton;
 @property (strong, nonatomic) ProfileViewController *profileVC;
 @property (strong, nonatomic) IBOutlet UILabel *spokeDateLabel;
 @property (strong, nonatomic) IBOutlet UIButton *pausePlayButton;
+- (IBAction)spokeNameButtonPressed:(id)sender;
 
 - (IBAction)playButtonPressed:(id)sender;
 - (IBAction)gotoRespokeButtonPressed:(id)sender;

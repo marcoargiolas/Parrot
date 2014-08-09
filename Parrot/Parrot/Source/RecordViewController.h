@@ -23,6 +23,7 @@
     IBOutlet UIButton *saveButton;
     BOOL startRecord;
     AVAudioPlayer *player;
+    Spoke *respokenSpoke;
 }
 
 @property (nonatomic, assign) BOOL startRecord;
@@ -69,6 +70,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *recordButton;
 @property (strong, nonatomic) IBOutlet UIButton *saveButton;
 @property (nonatomic,strong) AVAudioPlayer *audioPlayer;
+@property (strong, nonatomic) Spoke *respokenSpoke;
 
 - (IBAction)recordButtonPressed:(id)sender;
 

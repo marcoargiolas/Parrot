@@ -13,6 +13,7 @@
 #import "WallViewController.h"
 #import "SpokeCell.h"
 
+@class MainViewController;
 @interface ProfileViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITabBarDelegate,EZAudioFileDelegate,EZOutputDataSource, AVAudioPlayerDelegate, AVAudioSessionDelegate,AVAudioRecorderDelegate, UIGestureRecognizerDelegate>
 {
     UserProfile *userProf;
@@ -40,8 +41,10 @@
     BOOL userProfile;
     NSString *userId;
     NSString *userName;
+    MainViewController *mainVC;
 }
 
+@property (strong, nonatomic) MainViewController *mainVC;
 @property (strong, nonatomic) NSString *userName;
 @property (strong, nonatomic) NSString *userId;
 @property (strong, nonatomic) UIImage *userImageLoad;
@@ -61,5 +64,7 @@
 - (IBAction)recordButtonPressed:(id)sender;
 -(void)playSelectedAudio;
 - (IBAction)settingsButtonPressed:(id)sender;
+-(void)openUserProfile:(Spoke*)sender;
+-(void)openRespokenView:(Spoke*)sender;
 
 @end

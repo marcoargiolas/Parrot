@@ -11,14 +11,40 @@
 #import "SearchViewController.h"
 #import "WallViewController.h"
 
+@class MainViewController;
+@interface actionBarView : UIView
+{
+    IBOutlet UIButton *searchButton;
+    IBOutlet UIButton *wallButton;
+    IBOutlet UIButton *profileButton;
+    IBOutlet UIView *searchBackgroundView;
+    IBOutlet UIView *profileBackgroundView;
+    IBOutlet UIView *wallBackgroundView;
+    MainViewController *mainVC;
+}
+
+@property (strong, nonatomic) MainViewController *mainVC;
+@property (strong, nonatomic) IBOutlet UIButton *wallButton;
+@property (strong, nonatomic) IBOutlet UIButton *profileButton;
+@property (strong, nonatomic) IBOutlet UIButton *searchButton;
+@property (strong, nonatomic) IBOutlet UIView *profileBackgroundView;
+@property (strong, nonatomic) IBOutlet UIView *wallBackgroundView;
+@property (strong, nonatomic) IBOutlet UIView *searchBackgroundView;
+
+- (IBAction)profileButtonPressed:(id)sender;
+- (IBAction)wallButtonPressed:(id)sender;
+- (IBAction)searchButtonPressed:(id)sender;
+
+@end
+
 @interface MainViewController : UIViewController <UIGestureRecognizerDelegate>
 {
     IBOutlet UIView *searchContainerView;
     IBOutlet UIView *wallContainerView;
     IBOutlet UIView *profileContainerView;
-    IBOutlet UIButton *profileButton;
-    IBOutlet UIButton *wallButton;
-    IBOutlet UIButton *searchButton;
+    UIButton *profileButton;
+    UIButton *wallButton;
+    UIButton *searchButton;
     IBOutlet UIView *profileBackgroundView;
     IBOutlet UIView *wallBackgroundView;
     IBOutlet UIView *searchBackgroundView;
@@ -27,7 +53,11 @@
     ProfileViewController *profileVC;
     WallViewController *wallVC;
     SearchViewController *searchVC;
+    actionBarView *actionView;
+    Spoke *currentSpokeChoose;
 }
+
+@property (strong, nonatomic) actionBarView *actionView;
 @property (strong, nonatomic) IBOutlet UIView *profileBackgroundView;
 @property (strong, nonatomic) IBOutlet UIView *wallBackgroundView;
 @property (strong, nonatomic) IBOutlet UIView *searchBackgroundView;
@@ -41,5 +71,7 @@
 - (IBAction)wallButtonPressed:(id)sender;
 - (IBAction)searchButtonPressed:(id)sender;
 
+-(void)openUserProfile:(Spoke*)sender;
+-(void)openRespokenView:(Spoke*)sender;
 
 @end

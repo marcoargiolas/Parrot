@@ -10,6 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "UserProfile.h"
 
+@class MainViewController;
 @interface WallViewController : UIViewController <AVAudioPlayerDelegate, AVAudioSessionDelegate,AVAudioRecorderDelegate, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate>
 {
     UserProfile *userProf;
@@ -23,8 +24,10 @@
     IBOutlet UIButton *recordButton;
     BOOL startRecord;
     BOOL playerInPause;
+    MainViewController *mainVC;
 }
 
+@property (nonatomic, strong) MainViewController *mainVC;
 @property (nonatomic, strong) NSMutableArray *wallSpokesArray;
 @property (nonatomic, assign) BOOL playerInPause;
 @property (strong, nonatomic) IBOutlet UIButton *recordButton;
@@ -36,5 +39,7 @@
 
 -(void)playSelectedAudio;
 - (IBAction)recordButtonPressed:(id)sender;
+-(void)openUserProfile:(Spoke*)sender;
+-(void)openRespokenView:(Spoke*)sender;
 
 @end
