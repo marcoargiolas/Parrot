@@ -10,6 +10,7 @@
 #import "EZAudio.h"
 #import <AVFoundation/AVFoundation.h>
 #import "UserProfile.h"
+#import "RespokenViewController.h"
 
 #define kAudioFilePath @"EZAudioTest.m4a"
 
@@ -24,8 +25,10 @@
     BOOL startRecord;
     AVAudioPlayer *player;
     Spoke *respokenSpoke;
+    RespokenViewController *respokenVC;
 }
 
+@property (nonatomic, strong) RespokenViewController *respokenVC;
 @property (nonatomic, assign) BOOL startRecord;
 /**
  Use a OpenGL based plot to visualize the data coming in

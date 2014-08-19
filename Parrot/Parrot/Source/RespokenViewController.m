@@ -39,88 +39,49 @@
 - (IBAction)respokenUserButtonPressed:(id)sender {
 }
 
-- (IBAction)pausePlayButtonPressed:(id)sender {
-}
-- (IBAction)progressSliderMoved:(id)sender {
+- (IBAction)progressSliderMoved:(UISlider*)sender
+{
+    if(respokenVC != nil)
+    {
+        [respokenVC.player pause];
+        [pausePlayButton setSelected:YES];
+        respokenVC.player.currentTime = respokenSlider.value;
+        respokenVC.player.currentTime = sender.value;
+        currentTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)respokenVC.player.currentTime / 60, (int)respokenVC.player.currentTime % 60, nil];
+        respokenSlider.value = respokenVC.player.currentTime;
+    }
 }
 
 - (IBAction)likeButtonPressed:(id)sender
 {
-    NSLog(@"LIKE BUTTON PRESSED");
+    if(respokenVC.currentSpoke.listOfThankersID == nil)
+    {
+        respokenVC.currentSpoke.listOfThankersID = [[NSMutableArray alloc]init];
+    }
     
-    //    int totalLikes = currentSpoke.totalLikes;
-    //    if(!likeButton.selected)
-    //    {
-    //        totalLikes = totalLikes + 1;
-    //    }
-    //    else
-    //    {
-    //        totalLikes = totalLikes - 1;
-    //    }
-    //    currentSpoke.totalLikes = totalLikes;
+    if (respokenVC != nil)
+    {
+        if(!likeButton.selected)
+        {
+            if(![respokenVC.currentSpoke.listOfThankersID containsObject:[respokenVC.userProf getUserID]])
+                [respokenVC.currentSpoke.listOfThankersID addObject:[respokenVC.userProf getUserID]];
+        }
+        else
+        {
+            if([respokenVC.currentSpoke.listOfThankersID containsObject:[respokenVC.userProf getUserID]])
+                [respokenVC.currentSpoke.listOfThankersID removeObject:[respokenVC.userProf getUserID]];
+        }
+        
+        respokenVC.currentSpoke.totalLikes = [respokenVC.currentSpoke.listOfThankersID count];
+        [respokenVC.userProf updateTotalSpokeLike:respokenVC.currentSpoke.spokeID thanksID:[respokenVC.userProf getUserID]addLike:!likeButton.selected totalLikes:[respokenVC.currentSpoke.listOfThankersID count]];
+    }
+    likeButton.selected = !likeButton.selected;
     
-//    if(currentSpoke.listOfThankersID == nil)
-//    {
-//        currentSpoke.listOfThankersID = [[NSMutableArray alloc]init];
-//    }
-//    
-//    if(profileVC != nil)
-//    {
-//        if(!likeButton.selected)
-//        {
-//            if(![currentSpoke.listOfThankersID containsObject:[profileVC.userProf getUserID]])
-//                [currentSpoke.listOfThankersID addObject:[profileVC.userProf getUserID]];
-//        }
-//        else
-//        {
-//            if([currentSpoke.listOfThankersID containsObject:[profileVC.userProf getUserID]])
-//                [currentSpoke.listOfThankersID removeObject:[profileVC.userProf getUserID]];
-//        }
-//        
-//        [profileVC.currentSpokenArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
-//        [profileVC.userProf updateTotalSpokeLike:currentSpoke.spokeID thanksID:[profileVC.userProf getUserID]addLike:!likeButton.selected totalLikes:[currentSpoke.listOfThankersID count]];
-//    }
-//    else if (wallVC != nil)
-//    {
-//        if(!likeButton.selected)
-//        {
-//            if(![currentSpoke.listOfThankersID containsObject:[wallVC.userProf getUserID]])
-//                [currentSpoke.listOfThankersID addObject:[wallVC.userProf getUserID]];
-//        }
-//        else
-//        {
-//            if([currentSpoke.listOfThankersID containsObject:[wallVC.userProf getUserID]])
-//                [currentSpoke.listOfThankersID removeObject:[wallVC.userProf getUserID]];
-//        }
-//        
-//        currentSpoke.totalLikes = [currentSpoke.listOfThankersID count];
-//        [wallVC.wallSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
-//        [wallVC.userProf updateTotalSpokeLike:currentSpoke.spokeID thanksID:[wallVC.userProf getUserID]addLike:!likeButton.selected totalLikes:[currentSpoke.listOfThankersID count]];
-//    }
-//    else if (respokenVC != nil)
-//    {
-//        if(!likeButton.selected)
-//        {
-//            if(![currentSpoke.listOfThankersID containsObject:[respokenVC.userProf getUserID]])
-//                [currentSpoke.listOfThankersID addObject:[respokenVC.userProf getUserID]];
-//        }
-//        else
-//        {
-//            if([currentSpoke.listOfThankersID containsObject:[respokenVC.userProf getUserID]])
-//                [currentSpoke.listOfThankersID removeObject:[respokenVC.userProf getUserID]];
-//        }
-//        
-//        currentSpoke.totalLikes = [currentSpoke.listOfThankersID count];
-//        [respokenVC.wallSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
-//        [respokenVC.userProf updateTotalSpokeLike:currentSpoke.spokeID thanksID:[respokenVC.userProf getUserID]addLike:!likeButton.selected totalLikes:[currentSpoke.listOfThankersID count]];
-//    }
-//    likeButton.selected = !likeButton.selected;
-//    
-//    if([currentSpoke.listOfThankersID count] <= 1)
-//        likesLabel.text = [NSString stringWithFormat:@"%d like", [currentSpoke.listOfThankersID count]];
-//    else
-//        likesLabel.text = [NSString stringWithFormat:@"%d likes", [currentSpoke.listOfThankersID count]];
-//    //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikes:) name:@"updateLikes" object:nil];
+    if([respokenVC.currentSpoke.listOfThankersID count] <= 1)
+        likesLabel.text = [NSString stringWithFormat:@"%d like", [respokenVC.currentSpoke.listOfThankersID count]];
+    else
+        likesLabel.text = [NSString stringWithFormat:@"%d likes", [respokenVC.currentSpoke.listOfThankersID count]];
+    //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikes:) name:@"updateLikes" object:nil];
 }
 
 - (IBAction)playButtonPressed:(id)sender
@@ -129,7 +90,7 @@
     if(![respokenVC.player isPlaying])
     {
         updateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
-        
+        [respokenSlider setFrame:CGRectMake(49, 10, 226, 31)];
         respokenSlider.minimumValue = 0;
         respokenSlider.maximumValue = respokenVC.player.duration;
         
@@ -146,6 +107,7 @@
 
 - (void)updateSlider
 {
+    [respokenSlider setFrame:CGRectMake(49, 10, 226, 31)];
     float progress = respokenVC.player.currentTime;
     currentTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)respokenVC.player.currentTime / 60, (int)respokenVC.player.currentTime % 60, nil];
     [respokenSlider setValue:progress];
@@ -174,59 +136,26 @@
     heardLabel.text = [NSString stringWithFormat:@"%d heard", totalHeard];
 }
 
-//- (IBAction)pausePlayButtonPressed:(id)sender
-//{
-//    NSLog(@"PAUSE PLAY BUTTON PRESSED");
-//    if(profileVC != nil)
-//    {
-//        if(profileVC.player.playing)
-//        {
-//            [profileVC.player pause];
-//            [pausePlayButton setSelected:YES];
-//            [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
-//        }
-//        else
-//        {
-//            [profileVC.player play];
-//            [pausePlayButton setSelected:NO];
-//            [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
-//        }
-//    }
-//    else if(wallVC != nil)
-//    {
-//        if(wallVC.player.playing)
-//        {
-//            [wallVC.player pause];
-//            wallVC.playerInPause = YES;
-//            [pausePlayButton setSelected:YES];
-//            [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
-//        }
-//        else
-//        {
-//            [wallVC.player play];
-//            wallVC.playerInPause = NO;
-//            [pausePlayButton setSelected:NO];
-//            [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
-//        }
-//    }
-//    else if(respokenVC != nil)
-//    {
-//        if(respokenVC.player.playing)
-//        {
-//            [respokenVC.player pause];
-//            respokenVC.playerInPause = YES;
-//            [pausePlayButton setSelected:YES];
-//            [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
-//        }
-//        else
-//        {
-//            [respokenVC.player play];
-//            respokenVC.playerInPause = NO;
-//            [pausePlayButton setSelected:NO];
-//            [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
-//        }
-//    }
-//}
+- (IBAction)pausePlayButtonPressed:(id)sender
+{
+    if(respokenVC != nil)
+    {
+        if(respokenVC.player.playing)
+        {
+            [respokenVC.player pause];
+            respokenVC.playerInPause = YES;
+            [pausePlayButton setSelected:YES];
+            [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+        }
+        else
+        {
+            [respokenVC.player play];
+            respokenVC.playerInPause = NO;
+            [pausePlayButton setSelected:NO];
+            [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+        }
+    }
+}
 
 @end
 
@@ -248,6 +177,8 @@
 @synthesize userImageLoad;
 @synthesize userName;
 @synthesize currentSpoke;
+@synthesize respokenArray;
+@synthesize fromRecordView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -305,19 +236,32 @@
 {
     if(userProf == nil)
         userProf = [UserProfile sharedProfile];
-    [self requestRespokenArray];
+    respokenTableView.delegate = nil;
+    respokenTableView.dataSource = nil;
+    if(!fromRecordView)
+        [self requestRespokenArray];
+    else
+    {
+        fromRecordView = NO;
+        respokenTableView.delegate = self;
+        respokenTableView.dataSource = self;
+        [respokenTableView reloadData];
+    }
 }
 
 -(void)requestRespokenArray
 {
-    [userProf respokenForSpokeID:currentSpoke.spokeID];
     [refreshControl beginRefreshing];
+    [userProf respokenForSpokeID:currentSpoke.spokeID];
 }
 
 -(void)reloadRespokenArray:(NSNotification*)notification
 {
     respokenArray = (NSMutableArray*)[[notification userInfo]objectForKey:RESPOKEN_ARRAY];
     [refreshControl endRefreshing];
+    
+    respokenTableView.delegate = self;
+    respokenTableView.dataSource = self;
     [respokenTableView reloadData];
 }
 
@@ -344,6 +288,7 @@
 
 - (UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
 {
+    respokenHeader.respokenVC = self;
     [respokenHeader.layer setShadowColor:[UIColor blackColor].CGColor];
     [respokenHeader.layer setShadowOpacity:0.3];
     [respokenHeader.layer setShadowRadius:0];
@@ -424,6 +369,11 @@
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     return 70;
+}
+
+-(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 166;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
@@ -520,7 +470,6 @@
     [cell.spokeDateLabel setText:dateString];
     
     NSString *likeString = @"like";
-    NSLog(@"total likes %d for USER %@", [spokeObj.listOfThankersID count], spokeObj.ownerName);
     if (spokeObj.totalLikes > 0 && [spokeObj.listOfThankersID containsObject:[userProf getUserID]])
         cell.likeButton.selected = YES;
     if (spokeObj.totalLikes > 1)
@@ -671,6 +620,7 @@
     {
         RecordViewController *recordVC = [segue destinationViewController];
         recordVC.respokenSpoke = currentSpoke;
+        recordVC.respokenVC = self;
     }
 }
 

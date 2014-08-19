@@ -291,7 +291,7 @@
         }
         
         currentSpoke.totalLikes = [currentSpoke.listOfThankersID count];
-        [respokenVC.wallSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
+        [respokenVC.respokenArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
         [respokenVC.userProf updateTotalSpokeLike:currentSpoke.spokeID thanksID:[respokenVC.userProf getUserID]addLike:!likeButton.selected totalLikes:[currentSpoke.listOfThankersID count]];
     }
     likeButton.selected = !likeButton.selected;

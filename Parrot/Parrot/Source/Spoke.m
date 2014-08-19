@@ -22,6 +22,7 @@
 @synthesize ownerID;
 @synthesize ownerSurname;
 @synthesize listOfThankersID;
+@synthesize listOfRespokeID;
 
 - (id)init
 {
@@ -35,6 +36,7 @@
         respokeToSpokeID = @"";
         listOfHeardsID = [[NSMutableArray alloc]init];
         listOfThankersID = [[NSMutableArray alloc]init];
+        listOfRespokeID = [[NSMutableArray alloc]init];
         ownerSurname = @"";
         ownerName = @"";
         ownerID = @"";
@@ -53,6 +55,7 @@
     [aCoder encodeObject:respokeToSpokeID forKey:@"respokeToSpokeID"];
     [aCoder encodeObject:listOfHeardsID forKey:@"listOfHeardsID"];
     [aCoder encodeObject:listOfThankersID forKey:@"listOfThankersID"];
+    [aCoder encodeObject:listOfRespokeID forKey:@"listOfRespokeID"];
     [aCoder encodeObject:ownerImageData forKey:@"ownerImageData"];
     [aCoder encodeObject:ownerID forKey:@"ownerID"];
     [aCoder encodeObject:ownerName forKey:@"ownerName"];
@@ -71,6 +74,7 @@
         respokeToSpokeID = [aDecoder decodeObjectForKey:@"respokeToSpokeID"];
         listOfHeardsID = [aDecoder decodeObjectForKey:@"listOfHeardsID"];
         listOfThankersID = [aDecoder decodeObjectForKey:@"listOfThankersID"];
+        listOfRespokeID = [aDecoder decodeObjectForKey:@"listOfRespokeID"];
         ownerImageData = [aDecoder decodeObjectForKey:@"ownerImageData"];
         ownerID = [aDecoder decodeObjectForKey:@"ownerID"];
         ownerName = [aDecoder decodeObjectForKey:@"ownerName"];

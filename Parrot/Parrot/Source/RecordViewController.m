@@ -24,6 +24,7 @@
 @synthesize saveButton;
 @synthesize startRecord;
 @synthesize respokenSpoke;
+@synthesize respokenVC;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -75,6 +76,7 @@
 
 -(void)viewWillDisappear:(BOOL)animated
 {
+    respokenVC = nil;
     startRecord = NO;
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
 }
@@ -223,6 +225,14 @@
     if(respokenSpoke != nil)
     {
         spokeObj.respokeToSpokeID = respokenSpoke.spokeID;
+        [respokenVC.respokenArray addObject:spokeObj];
+        respokenVC.fromRecordView = YES;
+        if(respokenVC.currentSpoke.listOfRespokeID == nil)
+        {
+            respokenVC.currentSpoke.listOfRespokeID = [[NSMutableArray alloc]init];
+        }
+        [respokenVC.currentSpoke.listOfRespokeID addObject:spokeObj.spokeID];
+        [userProf updateRespokenList:respokenVC.currentSpoke.spokeID respokeID:spokeObj.spokeID];
     }
     [userProf.spokesArray addObject:spokeObj];
     [userProf saveProfileLocal];

@@ -327,6 +327,7 @@
     [cell.heardLabel setText:[NSString stringWithFormat:@"%d heard",spokeObj.totalHeards]];
     
     cell.spokeSlider.tag = indexPath.row;
+    [cell.respokeTotalLabel setText:[NSString stringWithFormat:@"%d",[spokeObj.listOfRespokeID count]]];
     
     if(([player isPlaying] || playerInPause) && [[player data]isEqualToData:[cell.spokePlayer data]])
     {

@@ -237,7 +237,8 @@
     [format setDateFormat:@"dd MMM yyyy"];
     NSString *dateString = [Utilities getDateString:spokeObj.creationDate WithFormat:format];
     [cell.spokeDateLabel setText:dateString];
-    
+    [cell.respokeTotalLabel setText:[NSString stringWithFormat:@"%d",[spokeObj.listOfRespokeID count]]];
+
     NSString *likeString = @"like";
     NSLog(@"total likes %d for USER %@", [spokeObj.listOfThankersID count], spokeObj.ownerName);
     if ([spokeObj.listOfThankersID containsObject:[userProf getUserID]])

@@ -201,6 +201,7 @@ static UserProfile *shared = nil;
     [obj setObject:spokeToSave.ownerID forKey:@"ownerID"];
     [obj setObject:spokeToSave.listOfHeardsID forKey:@"listOfHeardsID"];
     [obj setObject:spokeToSave.listOfThankersID forKey:@"listOfThankersID"];
+    [obj setObject:spokeToSave.listOfRespokeID forKey:@"listOfRespokeID"];
     PFFile *ownerImage = [PFFile fileWithData:spokeToSave.ownerImageData];
     [obj setObject:ownerImage forKey:@"ownerImageData"];
     [obj setObject:spokeToSave.ownerName forKey:@"ownerName"];
@@ -292,6 +293,48 @@ static UserProfile *shared = nil;
 //                        [spokesArray addObject:tempSpoke];
 //                        [self saveProfileLocal];
 //                    }
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateHeards" object:self userInfo:nil];
+                    break;
+                }
+            }
+        }
+        else
+        {
+            // Log details of the failure
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
+}
+
+-(void)updateRespokenList:(NSString*)spokeID respokeID:(NSString*)respokeID
+{
+    PFQuery *query = [PFQuery queryWithClassName:@"spoke"];
+    [query whereKey:@"spokeID" equalTo:spokeID];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error)
+        {
+            for (PFObject *object in objects)
+            {
+                NSMutableArray *respokeTempArray = [object objectForKey:@"listOfRespokeID"];
+                
+                if(![respokeTempArray containsObject:[self getUserID]])
+                {
+                    if(respokeTempArray == nil)
+                    {
+                        respokeTempArray = [[NSMutableArray alloc]init];
+                    }
+                    [respokeTempArray addObject:respokeID];
+                    [object setObject:respokeTempArray forKey:@"listOfRespokeID"];
+                    [object saveInBackground];
+                    //                    if([userHeardID isEqualToString:[self getUserID]])
+                    //                    {
+                    //                        Spoke *tempSpoke = [self getSpokeWithID:spokeID];
+                    //                        [spokesArray removeObject:[self getSpokeWithID:spokeID]];
+                    //                        tempSpoke.totalHeards = 1;
+                    //                        tempSpoke.listOfHeardsID = heardTempArray;
+                    //                        [spokesArray addObject:tempSpoke];
+                    //                        [self saveProfileLocal];
+                    //                    }
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"updateHeards" object:self userInfo:nil];
                     break;
                 }
@@ -458,6 +501,7 @@ static UserProfile *shared = nil;
     spokeObj.totalLikes = [[object objectForKey:@"totalLikes"] intValue];
     spokeObj.listOfHeardsID = [object objectForKey:@"listOfHeardsID"];
     spokeObj.listOfThankersID = [object objectForKey:@"listOfThankersID"];
+    spokeObj.listOfRespokeID = [object objectForKey:@"listOfRespokeID"];
     PFFile *audioFile = [object objectForKey:@"audioData"];
     spokeObj.audioData = [audioFile getData];
     spokeObj.ownerName = [object objectForKey:@"ownerName"];

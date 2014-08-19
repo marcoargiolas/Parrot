@@ -47,7 +47,7 @@
 
 - (IBAction)respokenUserNameButtonPressed:(id)sender;
 - (IBAction)playButtonPressed:(id)sender;
-- (IBAction)progressSliderMoved:(id)sender;
+- (IBAction)progressSliderMoved:(UISlider*)sender;
 - (IBAction)likeButtonPressed:(id)sender;
 
 - (IBAction)respokenUserButtonPressed:(id)sender;
@@ -55,7 +55,7 @@
 
 @end
 
-@interface RespokenViewController : UIViewController <AVAudioPlayerDelegate, AVAudioSessionDelegate,AVAudioRecorderDelegate, UIGestureRecognizerDelegate>
+@interface RespokenViewController : UIViewController <AVAudioPlayerDelegate, AVAudioSessionDelegate,AVAudioRecorderDelegate, UIGestureRecognizerDelegate, UITableViewDelegate, UITableViewDataSource>
 {
     IBOutlet UITableView *respokenTableView;
     UserProfile *userProf;
@@ -74,8 +74,11 @@
     NSString *userId;
     UIImage *userImageLoad;
     Spoke *currentSpoke;
+    BOOL fromRecordView;
 }
 
+@property (nonatomic, assign) BOOL fromRecordView;
+@property (strong, nonatomic) NSMutableArray *respokenArray;
 @property (strong, nonatomic) Spoke *currentSpoke;
 @property (strong, nonatomic) IBOutlet UITableView *respokenTableView;
 @property (strong, nonatomic) IBOutlet UIButton *recordButton;
