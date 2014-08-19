@@ -164,7 +164,7 @@
             <objects>
                 <viewController title="Profile" automaticallyAdjustsScrollViewInsets="NO" id="hL7-ZH-Yb5" customClass="ProfileViewController" sceneMemberID="viewController">
                     <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="LJE-hm-h7t">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="509"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" id="4mD-zy-bUt">
@@ -247,7 +247,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="177" sectionHeaderHeight="22" sectionFooterHeight="22" id="hcI-rR-wGp">
-                                <rect key="frame" x="0.0" y="110" width="320" height="399"/>
+                                <rect key="frame" x="0.0" y="110" width="320" height="394"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -611,11 +611,12 @@
                         <outlet property="buttonContainerView" destination="GDn-eP-M7r" id="HS8-nS-30Z"/>
                         <outlet property="recordButton" destination="Xhk-P5-oer" id="Ptz-mb-trl"/>
                         <outlet property="respokenTableView" destination="SAe-Ih-CFP" id="IfW-KW-OkZ"/>
+                        <segue destination="hL7-ZH-Yb5" kind="push" identifier="profileAction" id="zma-EB-bld"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KCB-6K-LMy" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="647" y="-964"/>
+            <point key="canvasLocation" x="893" y="-890"/>
         </scene>
     </scenes>
     <resources>
@@ -641,7 +642,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="LVe-XY-ICN"/>
         <segue reference="Nwk-46-9Bo"/>
+        <segue reference="zma-EB-bld"/>
     </inferredMetricsTieBreakers>
 </document>

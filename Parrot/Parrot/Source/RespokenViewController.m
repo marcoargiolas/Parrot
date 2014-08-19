@@ -572,7 +572,9 @@
 
 -(void)openUserProfile:(Spoke*)sender
 {
-    [mainVC openUserProfile:sender];
+    [self performSegueWithIdentifier:@"profileAction" sender:nil];
+    
+//    [mainVC openUserProfile:sender];
 }
 
 - (IBAction)recordButtonPressed:(id)sender
