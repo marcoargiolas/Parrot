@@ -28,4 +28,5 @@
 #define BIO_LOADED                      @"bioLoaded"
 #define RESPOKEN_ARRAY                  @"respokenArray"
 #define RESPOKEN_ARRAY_ARRIVED          @"respokenArrayArrived"
-
+#define CELL_PLAY_STARTED               @"cellPlayStarted"
+#define RESPOKEN_HEADER_PLAY            @"respokenHeaderPlay"

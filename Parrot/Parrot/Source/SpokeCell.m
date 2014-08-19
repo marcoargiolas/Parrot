@@ -101,9 +101,24 @@
             respokenVC.currentPlayingTag = (int)playButton.tag;
         }
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
-        if(![respokenVC.player isPlaying])
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopRespokenPlayer) name:RESPOKEN_HEADER_PLAY object:nil];
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:CELL_PLAY_STARTED object:nil];
+        
+        if(![respokenVC.player isPlaying] || respokenVC.currentPlayingTag != -1)
         {
-            respokenVC.player = spokePlayer;
+            NSError *dataError;
+            NSData *soundData = [[NSData alloc] initWithData:currentSpoke.audioData];
+            if(dataError != nil)
+            {
+                NSLog(@"DATA ERROR %@", dataError);
+            }
+            
+            NSError *error;
+            AVAudioPlayer *newPlayer =[[AVAudioPlayer alloc] initWithData: soundData error: &error];
+            newPlayer.delegate = self;
+
+            respokenVC.player = newPlayer;
             updateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
             
             spokeSlider.minimumValue = 0;
@@ -118,6 +133,14 @@
             [playContainerView addSubview:currentTimeLabel];
             [playContainerView addSubview:pausePlayButton];
         }
+    }
+}
+
+-(void)stopRespokenPlayer
+{
+    if (respokenVC != nil)
+    {
+        [respokenVC stopRespokenPlayer];
     }
 }
 

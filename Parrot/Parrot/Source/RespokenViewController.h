@@ -10,7 +10,7 @@
 #import "SpokeCell.h"
 
 @class RespokenViewController;
-@interface RespokenHeaderView : UIView
+@interface RespokenHeaderView : UIView <AVAudioPlayerDelegate, AVAudioSessionDelegate,AVAudioRecorderDelegate>
 {
     IBOutlet UIButton *pausePlayButton;
     IBOutlet UILabel *respokenDateLabel;
@@ -96,5 +96,6 @@
 -(void)playSelectedAudio;
 -(void)openUserProfile:(Spoke*)sender;
 - (IBAction)recordButtonPressed:(id)sender;
+-(void) stopRespokenPlayer;
 
 @end

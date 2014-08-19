@@ -326,16 +326,7 @@ static UserProfile *shared = nil;
                     [respokeTempArray addObject:respokeID];
                     [object setObject:respokeTempArray forKey:@"listOfRespokeID"];
                     [object saveInBackground];
-                    //                    if([userHeardID isEqualToString:[self getUserID]])
-                    //                    {
-                    //                        Spoke *tempSpoke = [self getSpokeWithID:spokeID];
-                    //                        [spokesArray removeObject:[self getSpokeWithID:spokeID]];
-                    //                        tempSpoke.totalHeards = 1;
-                    //                        tempSpoke.listOfHeardsID = heardTempArray;
-                    //                        [spokesArray addObject:tempSpoke];
-                    //                        [self saveProfileLocal];
-                    //                    }
-                    [[NSNotificationCenter defaultCenter] postNotificationName:@"updateHeards" object:self userInfo:nil];
+  
                     break;
                 }
             }

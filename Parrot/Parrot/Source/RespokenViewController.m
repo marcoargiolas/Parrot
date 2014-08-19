@@ -87,10 +87,27 @@
 - (IBAction)playButtonPressed:(id)sender
 {
     [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
-    if(![respokenVC.player isPlaying])
+    if(respokenVC.currentPlayingTag != playButton.tag)
     {
+        respokenVC.currentPlayingTag = (int)playButton.tag;
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:RESPOKEN_HEADER_PLAY object:nil];
+    if(![respokenVC.player isPlaying] || respokenVC.currentPlayingTag == -1)
+    {
+        NSError *dataError;
+        NSData *soundData = [[NSData alloc] initWithData:respokenVC.currentSpoke.audioData];
+        if(dataError != nil)
+        {
+            NSLog(@"DATA ERROR %@", dataError);
+        }
+        
+        NSError *error;
+        AVAudioPlayer *headerPlayer =[[AVAudioPlayer alloc] initWithData: soundData error: &error];
+        headerPlayer.delegate = self;
+        respokenVC.player = headerPlayer;
+
         updateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
-        [respokenSlider setFrame:CGRectMake(49, 10, 226, 31)];
+
         respokenSlider.minimumValue = 0;
         respokenSlider.maximumValue = respokenVC.player.duration;
         
@@ -193,7 +210,7 @@
 {
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadRespokenArray:) name:RESPOKEN_ARRAY_ARRIVED object:nil];
-    
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopRespokenPlayer) name:CELL_PLAY_STARTED object:nil];
     maskImage = [UIImage ellipsedMaskFromRect:CGRectMake(0, 0, IMAGE_WIDTH, IMAGE_WIDTH) inSize:CGSizeMake(IMAGE_WIDTH, IMAGE_WIDTH)];
     
     currentPlayingTag = -1;
@@ -304,7 +321,7 @@
         [respokenHeader.respokenUserButton setBackgroundImage:userImage forState:UIControlStateNormal];
     }
 
-    respokenHeader.playButton.tag = 1;
+    respokenHeader.playButton.tag = -1;
 
     NSError *dataError;
     NSData *soundData = [[NSData alloc] initWithData:currentSpoke.audioData];
@@ -576,6 +593,12 @@
     [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
 }
 
+-(void) stopRespokenPlayer
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
+    [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
+}
+
 - (void)sensorStateChange:(NSNotificationCenter *)notification
 {
     AVAudioSession* session = [AVAudioSession sharedInstance];
@@ -621,6 +644,8 @@
         RecordViewController *recordVC = [segue destinationViewController];
         recordVC.respokenSpoke = currentSpoke;
         recordVC.respokenVC = self;
+        recordVC.startRecord = startRecord;
+        startRecord = NO;
     }
 }
 
