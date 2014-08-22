@@ -209,6 +209,7 @@ static UserProfile *shared = nil;
     [obj saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error)
     {
         [[NSNotificationCenter defaultCenter]postNotificationName:@"loadWallSpokes" object:nil];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"loadUserWall" object:nil];
     }];
 }
 
@@ -401,8 +402,6 @@ static UserProfile *shared = nil;
                 [resultsArray addObject:[self spokeObjectfromPFObject:object]];
             }
             
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"wallSpokesArrived" object:nil];
-            
             NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:resultsArray forKey:RESPOKEN_ARRAY];
             [[NSNotificationCenter defaultCenter]postNotificationName:RESPOKEN_ARRAY_ARRIVED object:nil userInfo:userInfo];
         }
@@ -426,8 +425,10 @@ static UserProfile *shared = nil;
             {
                 [resultsArray addObject:[self spokeObjectfromPFObject:object]];
             }
-            
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"wallSpokesArrived" object:nil];
+            NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+            NSMutableDictionary* userInfo = [NSMutableDictionary dictionary];
+            [userInfo setObject:resultsArray forKey:RESULTS_ARRAY];
+            [nc postNotificationName:WALL_SPOKES_ARRIVED object:self userInfo:userInfo];
         }
         else
         {

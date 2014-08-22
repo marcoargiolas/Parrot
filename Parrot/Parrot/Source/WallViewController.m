@@ -62,13 +62,15 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSpokeArray:) name:@"loadWallSpokes" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadWallTableView) name:@"wallSpokesArrived" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadWallTableView:) name:WALL_SPOKES_ARRIVED object:nil];
     
     if(refreshControl == nil)
+    {
+        [self reloadSpokeArray:nil];
         [self setupRefreshControl];
-
+    }
+    [refreshControl beginRefreshing];
     [self.navigationController setNavigationBarHidden:YES];
-    [self reloadSpokeArray:nil];
 //    if([wallSpokesArray count] > 0)
 //        wallSpokesArray = [Utilities orderByDate:wallSpokesArray];
 //    [wallTableView reloadData];
@@ -88,12 +90,17 @@
 
 -(void)reloadSpokeArray:(NSNotification *)notification
 {
-    [refreshControl beginRefreshing];
-    wallSpokesArray = [userProf loadAllSpokesFromRemote];
+    [userProf loadAllSpokesFromRemote];
 }
 
--(void)reloadWallTableView
+-(void)reloadWallTableView:(NSNotification*)notification
 {
+    if (wallSpokesArray == nil)
+    {
+        wallSpokesArray = [[NSMutableArray alloc]init];
+    }
+    wallSpokesArray = (NSMutableArray*)[[notification userInfo]objectForKey:RESULTS_ARRAY];
+
     wallSpokesArray = [Utilities orderByDate:wallSpokesArray];
     [wallTableView reloadData];
     [refreshControl endRefreshing];
