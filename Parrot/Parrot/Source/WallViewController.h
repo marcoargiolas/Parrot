@@ -41,5 +41,6 @@
 - (IBAction)recordButtonPressed:(id)sender;
 -(void)openUserProfile:(Spoke*)sender;
 -(void)openRespokenView:(Spoke*)sender;
+-(void)reloadSpokeArray:(NSNotification*)notification;
 
 @end

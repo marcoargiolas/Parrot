@@ -88,7 +88,7 @@
     actionView.mainVC = self;
     profileVC.mainVC = self;
     wallVC.mainVC = self;
-    [self profileButtonPressed:nil];
+    [self wallButtonPressed:nil];
         
     [self.navigationController.navigationBar addSubview:actionView];
 }

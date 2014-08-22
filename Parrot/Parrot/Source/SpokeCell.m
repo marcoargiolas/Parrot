@@ -78,13 +78,19 @@
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
         if(![wallVC.player isPlaying])
         {
-            wallVC.player = spokePlayer;
+            NSData *soundData = [[NSData alloc] initWithData:currentSpoke.audioData];
+            NSError *error;
+            AVAudioPlayer *newPlayer =[[AVAudioPlayer alloc] initWithData: soundData error: &error];
+            newPlayer.delegate = self;
+
+            wallVC.player = newPlayer;
+            
             updateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
             
             spokeSlider.minimumValue = 0;
             spokeSlider.maximumValue = wallVC.player.duration;
             
-            [wallVC.player play];
+            [wallVC playSelectedAudio];
             
             [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changePlayButtonImage) name:PLAYBACK_STOP object:nil];
             [playButton removeFromSuperview];
@@ -124,7 +130,7 @@
             spokeSlider.minimumValue = 0;
             spokeSlider.maximumValue = respokenVC.player.duration;
             
-            [respokenVC.player play];
+            [respokenVC playSelectedAudio];
             
             [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changePlayButtonImage) name:PLAYBACK_STOP object:nil];
             [playButton removeFromSuperview];

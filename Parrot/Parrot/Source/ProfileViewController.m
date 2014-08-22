@@ -139,7 +139,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    [self reloadMySpokesArray];
+//    [self reloadMySpokesArray];
 }
 
 -(void)viewWillDisappear:(BOOL)animated

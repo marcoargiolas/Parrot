@@ -70,8 +70,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:)
-                                                 name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated

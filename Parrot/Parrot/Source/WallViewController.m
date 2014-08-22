@@ -44,10 +44,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSpokeArray) name:@"loadWallSpokes" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadWallTableView) name:@"wallSpokesArrived" object:nil];
     
-    [super viewDidLoad];
     userProf = [UserProfile sharedProfile];
     
     maskImage = [UIImage ellipsedMaskFromRect:CGRectMake(0, 0, IMAGE_WIDTH, IMAGE_WIDTH) inSize:CGSizeMake(IMAGE_WIDTH, IMAGE_WIDTH)];
@@ -60,12 +57,18 @@
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
     [recordButton addGestureRecognizer:longPress];
-
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSpokeArray:) name:@"loadWallSpokes" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadWallTableView) name:@"wallSpokesArrived" object:nil];
+    
+    if(refreshControl == nil)
+        [self setupRefreshControl];
+
     [self.navigationController setNavigationBarHidden:YES];
+    [self reloadSpokeArray:nil];
 //    if([wallSpokesArray count] > 0)
 //        wallSpokesArray = [Utilities orderByDate:wallSpokesArray];
 //    [wallTableView reloadData];
@@ -83,7 +86,7 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)reloadSpokeArray
+-(void)reloadSpokeArray:(NSNotification *)notification
 {
     [refreshControl beginRefreshing];
     wallSpokesArray = [userProf loadAllSpokesFromRemote];
@@ -94,8 +97,6 @@
     wallSpokesArray = [Utilities orderByDate:wallSpokesArray];
     [wallTableView reloadData];
     [refreshControl endRefreshing];
-    if(refreshControl == nil)
-        [self setupRefreshControl];
 }
 
 #pragma mark -
@@ -103,7 +104,7 @@
 - (void)setupRefreshControl
 {
     refreshControl = [[UIRefreshControl alloc]init];
-    [refreshControl addTarget:self action:@selector(reloadSpokeArray) forControlEvents:UIControlEventValueChanged];
+    [refreshControl addTarget:self action:@selector(reloadSpokeArray:) forControlEvents:UIControlEventValueChanged];
     [refreshControl setBounds:CGRectMake(refreshControl.frame.origin.x, refreshControl.frame.origin.y + 10, refreshControl.frame.size.width, refreshControl.frame.size.height)];
     [refreshControl setTintColor:[UIColor whiteColor]];
     [wallTableView addSubview:refreshControl];
@@ -325,11 +326,11 @@
 
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
     [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
 }
 
-- (void)sensorStateChange:(NSNotificationCenter *)notification
+- (void)sensorStateChange:(NSNotification *)notification
 {
     AVAudioSession* session = [AVAudioSession sharedInstance];
     
