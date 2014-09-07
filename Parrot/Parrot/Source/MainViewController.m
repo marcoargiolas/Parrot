@@ -91,6 +91,8 @@
     [self wallButtonPressed:nil];
         
     [self.navigationController.navigationBar addSubview:actionView];
+    
+    userProf = [UserProfile sharedProfile];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -184,8 +186,14 @@
     profileVC.myProfile = YES;
     wallVC.wallTableView.delegate = nil;
     wallVC.wallTableView.dataSource = nil;
-
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"loadUserWall" object:nil];
+    if ([userProf.spokesArray count] == 0)
+    {
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"loadUserWall" object:nil];
+    }
+    else
+    {
+        [profileVC.spokesTableView reloadData];
+    }
 }
 
 - (IBAction)wallButtonPressed:(id)sender
@@ -219,7 +227,7 @@
     wallVC.wallTableView.delegate = wallVC;
     wallVC.wallTableView.dataSource = wallVC;
     
-    UserProfile *userProf = [UserProfile sharedProfile];
+    userProf = [UserProfile sharedProfile];
     [userProf loadLocalSpokesCache];
     if ([userProf.cacheSpokesArray count] == 0)
     {

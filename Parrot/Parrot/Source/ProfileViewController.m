@@ -139,7 +139,12 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-//    [self reloadMySpokesArray];
+    if([userProf.spokesArray count] > 0 )
+    {
+        userProf.spokesArray = [Utilities orderByDate:userProf.cacheSpokesArray];
+        currentSpokenArray = [NSMutableArray arrayWithArray:userProf.spokesArray];
+        [spokesTableView reloadData];
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated

@@ -57,6 +57,7 @@
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
     [recordButton addGestureRecognizer:longPress];
+    [self setupRefreshControl];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -64,13 +65,18 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSpokeArray:) name:@"loadWallSpokes" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadWallTableView:) name:WALL_SPOKES_ARRIVED object:nil];
     
-    if(refreshControl == nil)
+//    if(refreshControl == nil)
     {
         [self reloadSpokeArray:nil];
-        [self setupRefreshControl];
+
     }
-    [refreshControl beginRefreshing];
+//    [refreshControl beginRefreshing];
     [self.navigationController setNavigationBarHidden:YES];
+    if([userProf.cacheSpokesArray count] > 0 )
+    {
+        userProf.cacheSpokesArray = [Utilities orderByDate:userProf.cacheSpokesArray];
+        [wallTableView reloadData];
+    }
 //    if([wallSpokesArray count] > 0)
 //        wallSpokesArray = [Utilities orderByDate:wallSpokesArray];
 //    [wallTableView reloadData];
@@ -102,6 +108,7 @@
     wallSpokesArray = (NSMutableArray*)[[notification userInfo]objectForKey:RESULTS_ARRAY];
 
     wallSpokesArray = [Utilities orderByDate:wallSpokesArray];
+    [userProf saveLocalSpokesCache:wallSpokesArray];
     [wallTableView reloadData];
     [refreshControl endRefreshing];
 }
@@ -161,7 +168,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [wallSpokesArray count];
+    return [userProf.cacheSpokesArray count];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -204,7 +211,7 @@
     cell.wallVC = self;
     cell.playButton.tag = indexPath.row;
     
-    Spoke *spokeObj = [wallSpokesArray objectAtIndex:indexPath.row];
+    Spoke *spokeObj = [userProf.cacheSpokesArray objectAtIndex:indexPath.row];
 
     NSData *img_data = spokeObj.ownerImageData;
     UIImage *userImageLoad = [UIImage imageWithData:img_data];

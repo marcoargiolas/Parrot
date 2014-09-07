@@ -56,6 +56,7 @@
     SearchViewController *searchVC;
     actionBarView *actionView;
     Spoke *currentSpokeChoose;
+    UserProfile *userProf;
 }
 
 @property (strong, nonatomic) actionBarView *actionView;

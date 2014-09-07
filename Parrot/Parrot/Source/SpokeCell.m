@@ -199,7 +199,7 @@
     {
         if(![currentSpoke.listOfHeardsID containsObject:[wallVC.userProf getUserID]])
         {
-            [wallVC.wallSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
+            [wallVC.userProf.cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
             [currentSpoke.listOfHeardsID addObject:[wallVC.userProf getUserID]];
         }
         
@@ -303,7 +303,7 @@
         }
 
         currentSpoke.totalLikes = [currentSpoke.listOfThankersID count];
-        [wallVC.wallSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
+        [wallVC.userProf.cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
         [wallVC.userProf updateTotalSpokeLike:currentSpoke.spokeID thanksID:[wallVC.userProf getUserID]addLike:!likeButton.selected totalLikes:[currentSpoke.listOfThankersID count]];
     }
     else if (respokenVC != nil)
