@@ -70,6 +70,7 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
 }
 
@@ -77,6 +78,7 @@
 {
     respokenVC = nil;
     startRecord = NO;
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
 }
 
@@ -233,7 +235,9 @@
         [respokenVC.currentSpoke.listOfRespokeID addObject:spokeObj.spokeID];
         [userProf updateRespokenList:respokenVC.currentSpoke.spokeID respokeID:spokeObj.spokeID];
     }
+   
     [userProf.spokesArray addObject:spokeObj];
+    [userProf.cacheSpokesArray addObject:spokeObj];
     [userProf saveProfileLocal];
     [userProf saveSpokesArrayRemote:spokeObj];
     

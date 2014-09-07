@@ -32,3 +32,4 @@
 #define RESPOKEN_HEADER_PLAY            @"respokenHeaderPlay"
 #define RESULTS_ARRAY                   @"resultsArray"
 #define WALL_SPOKES_ARRIVED             @"wallSpokesArrived"
+#define LAST_UPDATE                     @"lastUpdate"

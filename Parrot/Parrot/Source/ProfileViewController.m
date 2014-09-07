@@ -151,7 +151,7 @@
 -(void)reloadMySpokesArray
 {
     [refreshControl beginRefreshing];
-    
+    isLoading = YES;
     currentSpokenArray = [userProf loadSpokesFromRemoteForUser:userId];
 }
 
@@ -171,6 +171,7 @@
     {
         [totalSpokensSubLabel setText:@"Spoken"];
     }
+    isLoading = NO;
 }
 
 -(void)reloadInfoLabel:(NSNotification*)notification
@@ -217,6 +218,59 @@
 }
 
 #pragma mark UITableView delegate
+//-(void)scrollViewDidScroll:(UIScrollView *)scrollView
+//{
+//    CGFloat offsetY = scrollView.contentOffset.y;
+//    [buttonContainerView setFrame:CGRectMake(buttonContainerView.frame.origin.x, self.view.frame.size.height - 80, buttonContainerView.frame.size.width, buttonContainerView.frame.size.height)];
+//    if (!isLoading)
+//    {
+//        if (offsetY > tableViewOffset_y)
+//        {
+//            NSLog(@"NASCONDI");
+//            [UIView animateWithDuration:0.4 animations:^{
+//                [mainVC.navigationController.navigationBar setFrame:CGRectMake(0, -60, mainVC.navigationController.navigationBar.frame.size.width, mainVC.navigationController.navigationBar.frame.size.height)];
+//                [mainVC.view setFrame:CGRectMake(mainVC.view.frame.origin.x, 20, mainVC.view.frame.size.width, [UIScreen mainScreen].bounds.size.height)];
+//                [buttonContainerView setFrame:CGRectMake(buttonContainerView.frame.origin.x, self.view.frame.size.height - 80, buttonContainerView.frame.size.width, buttonContainerView.frame.size.height)];
+//            } completion:^(BOOL finished) {
+//            }];
+//        }
+//        else
+//        {
+////            [buttonContainerView setFrame:CGRectMake(buttonContainerView.frame.origin.x, [UIScreen mainScreen].bounds.size.height - 88, buttonContainerView.frame.size.width, buttonContainerView.frame.size.height)];
+//
+//            NSLog(@"MOSTRA");
+//            [UIView animateWithDuration:0.4 animations:^{
+//                [mainVC.navigationController.navigationBar setFrame:CGRectMake(0, 20, mainVC.navigationController.navigationBar.frame.size.width, mainVC.navigationController.navigationBar.frame.size.height)];
+//                [mainVC.view setFrame:CGRectMake(mainVC.view.frame.origin.x, 64, mainVC.view.frame.size.width, mainVC.view.frame.size.height)];
+//                [buttonContainerView setFrame:CGRectMake(buttonContainerView.frame.origin.x, self.view.frame.size.height + 64, buttonContainerView.frame.size.width, buttonContainerView.frame.size.height)];
+//
+//            }];
+//        }
+//        tableViewOffset_y = offsetY;
+//        if(tableViewOffset_y <= 0)
+//        {
+//            [mainVC.navigationController.navigationBar setFrame:CGRectMake(0, 20, mainVC.navigationController.navigationBar.frame.size.width, mainVC.navigationController.navigationBar.frame.size.height)];
+//            [mainVC.view setFrame:CGRectMake(mainVC.view.frame.origin.x, 64, mainVC.view.frame.size.width, mainVC.view.frame.size.height)];
+////            [buttonContainerView setFrame:CGRectMake(buttonContainerView.frame.origin.x, [UIScreen mainScreen].bounds.size.height + 88, buttonContainerView.frame.size.width, buttonContainerView.frame.size.height)];
+//        }
+//    }
+//}
+
+//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+//{
+//    UICollectionViewCell *lastCell = [[self.mainCollectionView visibleCells] lastObject];
+//    NSIndexPath *indexPath = [self.mainCollectionView indexPathForCell:lastCell];
+//    
+//    int threshold = (([currentObjectsArray count] - 3) > 0) ? ([currentObjectsArray count] - 3) : 0;
+//    
+//    if (indexPath.row > 18 || indexPath.row >= threshold) {
+//        footerCollectionView.topButton.hidden = NO;
+//    }
+//    else {
+//        footerCollectionView.topButton.hidden = YES;
+//    }
+//}
+
 -(CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     return 70;

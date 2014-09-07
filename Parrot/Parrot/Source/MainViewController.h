@@ -11,6 +11,7 @@
 #import "SearchViewController.h"
 #import "WallViewController.h"
 
+
 @class MainViewController;
 @interface actionBarView : UIView
 {

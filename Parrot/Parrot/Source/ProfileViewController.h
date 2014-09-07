@@ -42,6 +42,8 @@
     NSString *userId;
     NSString *userName;
     MainViewController *mainVC;
+    float tableViewOffset_y;
+    BOOL isLoading;
 }
 
 @property (strong, nonatomic) MainViewController *mainVC;

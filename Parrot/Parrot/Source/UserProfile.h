@@ -14,10 +14,12 @@
 {
     PFUser *currentUser;
     NSMutableArray *spokesArray;
+    NSMutableArray *cacheSpokesArray;
 }
 
 @property (nonatomic, strong) PFUser *currentUser;
 @property (nonatomic, strong) NSMutableArray *spokesArray;
+@property (nonatomic, strong) NSMutableArray *cacheSpokesArray;
 
 +(UserProfile*)sharedProfile;
 - (void) loadProfileFromFacebook;
@@ -35,5 +37,8 @@
 -(void)loadBioFromRemoteForUser:(NSString*)userID;
 -(void)respokenForSpokeID:(NSString*)spokeID;
 -(void)updateRespokenList:(NSString*)spokeID respokeID:(NSString*)respokeID;
+//CACHE MANAGEMENT
+-(void)saveLocalSpokesCache:(NSMutableArray*)arrivedSpokesArray;
+- (void)loadLocalSpokesCache;
 
 @end

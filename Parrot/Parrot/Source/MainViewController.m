@@ -219,7 +219,12 @@
     wallVC.wallTableView.delegate = wallVC;
     wallVC.wallTableView.dataSource = wallVC;
     
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"loadWallSpokes" object:nil];
+    UserProfile *userProf = [UserProfile sharedProfile];
+    [userProf loadLocalSpokesCache];
+    if ([userProf.cacheSpokesArray count] == 0)
+    {
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"loadWallSpokes" object:nil];
+    }
 }
 
 - (IBAction)searchButtonPressed:(id)sender

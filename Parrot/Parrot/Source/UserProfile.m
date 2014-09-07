@@ -15,6 +15,7 @@ static UserProfile *shared = nil;
 
 @synthesize currentUser;
 @synthesize spokesArray;
+@synthesize cacheSpokesArray;
 
 +(UserProfile*)sharedProfile
 {
@@ -80,6 +81,75 @@ static UserProfile *shared = nil;
         NSData *spokesData = [NSKeyedArchiver archivedDataWithRootObject:spokesArray];
         [spokesData writeToFile:spokesPath atomically:NO];
     }
+}
+
+-(void)saveLocalSpokesCache:(NSMutableArray*)arrivedSpokesArray
+{
+	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [[paths objectAtIndex:0] stringByAppendingPathComponent:[self getUserID]];
+    NSString *spokesPath = [documentsDirectory stringByAppendingPathComponent:@"currentSpokesCache.plist"];
+
+    if(![[NSFileManager defaultManager] fileExistsAtPath:spokesPath])
+    {
+        [[NSFileManager defaultManager] createDirectoryAtPath:documentsDirectory
+                                  withIntermediateDirectories:YES
+                                                   attributes:nil
+                                                        error:nil];
+    }
+    
+    for (int i = 0; i < [arrivedSpokesArray count]; i++)
+    {
+        Spoke *tempSpoke = [arrivedSpokesArray objectAtIndex:i];
+        NSDate *lastUpdate = [[NSUserDefaults standardUserDefaults]objectForKey:LAST_UPDATE];
+        if (lastUpdate == nil)
+        {
+            cacheSpokesArray = [NSMutableArray arrayWithArray:arrivedSpokesArray];
+        }
+        else
+        {
+            switch ([tempSpoke.creationDate compare:lastUpdate])
+            {
+                case NSOrderedAscending:
+                    NSLog(@"NSOrderedAscending");
+                    
+                    break;
+                case NSOrderedSame:
+                    NSLog(@"NSOrderedSame");
+                    break;
+                case NSOrderedDescending:
+                    NSLog(@"NSOrderedDescending");
+                    [cacheSpokesArray addObject:tempSpoke];
+                    break;
+            }
+        }
+    }
+    
+    [[NSUserDefaults standardUserDefaults]setObject:[NSDate date] forKey:LAST_UPDATE];
+//   [[NSUserDefaults standardUserDefaults]removeObjectForKey:LAST_UPDATE];
+    NSDate *lastUpdate = [[NSUserDefaults standardUserDefaults]objectForKey:LAST_UPDATE];
+    NSLog(@"LAST UPDATE DATE %@", lastUpdate);
+    if(currentUser != nil)
+    {
+        NSData *spokesData = [NSKeyedArchiver archivedDataWithRootObject:cacheSpokesArray];
+        [spokesData writeToFile:spokesPath atomically:NO];
+    }
+}
+
+- (void)loadLocalSpokesCache
+{
+    //Check backward compatibility
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+	NSString *documentsDirectory = [paths objectAtIndex:0];
+    NSString *userID = [[NSUserDefaults standardUserDefaults] objectForKey:USER_ID];
+    documentsDirectory = [documentsDirectory stringByAppendingPathComponent:userID];
+    NSString *spokesPath = [documentsDirectory stringByAppendingPathComponent:@"currentSpokesCache.plist"];
+    if(cacheSpokesArray == nil)
+    {
+        cacheSpokesArray = [[NSMutableArray alloc]init];
+    }
+
+    NSData *peopleData = [NSData dataWithContentsOfFile:spokesPath];
+    cacheSpokesArray = [NSKeyedUnarchiver unarchiveObjectWithData:peopleData];
 }
 
 - (void) loadProfileFromFacebook
@@ -208,8 +278,8 @@ static UserProfile *shared = nil;
     
     [obj saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error)
     {
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"loadWallSpokes" object:nil];
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"loadUserWall" object:nil];
+//        [[NSNotificationCenter defaultCenter]postNotificationName:@"loadWallSpokes" object:nil];
+//        [[NSNotificationCenter defaultCenter]postNotificationName:@"loadUserWall" object:nil];
     }];
 }
 
