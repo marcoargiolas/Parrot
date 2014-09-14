@@ -12,6 +12,7 @@
 
 @synthesize spokeID;
 @synthesize creationDate;
+@synthesize updateDate;
 @synthesize totalHeards;
 @synthesize audioData;
 @synthesize totalLikes;
@@ -30,6 +31,7 @@
 	{
         spokeID = @"";
         creationDate = [[NSDate alloc]init];
+        updateDate = [[NSDate alloc]init];
         totalLikes = 0;
         totalHeards = 0;
         audioData = [[NSData alloc]init];
@@ -49,6 +51,7 @@
 {
     [aCoder encodeObject:spokeID forKey:@"spokeID"];
     [aCoder encodeObject:creationDate forKey:@"creationDate"];
+    [aCoder encodeObject:updateDate forKey:@"updateDate"];
     [aCoder encodeInt:totalLikes forKey:@"totalLikes"];
     [aCoder encodeInt:totalHeards forKey:@"totalHeards"];
     [aCoder encodeObject:audioData forKey:@"audioData"];
@@ -68,6 +71,7 @@
     {
         spokeID = [aDecoder decodeObjectForKey:@"spokeID"];
         creationDate = [aDecoder decodeObjectForKey:@"creationDate"];
+        updateDate = [aDecoder decodeObjectForKey:@"updateDate"];
         totalLikes = [aDecoder decodeIntForKey:@"totalLikes"];
         totalHeards = [aDecoder decodeIntForKey:@"totalHeards"];
         audioData = [aDecoder decodeObjectForKey:@"audioData"];

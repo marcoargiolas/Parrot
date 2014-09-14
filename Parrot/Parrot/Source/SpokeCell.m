@@ -214,7 +214,6 @@
             [currentSpoke.listOfHeardsID addObject:[respokenVC.userProf getUserID]];
         }
         
-        
         [respokenVC.userProf updateTotalSpokeHeard:currentSpoke.spokeID heardID:[respokenVC.userProf getUserID]];
     }
     int totalHeard = [currentSpoke.listOfHeardsID count];

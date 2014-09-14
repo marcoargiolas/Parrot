@@ -10,6 +10,7 @@
 #import <Parse/Parse.h>
 #import "UserProfile.h"
 #import "GlobalDefines.h"
+#import "AppDelegate.h"
 
 @interface LoginViewController ()
 
@@ -24,6 +25,7 @@
     [super viewDidLoad];
 	[activityIndicator removeFromSuperview];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goToMainView) name:PROFILE_LOADED_FROM_FACEBOOK object:nil];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
 }
 
 - (void)dealloc
@@ -83,6 +85,18 @@
 - (void)goToMainView
 {
     [self performSegueWithIdentifier:@"loginAction" sender:self];
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    if ([segue.identifier isEqualToString:@"loginAction"])
+    {
+        UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+        ParrotNavigationController *controller = [storyBoard  instantiateViewControllerWithIdentifier:@"ParrotNavigationController"];
+        [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"background_navbar@2x.png"] forBarMetrics:UIBarMetricsDefault];
+        AppDelegate *appDelegate = (AppDelegate*)[[UIApplication sharedApplication] delegate];
+        appDelegate.window.rootViewController = controller;
+    }
 }
 
 @end

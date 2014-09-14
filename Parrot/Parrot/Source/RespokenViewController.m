@@ -174,6 +174,18 @@
     }
 }
 
+-(void) stopRespokenPlayer
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
+    [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
+}
+
+-(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
+    [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
+}
+
 @end
 
 @interface RespokenViewController ()
@@ -547,12 +559,6 @@
     {
         [refreshControl endRefreshing];
     }
-}
-
--(void)reloadSpokeArray
-{
-    [refreshControl beginRefreshing];
-    respokenArray = [userProf loadAllSpokesFromRemote];
 }
 
 -(void)reloadWallTableView

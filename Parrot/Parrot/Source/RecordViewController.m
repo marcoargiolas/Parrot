@@ -214,6 +214,7 @@
     spokeObj.ownerID = [userProf getUserID];
     spokeObj.spokeID = [Utilities soundFilePathString];
     spokeObj.creationDate = [NSDate date];
+    spokeObj.updateDate = [NSDate date];
 
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;

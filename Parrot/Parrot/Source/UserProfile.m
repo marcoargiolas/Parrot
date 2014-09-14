@@ -16,6 +16,7 @@ static UserProfile *shared = nil;
 @synthesize currentUser;
 @synthesize spokesArray;
 @synthesize cacheSpokesArray;
+@synthesize currentUserSpokesArray;
 
 +(UserProfile*)sharedProfile
 {
@@ -88,8 +89,17 @@ static UserProfile *shared = nil;
 	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
 	NSString *documentsDirectory = [[paths objectAtIndex:0] stringByAppendingPathComponent:[self getUserID]];
     NSString *spokesPath = [documentsDirectory stringByAppendingPathComponent:@"currentSpokesCache.plist"];
-
+    NSString *personalSpokesPath = [documentsDirectory stringByAppendingPathComponent:@"personalSpokesCache.plist"];
+    
     if(![[NSFileManager defaultManager] fileExistsAtPath:spokesPath])
+    {
+        [[NSFileManager defaultManager] createDirectoryAtPath:documentsDirectory
+                                  withIntermediateDirectories:YES
+                                                   attributes:nil
+                                                        error:nil];
+    }
+    
+    if(![[NSFileManager defaultManager] fileExistsAtPath:personalSpokesPath])
     {
         [[NSFileManager defaultManager] createDirectoryAtPath:documentsDirectory
                                   withIntermediateDirectories:YES
@@ -104,10 +114,11 @@ static UserProfile *shared = nil;
         if (lastUpdate == nil)
         {
             cacheSpokesArray = [NSMutableArray arrayWithArray:arrivedSpokesArray];
+            break;
         }
         else
         {
-            switch ([tempSpoke.creationDate compare:lastUpdate])
+            switch ([tempSpoke.updateDate compare:lastUpdate])
             {
                 case NSOrderedAscending:
                     NSLog(@"NSOrderedAscending");
@@ -118,12 +129,47 @@ static UserProfile *shared = nil;
                     break;
                 case NSOrderedDescending:
                     NSLog(@"NSOrderedDescending");
-                    [cacheSpokesArray addObject:tempSpoke];
+                    if ([cacheSpokesArray containsObject:tempSpoke])
+                    {
+                        [cacheSpokesArray replaceObjectAtIndex:i withObject:tempSpoke];
+                    }
+                    else
+                    {
+                        [cacheSpokesArray addObject:tempSpoke];
+                    }
                     break;
             }
         }
     }
     
+    for (int i = 0; i < [cacheSpokesArray count]; i++)
+    {
+        Spoke *tempSpoke = [cacheSpokesArray objectAtIndex:i];
+        if([tempSpoke.ownerID isEqualToString:[self getUserID]])
+        {
+            BOOL spokeFound = NO;
+            int indexFound = -1;
+            for (int j = 0; j < [spokesArray count]; j++)
+            {
+                Spoke *myTempSpoke = [spokesArray objectAtIndex:j];
+                if ([myTempSpoke.spokeID isEqualToString:tempSpoke.spokeID])
+                {
+                    spokeFound = YES;
+                    indexFound = j;
+                    break;
+                }
+            }
+            if (spokeFound)
+            {
+                [spokesArray replaceObjectAtIndex:indexFound withObject:tempSpoke];
+            }
+            else
+            {
+                [spokesArray addObject:tempSpoke];
+            }
+        }
+    }
+    NSLog(@"SPOKE ARRAy DELLA MINCHIA %d", [spokesArray count]);
     [[NSUserDefaults standardUserDefaults]setObject:[NSDate date] forKey:LAST_UPDATE];
 //   [[NSUserDefaults standardUserDefaults]removeObjectForKey:LAST_UPDATE];
     NSDate *lastUpdate = [[NSUserDefaults standardUserDefaults]objectForKey:LAST_UPDATE];
@@ -132,6 +178,11 @@ static UserProfile *shared = nil;
     {
         NSData *spokesData = [NSKeyedArchiver archivedDataWithRootObject:cacheSpokesArray];
         [spokesData writeToFile:spokesPath atomically:NO];
+        if ([spokesArray count] > 0)
+        {
+            spokesData = [NSKeyedArchiver archivedDataWithRootObject:spokesArray];
+            [spokesData writeToFile:personalSpokesPath atomically:NO];
+        }
     }
 }
 
@@ -143,13 +194,21 @@ static UserProfile *shared = nil;
     NSString *userID = [[NSUserDefaults standardUserDefaults] objectForKey:USER_ID];
     documentsDirectory = [documentsDirectory stringByAppendingPathComponent:userID];
     NSString *spokesPath = [documentsDirectory stringByAppendingPathComponent:@"currentSpokesCache.plist"];
+    NSString *personalSpokesPath = [documentsDirectory stringByAppendingPathComponent:@"personalSpokesCache.plist"];
+
+
+    NSData *peopleData = [NSData dataWithContentsOfFile:spokesPath];
+    cacheSpokesArray = [NSKeyedUnarchiver unarchiveObjectWithData:peopleData];
+    peopleData = [NSData dataWithContentsOfFile:personalSpokesPath];
+    spokesArray = [NSKeyedUnarchiver unarchiveObjectWithData:peopleData];
     if(cacheSpokesArray == nil)
     {
         cacheSpokesArray = [[NSMutableArray alloc]init];
     }
-
-    NSData *peopleData = [NSData dataWithContentsOfFile:spokesPath];
-    cacheSpokesArray = [NSKeyedUnarchiver unarchiveObjectWithData:peopleData];
+    if (spokesArray == nil)
+    {
+        spokesArray = [[NSMutableArray alloc]init];
+    }
 }
 
 - (void) loadProfileFromFacebook
@@ -263,6 +322,7 @@ static UserProfile *shared = nil;
     PFObject *obj = [PFObject objectWithClassName:@"spoke"];
     [obj setObject:spokeToSave.spokeID forKey:@"spokeID"];
     [obj setObject:spokeToSave.creationDate forKey:@"creationDate"];
+    [obj setObject:spokeToSave.updateDate forKey:@"updateDate"];
     [obj setObject:[NSString stringWithFormat:@"%d",spokeToSave.totalHeards] forKey:@"totalHeards"];
     PFFile *audioDataFile = [PFFile fileWithData:spokeToSave.audioData];
     [obj setObject:audioDataFile forKey:@"audioData"];
@@ -293,6 +353,7 @@ static UserProfile *shared = nil;
             for (PFObject *object in objects)
             {
                 NSMutableArray *thanksTempArray = [object objectForKey:@"listOfThankersID"];
+                
                 if(thanksTempArray == nil)
                 {
                     thanksTempArray = [[NSMutableArray alloc]init];
@@ -312,6 +373,7 @@ static UserProfile *shared = nil;
                 
                 NSLog(@"THANKS ARRAY DOPO %@", thanksTempArray);
                 [object setObject:thanksTempArray forKey:@"listOfThankersID"];
+                [object setObject:[NSDate date] forKey:@"updateDate"];
                 [object saveInBackground];
                 
                 NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
@@ -354,6 +416,7 @@ static UserProfile *shared = nil;
                     }
                     [heardTempArray addObject:userHeardID];
                     [object setObject:heardTempArray forKey:@"listOfHeardsID"];
+                    [object setObject:[NSDate date] forKey:@"updateDate"];
                     [object saveInBackground];
 //                    if([userHeardID isEqualToString:[self getUserID]])
 //                    {
@@ -396,6 +459,7 @@ static UserProfile *shared = nil;
                     }
                     [respokeTempArray addObject:respokeID];
                     [object setObject:respokeTempArray forKey:@"listOfRespokeID"];
+                    [object setObject:[NSDate date] forKey:@"updateDate"];
                     [object saveInBackground];
   
                     break;
@@ -415,16 +479,27 @@ static UserProfile *shared = nil;
     NSMutableArray *resultsArray = [[NSMutableArray alloc]init];
     PFQuery *query = [PFQuery queryWithClassName:@"spoke"];
     [query whereKey:@"ownerID" equalTo:userID];
+    [query orderByDescending:@"creationDate"];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error)
         {
+            spokeType currentType;
+            if ([userID isEqualToString:[self getUserID]])
+            {
+                mySpokesCount = [objects count];
+                currentType = mySpoke;
+            }
+            else
+            {
+                otherUserSpokesCount = [objects count];
+                currentType = otherUserSpoke;
+                currentUserSpokesArray = [[NSMutableArray alloc] init];
+            }
+            
             for (PFObject *object in objects)
             {
-                [resultsArray addObject:[self spokeObjectfromPFObject:object]];
+                [self createSpokeFromPFObject:object forSpokeType:currentType];
             }
-
-            NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:resultsArray forKey:SPOKEN_ARRAY_ARRIVED];
-            [[NSNotificationCenter defaultCenter]postNotificationName:USER_WALL_SPOKEN_ARRIVED object:nil userInfo:userInfo];
         }
         else
         {
@@ -483,31 +558,151 @@ static UserProfile *shared = nil;
 }
 
 
--(NSMutableArray*)loadAllSpokesFromRemote
+-(void)loadAllSpokesFromRemote
 {
-    NSMutableArray *resultsArray = [[NSMutableArray alloc]init];
+    allResultsArray = [[NSMutableArray alloc]init];
     
     PFQuery *query = [PFQuery queryWithClassName:@"spoke"];
+    [query orderByDescending:@"creationDate"];
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error)
         {
+            allResultObjectsCount = [objects count];
             for (PFObject *object in objects)
             {
-                [resultsArray addObject:[self spokeObjectfromPFObject:object]];
+                [self createSpokeFromPFObject:object forSpokeType:allSpoke];
             }
-            NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
-            NSMutableDictionary* userInfo = [NSMutableDictionary dictionary];
-            [userInfo setObject:resultsArray forKey:RESULTS_ARRAY];
-            [nc postNotificationName:WALL_SPOKES_ARRIVED object:self userInfo:userInfo];
         }
         else
         {
             NSLog(@"Error: %@ %@", error, [error userInfo]);
         }
     }];
-    return resultsArray;
 }
 
+-(void)loadFirstResults:(int)resultsNumber
+{
+    firstResultsArray = [[NSMutableArray alloc]init];
+    PFQuery *query = [PFQuery queryWithClassName:@"spoke"];
+    [query orderByDescending:@"creationDate"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error)
+        {
+            for (int i = 0; i < resultsNumber; i++)
+            {
+                PFObject *object =[objects objectAtIndex:i];
+                [self createSpokeFromPFObject:object forSpokeType:firstSpoke];
+            }
+        }
+        else
+        {
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
+}
+
+-(void)createSpokeFromPFObject:(PFObject*)object forSpokeType:(spokeType)type
+{
+    Spoke *spokeObj = [[Spoke alloc]init];
+    spokeObj.ownerID = [object objectForKey:@"ownerID"];
+    spokeObj.spokeID = [object objectForKey:@"spokeID"];
+    spokeObj.creationDate = [object objectForKey:@"creationDate"];
+    spokeObj.respokeToSpokeID = [object objectForKey:@"respokeToSpokeID"];
+    spokeObj.totalHeards = [[object objectForKey:@"totalHeards"] intValue];
+    spokeObj.totalLikes = [[object objectForKey:@"totalLikes"] intValue];
+    spokeObj.listOfHeardsID = [object objectForKey:@"listOfHeardsID"];
+    spokeObj.listOfThankersID = [object objectForKey:@"listOfThankersID"];
+    spokeObj.listOfRespokeID = [object objectForKey:@"listOfRespokeID"];
+    spokeObj.ownerName = [object objectForKey:@"ownerName"];
+    PFFile *audioFile = [object objectForKey:@"audioData"];
+    [audioFile getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+        spokeObj.audioData = data;
+        [self addImageToSpoke:spokeObj withPFObject:object forSpokeType:type];
+    }];
+}
+
+-(void)addImageToSpoke:(Spoke*)spokeObj withPFObject:(PFObject*)object forSpokeType:(spokeType)type
+{
+    PFFile *ownerImage = [object objectForKey:@"ownerImageData"];
+    [ownerImage getDataInBackgroundWithBlock:^(NSData *data, NSError *error) {
+        spokeObj.ownerImageData = data;
+        switch (type)
+        {
+            case firstSpoke:
+            {
+                [firstResultsArray addObject:spokeObj];
+                if ([firstResultsArray count] == 5)
+                {
+                    NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+                    NSMutableDictionary* userInfo = [NSMutableDictionary dictionary];
+                    [userInfo setObject:firstResultsArray forKey:FIRST_RESULTS_ARRAY];
+                    [nc postNotificationName:FIRST_SPOKES_ARRIVED object:self userInfo:userInfo];
+                    [firstResultsArray removeAllObjects];
+                    [self loadAllSpokesFromRemote];
+                }
+            }
+                break;
+            case allSpoke:
+            {
+                [allResultsArray addObject:spokeObj];
+                if ([allResultsArray count] == allResultObjectsCount)
+                {
+                    NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
+                    NSMutableDictionary* userInfo = [NSMutableDictionary dictionary];
+                    [userInfo setObject:allResultsArray forKey:RESULTS_ARRAY];
+                    [nc postNotificationName:WALL_SPOKES_ARRIVED object:self userInfo:userInfo];
+                }
+            }
+                break;
+            case mySpoke:
+            {
+                BOOL spokeFound = NO;
+                int indexFound = -1;
+                for (int i = 0; i < [spokesArray count]; i++)
+                {
+                    Spoke *tempSpoke = [spokesArray objectAtIndex:i];
+                    if ([spokeObj.spokeID isEqualToString:tempSpoke.spokeID])
+                    {
+                        spokeFound = YES;
+                        indexFound = i;
+                        break;
+                    }
+                }
+                if (spokeFound)
+                {
+                    [spokesArray replaceObjectAtIndex:indexFound withObject:spokeObj];
+                }
+                else
+                {
+                    [spokesArray addObject:spokeObj];
+                }
+
+                NSLog(@"SPOKES ARRAY COUNT %d", [spokesArray count]);
+                NSLog(@"MY SPOKES COUNT %d", mySpokesCount);
+
+                if ([spokesArray count] == mySpokesCount)
+                {
+                    NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:spokesArray forKey:SPOKEN_ARRAY_ARRIVED];
+                    [[NSNotificationCenter defaultCenter]postNotificationName:USER_WALL_SPOKEN_ARRIVED object:nil userInfo:userInfo];
+                }
+            }
+                break;
+            case otherUserSpoke:
+            {
+                [currentUserSpokesArray addObject:spokeObj];
+                if ([currentUserSpokesArray count] == otherUserSpokesCount)
+                {
+                    NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:currentUserSpokesArray forKey:SPOKEN_ARRAY_ARRIVED];
+                    [[NSNotificationCenter defaultCenter]postNotificationName:USER_WALL_SPOKEN_ARRIVED object:nil userInfo:userInfo];
+                    currentUserSpokesArray = nil;
+                }
+            }
+                break;
+            default:
+                break;
+        }
+    }];
+}
 
 -(void)deleteSpoke:(Spoke*)spokeToDelete
 {
@@ -564,9 +759,9 @@ static UserProfile *shared = nil;
     spokeObj.listOfHeardsID = [object objectForKey:@"listOfHeardsID"];
     spokeObj.listOfThankersID = [object objectForKey:@"listOfThankersID"];
     spokeObj.listOfRespokeID = [object objectForKey:@"listOfRespokeID"];
+    spokeObj.ownerName = [object objectForKey:@"ownerName"];
     PFFile *audioFile = [object objectForKey:@"audioData"];
     spokeObj.audioData = [audioFile getData];
-    spokeObj.ownerName = [object objectForKey:@"ownerName"];
     PFFile *ownerImage = [object objectForKey:@"ownerImageData"];
     spokeObj.ownerImageData = [ownerImage getData];
 

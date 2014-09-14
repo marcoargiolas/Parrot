@@ -7,9 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ParrotNavigationController.h"
+#import <AVFoundation/AVFoundation.h>
+#import <Parse/Parse.h>
+#import "UserProfile.h"
+#import "MainViewController.h"
+#import "GlobalDefines.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
-
+{
+    UserProfile *userProf;
+}
 @property (strong, nonatomic) UIWindow *window;
 
 @end

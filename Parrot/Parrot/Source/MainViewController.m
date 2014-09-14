@@ -8,6 +8,8 @@
 
 #import "MainViewController.h"
 #import "ParrotNavigationController.h"
+#import "AppDelegate.h"
+#import "Utilities.h"
 
 @implementation actionBarView
 
@@ -62,6 +64,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    userProf = [UserProfile sharedProfile];
     [profileContainerView setFrame:CGRectMake(profileContainerView.frame.origin.x, profileContainerView.frame.origin.y, profileContainerView.frame.size.width, [UIScreen mainScreen].bounds.size.height)];
     [wallContainerView setFrame:CGRectMake(wallContainerView.frame.origin.x, wallContainerView.frame.origin.y, wallContainerView.frame.size.width, [UIScreen mainScreen].bounds.size.height)];
     [searchContainerView setFrame:CGRectMake(searchContainerView.frame.origin.x, searchContainerView.frame.origin.y, searchContainerView.frame.size.width, [UIScreen mainScreen].bounds.size.height)];
@@ -88,22 +91,15 @@
     actionView.mainVC = self;
     profileVC.mainVC = self;
     wallVC.mainVC = self;
+
+    [userProf loadLocalSpokesCache];
     [self wallButtonPressed:nil];
-        
-    [self.navigationController.navigationBar addSubview:actionView];
-    
-    userProf = [UserProfile sharedProfile];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
     [self.navigationController.navigationBar addSubview:actionView];
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"background_navbar@2x.png"] forBarMetrics:UIBarMetricsDefault];
-}
-
--(UIStatusBarStyle)preferredStatusBarStyle
-{
-    return UIStatusBarStyleLightContent;
 }
 
 - (void)didReceiveMemoryWarning
@@ -181,19 +177,18 @@
     [wallContainerView setHidden:YES];
     [searchContainerView setHidden:YES];
     
-    profileVC.spokesTableView.delegate = profileVC;
-    profileVC.spokesTableView.dataSource = profileVC;
     profileVC.myProfile = YES;
-    wallVC.wallTableView.delegate = nil;
-    wallVC.wallTableView.dataSource = nil;
-    if ([userProf.spokesArray count] == 0)
+    
+    if ([userProf.spokesArray count] > 0)
     {
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"loadUserWall" object:nil];
+        profileVC.currentSpokenArray = [NSMutableArray arrayWithArray:userProf.spokesArray];
+        [profileVC.spokesTableView reloadData];
     }
     else
     {
-        [profileVC.spokesTableView reloadData];
+        [profileVC reloadMySpokesArray];
     }
+
 }
 
 - (IBAction)wallButtonPressed:(id)sender
@@ -221,17 +216,11 @@
     [wallContainerView setHidden:NO];
     [searchContainerView setHidden:YES];
 
-    profileVC.spokesTableView.delegate = nil;
-    profileVC.spokesTableView.dataSource = nil;
     profileVC.myProfile = NO;
-    wallVC.wallTableView.delegate = wallVC;
-    wallVC.wallTableView.dataSource = wallVC;
     
-    userProf = [UserProfile sharedProfile];
-    [userProf loadLocalSpokesCache];
-    if ([userProf.cacheSpokesArray count] == 0)
+    if ([userProf.cacheSpokesArray count] > 0)
     {
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"loadWallSpokes" object:nil];
+        [wallVC loadWallSpokes];
     }
 }
 
@@ -267,10 +256,12 @@
     if([segue.identifier isEqualToString:@"profileAction"])
     {
         profileVC = [segue destinationViewController];
+        profileVC.mainVC = self;
     }
     else if([segue.identifier isEqualToString:@"wallAction"])
     {
         wallVC = [[[segue destinationViewController] viewControllers] objectAtIndex:0];
+        wallVC.mainVC = self;
     }
     else if ([segue.identifier isEqualToString:@"userProfileAction"])
     {
@@ -280,6 +271,7 @@
         profVC.userImageLoad = [UIImage imageWithData:currentSpokeChoose.ownerImageData];
         profVC.userName = [NSString stringWithFormat:@"%@ %@",currentSpokeChoose.ownerName, currentSpokeChoose.ownerSurname];
         profVC.userId = currentSpokeChoose.ownerID;
+        profVC.mainVC = self;
         currentSpokeChoose = nil;
     }
     else if ([segue.identifier isEqualToString:@"respokenAction"])
@@ -290,7 +282,7 @@
         respokenVC.userName = [NSString stringWithFormat:@"%@ %@",currentSpokeChoose.ownerName, currentSpokeChoose.ownerSurname];
         respokenVC.userId = currentSpokeChoose.ownerID;
         respokenVC.currentSpoke = currentSpokeChoose;
-        
+        respokenVC.mainVC = self;
         currentSpokeChoose = nil;
     }
 }

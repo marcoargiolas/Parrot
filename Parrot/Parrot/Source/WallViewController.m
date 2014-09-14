@@ -46,7 +46,7 @@
     [super viewDidLoad];
     
     userProf = [UserProfile sharedProfile];
-    
+    wallSpokesArray = [[NSMutableArray alloc]init];
     maskImage = [UIImage ellipsedMaskFromRect:CGRectMake(0, 0, IMAGE_WIDTH, IMAGE_WIDTH) inSize:CGSizeMake(IMAGE_WIDTH, IMAGE_WIDTH)];
     
     currentPlayingTag = -1;
@@ -58,34 +58,43 @@
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
     [recordButton addGestureRecognizer:longPress];
     [self setupRefreshControl];
+    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    [self.navigationController setNavigationBarHidden:YES];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadWallTableView:) name:WALL_SPOKES_ARRIVED object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadWallTableView:) name:FIRST_SPOKES_ARRIVED object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadSpokeArray:) name:@"loadWallSpokes" object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadWallTableView:) name:WALL_SPOKES_ARRIVED object:nil];
-    
-//    if(refreshControl == nil)
-    {
-        [self reloadSpokeArray:nil];
+    [self loadWallSpokes];
+}
 
-    }
-//    [refreshControl beginRefreshing];
-    [self.navigationController setNavigationBarHidden:YES];
+-(void)loadWallSpokes
+{
     if([userProf.cacheSpokesArray count] > 0 )
     {
-        userProf.cacheSpokesArray = [Utilities orderByDate:userProf.cacheSpokesArray];
+        wallSpokesArray = [Utilities orderByDate:userProf.cacheSpokesArray];
         [wallTableView reloadData];
     }
-//    if([wallSpokesArray count] > 0)
-//        wallSpokesArray = [Utilities orderByDate:wallSpokesArray];
-//    [wallTableView reloadData];
+    else
+    {
+        if(!isLoading)
+        {
+            isLoading = YES;
+           [self reloadSpokeArray:nil];
+        }
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
 {
     startRecord = NO;
     [player stop];
+    if ([userProf.cacheSpokesArray count] == 0)
+    {
+        [userProf saveLocalSpokesCache:userProf.cacheSpokesArray];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -96,7 +105,13 @@
 
 -(void)reloadSpokeArray:(NSNotification *)notification
 {
-    [userProf loadAllSpokesFromRemote];
+    [refreshControl beginRefreshing];
+    if ([wallSpokesArray count] == 0)
+    {
+        [[UserProfile sharedProfile] loadFirstResults:5];
+    }
+    else
+        [[UserProfile sharedProfile] loadAllSpokesFromRemote];
 }
 
 -(void)reloadWallTableView:(NSNotification*)notification
@@ -105,12 +120,22 @@
     {
         wallSpokesArray = [[NSMutableArray alloc]init];
     }
-    wallSpokesArray = (NSMutableArray*)[[notification userInfo]objectForKey:RESULTS_ARRAY];
-
+    if([notification.name isEqualToString:FIRST_SPOKES_ARRIVED])
+    {
+        wallSpokesArray = (NSMutableArray*)[[notification userInfo]objectForKey:FIRST_RESULTS_ARRAY];
+        [userProf saveLocalSpokesCache:wallSpokesArray];
+    }
+    else if([notification.name isEqualToString:WALL_SPOKES_ARRIVED])
+    {
+        wallSpokesArray = (NSMutableArray*)[[notification userInfo]objectForKey:RESULTS_ARRAY];
+        [userProf saveLocalSpokesCache:wallSpokesArray];
+    }
+    
     wallSpokesArray = [Utilities orderByDate:wallSpokesArray];
-    [userProf saveLocalSpokesCache:wallSpokesArray];
     [wallTableView reloadData];
     [refreshControl endRefreshing];
+    
+    isLoading = NO;
 }
 
 #pragma mark -
@@ -168,7 +193,8 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [userProf.cacheSpokesArray count];
+    NSLog(@"count %d",[wallSpokesArray count]);
+    return [wallSpokesArray count];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -211,7 +237,7 @@
     cell.wallVC = self;
     cell.playButton.tag = indexPath.row;
     
-    Spoke *spokeObj = [userProf.cacheSpokesArray objectAtIndex:indexPath.row];
+    Spoke *spokeObj = [wallSpokesArray objectAtIndex:indexPath.row];
 
     NSData *img_data = spokeObj.ownerImageData;
     UIImage *userImageLoad = [UIImage imageWithData:img_data];
@@ -291,6 +317,13 @@
     }
 
     [cell setBackgroundColor:[UIColor clearColor]];
+    
+//    int lastRow = (int)[tableView numberOfRowsInSection:indexPath.section]-1;
+//    if(lastRow == indexPath.row && indexPath.row == 4)
+//    {
+//        [userProf loadAllSpokesFromRemote];
+//    }
+
     return cell;
 }
 

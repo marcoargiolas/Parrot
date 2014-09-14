@@ -139,11 +139,62 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    if([userProf.spokesArray count] > 0 )
+    if (!userProfile)
     {
-        userProf.spokesArray = [Utilities orderByDate:userProf.cacheSpokesArray];
-        currentSpokenArray = [NSMutableArray arrayWithArray:userProf.spokesArray];
-        [spokesTableView reloadData];
+        if ([userProf.spokesArray count] > 0)
+        {
+            userProf.spokesArray = [Utilities orderByDate:userProf.spokesArray];
+            currentSpokenArray = [NSMutableArray arrayWithArray:userProf.spokesArray];
+            [spokesTableView reloadData];
+        }
+        else
+        {
+            if (!isLoading)
+            {
+                isLoading = YES;
+                [self reloadMySpokesArray];
+            }
+        }
+    }
+    else
+    {
+        if (!isLoading)
+        {
+            isLoading = YES;
+            [self reloadMySpokesArray];
+        }
+    }
+}
+
+-(void)loadSpokesTableView
+{
+    if (userProf.currentUserSpokesArray == nil)
+    {
+        if (!userProfile)
+        {
+            if ([userProf.spokesArray count] > 0)
+            {
+                userProf.spokesArray = [Utilities orderByDate:userProf.spokesArray];
+                currentSpokenArray = [NSMutableArray arrayWithArray:userProf.spokesArray];
+                [spokesTableView reloadData];
+            }
+            else
+            {
+                if (!isLoading)
+                {
+                    isLoading = YES;
+                    [self reloadMySpokesArray];
+                }
+            }
+        }
+        else
+        {
+            if (!isLoading)
+            {
+                isLoading = YES;
+                [self reloadMySpokesArray];
+            }
+        }
     }
 }
 
@@ -157,7 +208,7 @@
 {
     [refreshControl beginRefreshing];
     isLoading = YES;
-    currentSpokenArray = [userProf loadSpokesFromRemoteForUser:userId];
+    [userProf loadSpokesFromRemoteForUser:userId];
 }
 
 -(void)reloadMyWallTableView:(NSNotification*)notification

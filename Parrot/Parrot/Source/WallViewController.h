@@ -25,6 +25,8 @@
     BOOL startRecord;
     BOOL playerInPause;
     MainViewController *mainVC;
+    BOOL firstResults;
+    BOOL isLoading;
 }
 
 @property (nonatomic, strong) MainViewController *mainVC;
@@ -42,5 +44,6 @@
 -(void)openUserProfile:(Spoke*)sender;
 -(void)openRespokenView:(Spoke*)sender;
 -(void)reloadSpokeArray:(NSNotification*)notification;
+-(void)loadWallSpokes;
 
 @end

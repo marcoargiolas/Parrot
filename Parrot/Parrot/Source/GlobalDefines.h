@@ -33,3 +33,5 @@
 #define RESULTS_ARRAY                   @"resultsArray"
 #define WALL_SPOKES_ARRIVED             @"wallSpokesArrived"
 #define LAST_UPDATE                     @"lastUpdate"
+#define FIRST_RESULTS_ARRAY             @"firstResultsArray"
+#define FIRST_SPOKES_ARRIVED            @"firstSpokesArrived"

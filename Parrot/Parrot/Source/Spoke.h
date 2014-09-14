@@ -13,6 +13,7 @@
     NSString *spokeID;
     NSData *audioData;
     NSDate *creationDate;
+    NSDate *updateDate;
     int totalLikes;
     int totalHeards;
     NSString *respokeToSpokeID;
@@ -35,6 +36,7 @@
 @property (nonatomic, strong) NSString *spokeID;
 @property (nonatomic, strong) NSData *audioData;
 @property (nonatomic, strong) NSDate *creationDate;
+@property (nonatomic, strong) NSDate *updateDate;
 @property (nonatomic, assign) int totalLikes;
 @property (nonatomic, assign) int totalHeards;
 @property (nonatomic, strong) NSString *respokeToSpokeID;

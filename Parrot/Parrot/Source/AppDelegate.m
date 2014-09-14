@@ -7,12 +7,6 @@
 //
 
 #import "AppDelegate.h"
-#import <AVFoundation/AVFoundation.h>
-#import <Parse/Parse.h>
-#import "UserProfile.h"
-#import "MainViewController.h"
-#import "GlobalDefines.h"
-#import "ParrotNavigationController.h"
 
 @implementation AppDelegate
 
@@ -39,17 +33,15 @@
     // ****************************************************************************
     [PFFacebookUtils initializeFacebook];
 
+    userProf = [UserProfile sharedProfile];
     if([[NSUserDefaults standardUserDefaults]objectForKey:USER_ID] != nil)
     {
-        [[UserProfile sharedProfile]loadProfileLocal];
+        [userProf loadProfileLocal];
         UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        
         ParrotNavigationController *controller = [storyBoard  instantiateViewControllerWithIdentifier:@"ParrotNavigationController"];
         [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"background_navbar@2x.png"] forBarMetrics:UIBarMetricsDefault];
         self.window.rootViewController = controller;
     }
-    
-    [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
    
     return YES;
 }
@@ -72,7 +64,8 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    [[UserProfile sharedProfile]saveProfileLocal];
+    [userProf saveProfileLocal];
+    [userProf saveLocalSpokesCache:userProf.cacheSpokesArray];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application

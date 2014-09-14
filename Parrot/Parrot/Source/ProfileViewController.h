@@ -68,5 +68,7 @@
 - (IBAction)settingsButtonPressed:(id)sender;
 -(void)openUserProfile:(Spoke*)sender;
 -(void)openRespokenView:(Spoke*)sender;
+-(void)reloadMySpokesArray;
+-(void)loadSpokesTableView;
 
 @end
