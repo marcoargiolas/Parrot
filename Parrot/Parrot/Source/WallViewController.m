@@ -346,6 +346,9 @@
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
         [wallTableView beginUpdates];
+        Spoke *spokeToDelete = [wallSpokesArray objectAtIndex:indexPath.row];
+        [userProf.cacheSpokesArray removeObject:spokeToDelete];
+        [userProf.spokesArray removeObject:spokeToDelete];
         [userProf deleteSpoke:[wallSpokesArray objectAtIndex:indexPath.row]];
         [wallSpokesArray removeObjectAtIndex:indexPath.row];
         [wallTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];

@@ -473,7 +473,9 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return YES;
+    if([userId isEqualToString:[userProf getUserID]])
+        return YES;
+    return NO;
 }
 
 // Override to support editing the table view.
@@ -482,6 +484,9 @@
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
         [spokesTableView beginUpdates];
+        Spoke *spokeToDelete = [currentSpokenArray objectAtIndex:indexPath.row];
+        [userProf.cacheSpokesArray removeObject:spokeToDelete];
+        [userProf.spokesArray removeObject:spokeToDelete];
         [userProf deleteSpoke:[currentSpokenArray objectAtIndex:indexPath.row]];
         [currentSpokenArray removeObjectAtIndex:indexPath.row];
         [spokesTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];

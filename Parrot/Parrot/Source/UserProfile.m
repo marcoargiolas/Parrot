@@ -122,21 +122,23 @@ static UserProfile *shared = nil;
             {
                 case NSOrderedAscending:
                     NSLog(@"NSOrderedAscending");
-                    
                     break;
                 case NSOrderedSame:
                     NSLog(@"NSOrderedSame");
                     break;
                 case NSOrderedDescending:
+                {
                     NSLog(@"NSOrderedDescending");
-                    if ([cacheSpokesArray containsObject:tempSpoke])
+                    for (int j = 0; j < [cacheSpokesArray count]; j++)
                     {
-                        [cacheSpokesArray replaceObjectAtIndex:i withObject:tempSpoke];
+                        Spoke *cacheSpoke = [cacheSpokesArray objectAtIndex:j];
+                        if ([cacheSpoke.spokeID isEqualToString:tempSpoke.spokeID])
+                        {
+                            [cacheSpokesArray replaceObjectAtIndex:i withObject:tempSpoke];
+                            break;
+                        }
                     }
-                    else
-                    {
-                        [cacheSpokesArray addObject:tempSpoke];
-                    }
+                }
                     break;
             }
         }
@@ -496,7 +498,12 @@ static UserProfile *shared = nil;
                 currentUserSpokesArray = [[NSMutableArray alloc] init];
             }
             
-            for (PFObject *object in objects)
+            if ([objects count] == 0)
+            {
+                NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:spokesArray forKey:SPOKEN_ARRAY_ARRIVED];
+                [[NSNotificationCenter defaultCenter]postNotificationName:USER_WALL_SPOKEN_ARRIVED object:nil userInfo:userInfo];
+            }
+            else for (PFObject *object in objects)
             {
                 [self createSpokeFromPFObject:object forSpokeType:currentType];
             }
