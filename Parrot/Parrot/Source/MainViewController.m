@@ -70,15 +70,15 @@
     [searchContainerView setFrame:CGRectMake(searchContainerView.frame.origin.x, searchContainerView.frame.origin.y, searchContainerView.frame.size.width, [UIScreen mainScreen].bounds.size.height)];
     
 
-    UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft:)];
-    swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
-    [self.view addGestureRecognizer:swipeLeft];
-    swipeLeft.delegate = self;
-    
-    UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeRight:)];
-    swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
-    [self.view addGestureRecognizer:swipeRight];
-    swipeRight.delegate = self;
+//    UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft:)];
+//    swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
+//    [self.view addGestureRecognizer:swipeLeft];
+//    swipeLeft.delegate = self;
+//    
+//    UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeRight:)];
+//    swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
+//    [self.view addGestureRecognizer:swipeRight];
+//    swipeRight.delegate = self;
     
     [buttonsContainerView.layer setShadowColor:[UIColor blackColor].CGColor];
     [buttonsContainerView.layer setShadowOpacity:0.3];
@@ -119,37 +119,37 @@
 }
 */
 
--(void) swipeRight:(UISwipeGestureRecognizer *) recognizer
-{
-    if(actionView.profileButton.selected)
-        return;
-    if(actionView.wallButton.selected)
-    {
-        [self profileButtonPressed:nil];
-        return;
-    }
-    if(actionView.searchButton.selected)
-    {
-        [self wallButtonPressed:nil];
-        return;
-    }
-}
-
--(void) swipeLeft:(UISwipeGestureRecognizer *) recognizer
-{
-    if(actionView.profileButton.selected)
-    {
-        [self wallButtonPressed:nil];
-        return;
-    }
-    if(actionView.wallButton.selected)
-    {
-        [self searchButtonPressed:nil];
-        return;
-    }
-    if(actionView.searchButton.selected)
-        return;
-}
+//-(void) swipeRight:(UISwipeGestureRecognizer *) recognizer
+//{
+//    if(actionView.profileButton.selected)
+//        return;
+//    if(actionView.wallButton.selected)
+//    {
+//        [self profileButtonPressed:nil];
+//        return;
+//    }
+//    if(actionView.searchButton.selected)
+//    {
+//        [self wallButtonPressed:nil];
+//        return;
+//    }
+//}
+//
+//-(void) swipeLeft:(UISwipeGestureRecognizer *) recognizer
+//{
+//    if(actionView.profileButton.selected)
+//    {
+//        [self wallButtonPressed:nil];
+//        return;
+//    }
+//    if(actionView.wallButton.selected)
+//    {
+//        [self searchButtonPressed:nil];
+//        return;
+//    }
+//    if(actionView.searchButton.selected)
+//        return;
+//}
 
 - (IBAction)profileButtonPressed:(id)sender
 {
