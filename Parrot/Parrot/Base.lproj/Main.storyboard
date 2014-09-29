@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="5056" systemVersion="13E28" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="vXZ-lx-hvc">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="vXZ-lx-hvc">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
         <!--Login View Controller-->
@@ -159,12 +159,12 @@
             </objects>
             <point key="canvasLocation" x="1624" y="933"/>
         </scene>
-        <!--Profile View Controller - Profile-->
+        <!--Profile-->
         <scene sceneID="SRB-hQ-kzt">
             <objects>
                 <viewController title="Profile" automaticallyAdjustsScrollViewInsets="NO" id="hL7-ZH-Yb5" customClass="ProfileViewController" sceneMemberID="viewController">
                     <view key="view" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="LJE-hm-h7t">
-                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <rect key="frame" x="0.0" y="64" width="320" height="509"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" id="4mD-zy-bUt">
@@ -247,7 +247,7 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="177" sectionHeaderHeight="22" sectionFooterHeight="22" id="hcI-rR-wGp">
-                                <rect key="frame" x="0.0" y="110" width="320" height="394"/>
+                                <rect key="frame" x="0.0" y="110" width="320" height="399"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
@@ -563,7 +563,7 @@
             </objects>
             <point key="canvasLocation" x="1377" y="1697"/>
         </scene>
-        <!--Respoken View Controller - Detail-->
+        <!--Detail-->
         <scene sceneID="P7I-pf-Ts9">
             <objects>
                 <viewController title="Detail" id="qCF-vN-QXj" customClass="RespokenViewController" sceneMemberID="viewController">
@@ -642,7 +642,7 @@
         <simulatedScreenMetrics key="destination" type="retina4"/>
     </simulatedMetricsContainer>
     <inferredMetricsTieBreakers>
-        <segue reference="Nwk-46-9Bo"/>
-        <segue reference="zma-EB-bld"/>
+        <segue reference="LVe-XY-ICN"/>
+        <segue reference="XMF-2W-9to"/>
     </inferredMetricsTieBreakers>
 </document>

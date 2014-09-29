@@ -51,6 +51,7 @@
 @synthesize wallBackgroundView;
 @synthesize searchBackgroundView;
 @synthesize actionView;
+@synthesize buttonsContainerView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -99,7 +100,11 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [self.navigationController.navigationBar addSubview:actionView];
-    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"background_navbar@2x.png"] forBarMetrics:UIBarMetricsDefault];
+//    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"background_navbar@2x.png"] forBarMetrics:UIBarMetricsDefault];
+    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setBackgroundColor:[UIColor blackColor]];
 }
 
 - (void)didReceiveMemoryWarning
