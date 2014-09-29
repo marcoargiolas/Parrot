@@ -72,6 +72,15 @@
                 [respokenVC.currentSpoke.listOfThankersID removeObject:[respokenVC.userProf getUserID]];
         }
         
+        for (int i = 0; i < [respokenVC.userProf.cacheSpokesArray count]; i++)
+        {
+            Spoke *tempSpoke = [respokenVC.userProf.cacheSpokesArray objectAtIndex:i];
+            if ([tempSpoke.spokeID isEqualToString:respokenVC.currentSpoke.spokeID])
+            {
+                [respokenVC.userProf.cacheSpokesArray replaceObjectAtIndex:i withObject:respokenVC.currentSpoke];
+            }
+        }
+
         respokenVC.currentSpoke.totalLikes = [respokenVC.currentSpoke.listOfThankersID count];
         [respokenVC.userProf updateTotalSpokeLike:respokenVC.currentSpoke.spokeID thanksID:[respokenVC.userProf getUserID]addLike:!likeButton.selected totalLikes:[respokenVC.currentSpoke.listOfThankersID count]];
     }
@@ -137,17 +146,24 @@
     [respokenSlider removeFromSuperview];
     [currentTimeLabel removeFromSuperview];
     [pausePlayButton removeFromSuperview];
-    [playContainerView addSubview:playButton];
-    [playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
     
+    [playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
+    [playContainerView addSubview:playButton];
+
     if(![respokenVC.currentSpoke.listOfHeardsID containsObject:[respokenVC.userProf getUserID]])
     {
         [respokenVC.currentSpoke.listOfHeardsID addObject:[respokenVC.userProf getUserID]];
+        for (int i = 0; i < [respokenVC.userProf.cacheSpokesArray count]; i++)
+        {
+            Spoke *tempSpoke = [respokenVC.userProf.cacheSpokesArray objectAtIndex:i];
+            if ([tempSpoke.spokeID isEqualToString:respokenVC.currentSpoke.spokeID])
+            {
+                [respokenVC.userProf.cacheSpokesArray replaceObjectAtIndex:i withObject:respokenVC.currentSpoke];
+            }
+        }
     }
     
-    
     [respokenVC.userProf updateTotalSpokeHeard:respokenVC.currentSpoke.spokeID heardID:[respokenVC.userProf getUserID]];
-    
     int totalHeard = [respokenVC.currentSpoke.listOfHeardsID count];
     respokenVC.currentSpoke.totalHeards = totalHeard;
     heardLabel.text = [NSString stringWithFormat:@"%d heard", totalHeard];
@@ -178,12 +194,14 @@
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
     [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
 }
 
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
     [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
+    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
 }
 
 @end

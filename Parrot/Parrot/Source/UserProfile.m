@@ -128,16 +128,25 @@ static UserProfile *shared = nil;
                     break;
                 case NSOrderedDescending:
                 {
+                    BOOL found = NO;
                     NSLog(@"NSOrderedDescending");
                     for (int j = 0; j < [cacheSpokesArray count]; j++)
                     {
                         Spoke *cacheSpoke = [cacheSpokesArray objectAtIndex:j];
                         if ([cacheSpoke.spokeID isEqualToString:tempSpoke.spokeID])
                         {
-                            [cacheSpokesArray replaceObjectAtIndex:i withObject:tempSpoke];
+                            found = YES;
                             break;
                         }
                     }
+                    if (found)
+                    {
+                        [cacheSpokesArray replaceObjectAtIndex:i withObject:tempSpoke];
+                    }
+//                    else
+//                    {
+//                        [cacheSpokesArray addObject:tempSpoke];
+//                    }
                 }
                     break;
             }

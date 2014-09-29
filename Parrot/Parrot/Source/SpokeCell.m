@@ -190,6 +190,11 @@
         if(![currentSpoke.listOfHeardsID containsObject:[profileVC.userProf getUserID]])
         {
             [profileVC.currentSpokenArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
+            if ([profileVC.userProf.cacheSpokesArray count] < currentSpokeIndex)
+            {
+                [profileVC.userProf.cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
+            }
+            
             [currentSpoke.listOfHeardsID addObject:[profileVC.userProf getUserID]];
         }
 
@@ -199,7 +204,11 @@
     {
         if(![currentSpoke.listOfHeardsID containsObject:[wallVC.userProf getUserID]])
         {
-            [wallVC.userProf.cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
+            if ([wallVC.userProf.cacheSpokesArray count] < currentSpokeIndex)
+            {
+                [wallVC.userProf.cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
+            }
+            
             [currentSpoke.listOfHeardsID addObject:[wallVC.userProf getUserID]];
         }
         
@@ -210,6 +219,11 @@
     {
         if(![currentSpoke.listOfHeardsID containsObject:[respokenVC.userProf getUserID]])
         {
+            if ([respokenVC.userProf.cacheSpokesArray count] < currentSpokeIndex)
+            {
+                [respokenVC.userProf.cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
+            }
+            
             [respokenVC.wallSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
             [currentSpoke.listOfHeardsID addObject:[respokenVC.userProf getUserID]];
         }
@@ -286,6 +300,7 @@
         }
 
         [profileVC.currentSpokenArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
+        [profileVC.userProf.cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
         [profileVC.userProf updateTotalSpokeLike:currentSpoke.spokeID thanksID:[profileVC.userProf getUserID]addLike:!likeButton.selected totalLikes:[currentSpoke.listOfThankersID count]];
     }
     else if (wallVC != nil)
@@ -320,6 +335,7 @@
         
         currentSpoke.totalLikes = [currentSpoke.listOfThankersID count];
         [respokenVC.respokenArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
+        [respokenVC.userProf.cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
         [respokenVC.userProf updateTotalSpokeLike:currentSpoke.spokeID thanksID:[respokenVC.userProf getUserID]addLike:!likeButton.selected totalLikes:[currentSpoke.listOfThankersID count]];
     }
     likeButton.selected = !likeButton.selected;
