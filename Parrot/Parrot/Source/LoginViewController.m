@@ -26,6 +26,11 @@
 	[activityIndicator removeFromSuperview];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(goToMainView) name:PROFILE_LOADED_FROM_FACEBOOK object:nil];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
+    
+    self.navigationController.navigationBar.barTintColor = [UIColor blackColor];
+    self.navigationController.navigationBar.tintColor = [UIColor whiteColor];
+    [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
+    [self.navigationController.navigationBar setBackgroundColor:[UIColor blackColor]];
 }
 
 - (void)dealloc
@@ -41,7 +46,7 @@
 #pragma mark - Login mehtods
 
 /* Login to facebook method */
-- (IBAction)loginButtonPressed:(id)sender
+- (IBAction)facebookLoginButtonPressed:(id)sender
 {
     [self.view addSubview:activityIndicator];
     // Set permissions required from the facebook user account
@@ -80,6 +85,16 @@
     }];
     
     [activityIndicator startAnimating]; // Show loading indicator until login is finished
+}
+
+- (IBAction)registerButtonPressed:(id)sender
+{
+    [self performSegueWithIdentifier:@"registerAction" sender:self];
+}
+
+- (IBAction)loginButtonPressed:(id)sender
+{
+
 }
 
 - (void)goToMainView

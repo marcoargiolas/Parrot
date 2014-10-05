@@ -180,7 +180,6 @@ static UserProfile *shared = nil;
             }
         }
     }
-    NSLog(@"SPOKE ARRAy DELLA MINCHIA %d", [spokesArray count]);
     [[NSUserDefaults standardUserDefaults]setObject:[NSDate date] forKey:LAST_UPDATE];
 //   [[NSUserDefaults standardUserDefaults]removeObjectForKey:LAST_UPDATE];
     NSDate *lastUpdate = [[NSUserDefaults standardUserDefaults]objectForKey:LAST_UPDATE];

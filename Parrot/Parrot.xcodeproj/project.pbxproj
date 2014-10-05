@@ -66,6 +66,7 @@
 		DEAA904C196356170036B6BF /* CHANGELOG in Resources */ = {isa = PBXBuildFile; fileRef = DEAA903E196356170036B6BF /* CHANGELOG */; };
 		DEAA904D196356170036B6BF /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = DEAA903F196356170036B6BF /* VERSION */; };
 		DEAA9051196356C70036B6BF /* RecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA9050196356C70036B6BF /* RecordViewController.m */; };
+		DEB5128619E03F25007FB802 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB5128519E03F25007FB802 /* RegisterViewController.m */; };
 		DECADBCD1961EA300024D067 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADBCC1961EA300024D067 /* Foundation.framework */; };
 		DECADBCF1961EA300024D067 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADBCE1961EA300024D067 /* CoreGraphics.framework */; };
 		DECADBD11961EA300024D067 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADBD01961EA300024D067 /* UIKit.framework */; };
@@ -194,6 +195,8 @@
 		DEAA903F196356170036B6BF /* VERSION */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = VERSION; sourceTree = "<group>"; };
 		DEAA904F196356C70036B6BF /* RecordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RecordViewController.h; path = Source/RecordViewController.h; sourceTree = "<group>"; };
 		DEAA9050196356C70036B6BF /* RecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecordViewController.m; path = Source/RecordViewController.m; sourceTree = "<group>"; };
+		DEB5128419E03F25007FB802 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RegisterViewController.h; path = Source/RegisterViewController.h; sourceTree = "<group>"; };
+		DEB5128519E03F25007FB802 /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RegisterViewController.m; path = Source/RegisterViewController.m; sourceTree = "<group>"; };
 		DECADBC91961EA300024D067 /* Parrot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Parrot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DECADBCC1961EA300024D067 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		DECADBCE1961EA300024D067 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -529,6 +532,8 @@
 				DEAA901F196350B20036B6BF /* SearchViewController.m */,
 				DEF8192D19962EBD00D086A7 /* ParrotNavigationController.h */,
 				DEF8192E19962EBD00D086A7 /* ParrotNavigationController.m */,
+				DEB5128419E03F25007FB802 /* RegisterViewController.h */,
+				DEB5128519E03F25007FB802 /* RegisterViewController.m */,
 			);
 			name = Start;
 			sourceTree = "<group>";
@@ -687,6 +692,7 @@
 				DEF8192F19962EBD00D086A7 /* ParrotNavigationController.m in Sources */,
 				DE9DFC621965FC3200908ED7 /* UIImage+Additions.m in Sources */,
 				DEAA9040196356170036B6BF /* AEFloatConverter.m in Sources */,
+				DEB5128619E03F25007FB802 /* RegisterViewController.m in Sources */,
 				DEAA904B196356170036B6BF /* TPCircularBuffer.c in Sources */,
 				DECADC0C1961EC160024D067 /* AppDelegate.m in Sources */,
 				DEAA9041196356170036B6BF /* EZAudio.m in Sources */,
