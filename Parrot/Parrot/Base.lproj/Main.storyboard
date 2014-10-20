@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="KBW-xw-l5A">
     <dependencies>
-        <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
     </dependencies>
     <scenes>
@@ -86,16 +85,78 @@
                         <outlet property="registerButton" destination="k7T-ys-Lrx" id="kuR-0H-vJh"/>
                         <segue destination="sCf-2d-vO1" kind="modal" identifier="loginAction" id="6rq-b7-8o9"/>
                         <segue destination="RUB-Sq-mq8" kind="push" identifier="registerAction" id="xra-8s-BJt"/>
+                        <segue destination="anM-6y-Ah5" kind="push" identifier="enterAction" id="SnB-xE-GzB"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="x5A-6p-PRh" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1215" y="69"/>
         </scene>
-        <!--Register View Controller-->
+        <!--Enter View Controller-->
+        <scene sceneID="SV6-mb-d4e">
+            <objects>
+                <viewController id="anM-6y-Ah5" customClass="EnterViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8lS-7n-s3G">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="rLW-bU-M6S">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="hJG-wI-dsS">
+                                        <rect key="frame" x="110" y="252" width="100" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Login">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="loginButtonPressed:" destination="anM-6y-Ah5" eventType="touchUpInside" id="fvN-ib-8Da"/>
+                                        </connections>
+                                    </button>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Username" minimumFontSize="17" id="J5Y-iR-uEh">
+                                        <rect key="frame" x="30" y="101" width="260" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" autocorrectionType="no"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="anM-6y-Ah5" id="dLQ-j4-vpx"/>
+                                        </connections>
+                                    </textField>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Password" minimumFontSize="17" id="Rjc-ar-TLU">
+                                        <rect key="frame" x="30" y="177" width="260" height="40"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
+                                        <connections>
+                                            <outlet property="delegate" destination="anM-6y-Ah5" id="vc2-3r-Xhc"/>
+                                        </connections>
+                                    </textField>
+                                </subviews>
+                                <connections>
+                                    <outlet property="delegate" destination="anM-6y-Ah5" id="cNC-Aq-c2U"/>
+                                </connections>
+                            </scrollView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="aMo-dl-BwT"/>
+                    <connections>
+                        <outlet property="containerScrollView" destination="rLW-bU-M6S" id="fTb-31-YOC"/>
+                        <outlet property="loginButton" destination="hJG-wI-dsS" id="Sk7-Td-brI"/>
+                        <outlet property="passwordTextfield" destination="Rjc-ar-TLU" id="STs-iH-jdj"/>
+                        <outlet property="usernameTextfield" destination="J5Y-iR-uEh" id="eqj-tw-Gil"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Q4P-uK-12w" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-569" y="630"/>
+        </scene>
+        <!--Register-->
         <scene sceneID="Uvg-62-51Z">
             <objects>
-                <viewController id="RUB-Sq-mq8" customClass="RegisterViewController" sceneMemberID="viewController">
+                <viewController title="Register" id="RUB-Sq-mq8" customClass="RegisterViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="cru-j4-Bmc">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -125,6 +186,7 @@
                                         </state>
                                         <connections>
                                             <action selector="privacyButtonPressed:" destination="RUB-Sq-mq8" eventType="touchUpInside" id="7Wm-bs-4AM"/>
+                                            <segue destination="zSd-94-w1d" kind="modal" id="6er-j3-CDA"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="PE1-CJ-XNO">
@@ -136,6 +198,7 @@
                                         </state>
                                         <connections>
                                             <action selector="termsButtonPressed:" destination="RUB-Sq-mq8" eventType="touchUpInside" id="mfx-4i-Rqz"/>
+                                            <segue destination="5uF-I9-IY9" kind="modal" id="hDc-5V-73I"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="BtI-kh-xJZ">
@@ -199,6 +262,64 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H7r-A3-uPa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-1225" y="916"/>
+        </scene>
+        <!--Terms of Service-->
+        <scene sceneID="JQH-5a-Ium">
+            <objects>
+                <viewController title="Terms of Service" id="5uF-I9-IY9" customClass="TermsViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="XpF-uE-tBy">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="EuU-N5-km6">
+                                <rect key="frame" x="19" y="20" width="40" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Close">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="backButtonPressed:" destination="5uF-I9-IY9" eventType="touchUpInside" id="Fxx-Yj-Rkq"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="backButton" destination="EuU-N5-km6" id="Owp-eM-jn5"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lxN-Oc-HHh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1531" y="1613"/>
+        </scene>
+        <!--Privay Policy-->
+        <scene sceneID="EME-1D-KGq">
+            <objects>
+                <viewController title="Privay Policy" id="zSd-94-w1d" customClass="PrivacyViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="GWI-Or-NIg">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="ngB-k6-hTs">
+                                <rect key="frame" x="19" y="20" width="40" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Close">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="backButtonPressed:" destination="zSd-94-w1d" eventType="touchUpInside" id="KKQ-Ig-mZf"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <connections>
+                        <outlet property="backButton" destination="ngB-k6-hTs" id="sis-Eh-FnS"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="qoO-qh-dlN" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-909" y="1613"/>
         </scene>
         <!--Main View Controller-->
         <scene sceneID="i3Z-9j-mDG">

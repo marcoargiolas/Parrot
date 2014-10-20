@@ -164,11 +164,18 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-}
-
-
-
-- (IBAction)privacyButton:(id)sender {
+    NSLog(@"BUTTON INDEX %d", buttonIndex);
+    switch (buttonIndex)
+    {
+            //Change
+        case 0:
+            break;
+        case 1:
+            [self registerAction];
+            break;
+        default:
+            break;
+    }
 }
 
 - (IBAction)termsButtonPressed:(id)sender {
@@ -179,19 +186,29 @@
 
 - (IBAction)registerButtonPressed:(id)sender
 {
-    PFUser *user = [PFUser user];
+    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Is This Correct ?" message:[NSString stringWithFormat:@"You entered your email as: %@", emailTextField.text]  delegate:self cancelButtonTitle:@"Change" otherButtonTitles:@"Ok", nil];
+    [alert show];
+}
+
+-(void) registerAction
+{
     UIAlertView *alert;
-    if ([userNameTextField.text length] == 0)
+    PFUser *user = [PFUser user];
+    if (imageData == nil)
     {
-        alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Please insert your username" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+        alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Please choose your image" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+    }
+    else if ([userNameTextField.text length] == 0)
+    {
+        alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Please insert your username" delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
     }
     else if ([emailTextField.text length] == 0)
     {
-        alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Please insert your email" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+        alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Please insert your email" delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
     }
     else if ([passwordTextField.text length] == 0)
     {
-        alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Please insert your password" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+        alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Please insert your password" delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
     }
     if(alert != nil)
         [alert show];
@@ -202,7 +219,6 @@
         user.email = emailTextField.text;
         
         // other fields can be set just like with PFObject
-        
         [user signUpInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (!error)
             {
@@ -211,14 +227,30 @@
                 userProf.currentUser = [PFUser currentUser];
                 userProf.spokesArray = [[NSMutableArray alloc]init];
                 NSMutableDictionary *currentProfile = [[NSMutableDictionary alloc] init];
-
-                [userProf.currentUser setObject:currentProfile forKey:USER_PROFILE];
+                
+                [currentProfile setObject:user.username forKey:USER_FULL_NAME];
+                [currentProfile setObject:imageData forKey:USER_IMAGE_DATA];
+                
                 [userProf.currentUser setObject:userProf.spokesArray forKey:USER_SPOKES_ARRAY];
                 [userProf.currentUser setObject:user.username forKey:@"fullName"];
-
+                
+                [userProf.currentUser setObject:currentProfile forKey:USER_PROFILE];
+                
                 PFFile *ownerImage = [PFFile fileWithData:imageData];
                 [userProf.currentUser setObject:ownerImage forKey:@"userImage"];
                 
+                PFObject *userImage = [PFObject objectWithClassName:@"User"];
+                [userImage setObject:ownerImage forKey:@"userImage"];
+                [userImage setObject:user forKey:@"User"];
+                [userImage saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                    if (!error) {
+                        NSLog(@"SAVE");
+                    }
+                    else{
+                        // Log details of the failure
+                        NSLog(@"Error: %@ %@", error, [error userInfo]);
+                    }
+                }];
                 
                 [userProf.currentUser saveInBackground];
                 //            [self updateProfile];
@@ -234,7 +266,6 @@
         }];
     }
 }
-
 #pragma mark image management
 - (IBAction)addImageButtonPressed:(id)sender
 {

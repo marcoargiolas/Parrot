@@ -11,6 +11,7 @@
 		DE1D8987197AEFA900B552B4 /* SpokeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE1D8986197AEFA900B552B4 /* SpokeCell.m */; };
 		DE1D898A197C3D4200B552B4 /* button_main_record_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE1D8989197C3D4200B552B4 /* button_main_record_active@2x.png */; };
 		DE1D898C197C409300B552B4 /* startRecord.wav in Resources */ = {isa = PBXBuildFile; fileRef = DE1D898B197C409300B552B4 /* startRecord.wav */; };
+		DE20056919F041F9002759C9 /* EnterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE20056819F041F9002759C9 /* EnterViewController.m */; };
 		DE6388F619684748008D5B9D /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6388F519684748008D5B9D /* Utilities.m */; };
 		DE63890A19687EFF008D5B9D /* button_bar_options_enabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE6388F719687EFF008D5B9D /* button_bar_options_enabled@2x.png */; };
 		DE63890B19687EFF008D5B9D /* button_bar_pause_enabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE6388F819687EFF008D5B9D /* button_bar_pause_enabled@2x.png */; };
@@ -67,6 +68,8 @@
 		DEAA904D196356170036B6BF /* VERSION in Resources */ = {isa = PBXBuildFile; fileRef = DEAA903F196356170036B6BF /* VERSION */; };
 		DEAA9051196356C70036B6BF /* RecordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEAA9050196356C70036B6BF /* RecordViewController.m */; };
 		DEB5128619E03F25007FB802 /* RegisterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB5128519E03F25007FB802 /* RegisterViewController.m */; };
+		DEB5128D19E15AD9007FB802 /* TermsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB5128C19E15AD9007FB802 /* TermsViewController.m */; };
+		DEB5129019E15AE7007FB802 /* PrivacyViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEB5128F19E15AE7007FB802 /* PrivacyViewController.m */; };
 		DECADBCD1961EA300024D067 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADBCC1961EA300024D067 /* Foundation.framework */; };
 		DECADBCF1961EA300024D067 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADBCE1961EA300024D067 /* CoreGraphics.framework */; };
 		DECADBD11961EA300024D067 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADBD01961EA300024D067 /* UIKit.framework */; };
@@ -119,6 +122,8 @@
 		DE1D8986197AEFA900B552B4 /* SpokeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SpokeCell.m; path = Source/SpokeCell.m; sourceTree = "<group>"; };
 		DE1D8989197C3D4200B552B4 /* button_main_record_active@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_main_record_active@2x.png"; sourceTree = "<group>"; };
 		DE1D898B197C409300B552B4 /* startRecord.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = startRecord.wav; path = Parrot/Resources/startRecord.wav; sourceTree = "<group>"; };
+		DE20056719F041F9002759C9 /* EnterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EnterViewController.h; path = Source/EnterViewController.h; sourceTree = "<group>"; };
+		DE20056819F041F9002759C9 /* EnterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EnterViewController.m; path = Source/EnterViewController.m; sourceTree = "<group>"; };
 		DE6388F419684748008D5B9D /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utilities.h; path = Source/Utilities.h; sourceTree = "<group>"; };
 		DE6388F519684748008D5B9D /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Utilities.m; path = Source/Utilities.m; sourceTree = "<group>"; };
 		DE6388F719687EFF008D5B9D /* button_bar_options_enabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_bar_options_enabled@2x.png"; sourceTree = "<group>"; };
@@ -197,6 +202,10 @@
 		DEAA9050196356C70036B6BF /* RecordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RecordViewController.m; path = Source/RecordViewController.m; sourceTree = "<group>"; };
 		DEB5128419E03F25007FB802 /* RegisterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RegisterViewController.h; path = Source/RegisterViewController.h; sourceTree = "<group>"; };
 		DEB5128519E03F25007FB802 /* RegisterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RegisterViewController.m; path = Source/RegisterViewController.m; sourceTree = "<group>"; };
+		DEB5128B19E15AD9007FB802 /* TermsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TermsViewController.h; path = Source/TermsViewController.h; sourceTree = "<group>"; };
+		DEB5128C19E15AD9007FB802 /* TermsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = TermsViewController.m; path = Source/TermsViewController.m; sourceTree = "<group>"; };
+		DEB5128E19E15AE7007FB802 /* PrivacyViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PrivacyViewController.h; path = Source/PrivacyViewController.h; sourceTree = "<group>"; };
+		DEB5128F19E15AE7007FB802 /* PrivacyViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PrivacyViewController.m; path = Source/PrivacyViewController.m; sourceTree = "<group>"; };
 		DECADBC91961EA300024D067 /* Parrot.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Parrot.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DECADBCC1961EA300024D067 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		DECADBCE1961EA300024D067 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -376,6 +385,23 @@
 			name = Profile;
 			sourceTree = "<group>";
 		};
+		DEB5128719E15AA5007FB802 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				DECADC271961EE3D0024D067 /* LoginViewController.h */,
+				DECADC281961EE3D0024D067 /* LoginViewController.m */,
+				DEB5128419E03F25007FB802 /* RegisterViewController.h */,
+				DEB5128519E03F25007FB802 /* RegisterViewController.m */,
+				DEB5128B19E15AD9007FB802 /* TermsViewController.h */,
+				DEB5128C19E15AD9007FB802 /* TermsViewController.m */,
+				DEB5128E19E15AE7007FB802 /* PrivacyViewController.h */,
+				DEB5128F19E15AE7007FB802 /* PrivacyViewController.m */,
+				DE20056719F041F9002759C9 /* EnterViewController.h */,
+				DE20056819F041F9002759C9 /* EnterViewController.m */,
+			);
+			name = Login;
+			sourceTree = "<group>";
+		};
 		DECADBC01961EA300024D067 = {
 			isa = PBXGroup;
 			children = (
@@ -423,6 +449,7 @@
 		DECADBD21961EA300024D067 /* Parrot */ = {
 			isa = PBXGroup;
 			children = (
+				DEB5128719E15AA5007FB802 /* Login */,
 				DE1D8988197AF22A00B552B4 /* Wall */,
 				DE9DFC631966060600908ED7 /* Spoke */,
 				DE9DFC5F1965FC0E00908ED7 /* Utilities */,
@@ -522,8 +549,6 @@
 		DECADC261961EE230024D067 /* Start */ = {
 			isa = PBXGroup;
 			children = (
-				DECADC271961EE3D0024D067 /* LoginViewController.h */,
-				DECADC281961EE3D0024D067 /* LoginViewController.m */,
 				DECADC081961EC160024D067 /* AppDelegate.h */,
 				DECADC091961EC160024D067 /* AppDelegate.m */,
 				DECADC2A1961EEF50024D067 /* MainViewController.h */,
@@ -532,8 +557,6 @@
 				DEAA901F196350B20036B6BF /* SearchViewController.m */,
 				DEF8192D19962EBD00D086A7 /* ParrotNavigationController.h */,
 				DEF8192E19962EBD00D086A7 /* ParrotNavigationController.m */,
-				DEB5128419E03F25007FB802 /* RegisterViewController.h */,
-				DEB5128519E03F25007FB802 /* RegisterViewController.m */,
 			);
 			name = Start;
 			sourceTree = "<group>";
@@ -681,6 +704,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE20056919F041F9002759C9 /* EnterViewController.m in Sources */,
 				DEF819361996AEBD00D086A7 /* RespokenViewController.m in Sources */,
 				DEAA904A196356170036B6BF /* EZRecorder.m in Sources */,
 				DEAA9044196356170036B6BF /* EZAudioPlot.m in Sources */,
@@ -696,8 +720,10 @@
 				DEAA904B196356170036B6BF /* TPCircularBuffer.c in Sources */,
 				DECADC0C1961EC160024D067 /* AppDelegate.m in Sources */,
 				DEAA9041196356170036B6BF /* EZAudio.m in Sources */,
+				DEB5129019E15AE7007FB802 /* PrivacyViewController.m in Sources */,
 				DE9DFC5C1965F0EC00908ED7 /* UserProfile.m in Sources */,
 				DEAA9047196356170036B6BF /* EZMicrophone.m in Sources */,
+				DEB5128D19E15AD9007FB802 /* TermsViewController.m in Sources */,
 				DECADBD91961EA300024D067 /* main.m in Sources */,
 				DECADC291961EE3D0024D067 /* LoginViewController.m in Sources */,
 				DECADC2C1961EEF50024D067 /* MainViewController.m in Sources */,

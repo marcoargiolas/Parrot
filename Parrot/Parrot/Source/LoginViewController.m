@@ -94,7 +94,7 @@
 
 - (IBAction)loginButtonPressed:(id)sender
 {
-
+    [self performSegueWithIdentifier:@"enterAction" sender:self];
 }
 
 - (void)goToMainView
