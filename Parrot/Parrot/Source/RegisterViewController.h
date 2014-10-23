@@ -14,6 +14,7 @@
     NSData *imageData;
 }
 
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (strong, nonatomic) IBOutlet UIScrollView *containerScrollView;
 @property (strong, nonatomic) IBOutlet UIButton *addImageButton;
 @property (strong, nonatomic) IBOutlet UITextField *userNameTextField;

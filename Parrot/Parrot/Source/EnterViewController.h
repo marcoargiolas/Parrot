@@ -10,6 +10,7 @@
 
 @interface EnterViewController : UIViewController
 @property (strong, nonatomic) IBOutlet UITextField *usernameTextfield;
+@property (strong, nonatomic) IBOutlet UIActivityIndicatorView *activityIndicator;
 @property (strong, nonatomic) IBOutlet UITextField *passwordTextfield;
 @property (strong, nonatomic) IBOutlet UIButton *loginButton;
 @property (strong, nonatomic) IBOutlet UIScrollView *containerScrollView;

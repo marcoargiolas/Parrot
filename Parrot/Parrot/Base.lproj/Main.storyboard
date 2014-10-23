@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6245" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="KBW-xw-l5A">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6250" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" initialViewController="KBW-xw-l5A">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6244"/>
     </dependencies>
     <scenes>
         <!--Navigation Controller-->
@@ -115,7 +116,7 @@
                                             <action selector="loginButtonPressed:" destination="anM-6y-Ah5" eventType="touchUpInside" id="fvN-ib-8Da"/>
                                         </connections>
                                     </button>
-                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Username" minimumFontSize="17" id="J5Y-iR-uEh">
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="line" placeholder="Email" minimumFontSize="17" id="J5Y-iR-uEh">
                                         <rect key="frame" x="30" y="101" width="260" height="40"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -138,11 +139,17 @@
                                     <outlet property="delegate" destination="anM-6y-Ah5" id="cNC-Aq-c2U"/>
                                 </connections>
                             </scrollView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" id="h2E-4L-5Ah">
+                                <rect key="frame" x="141" y="266" width="37" height="37"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="aMo-dl-BwT"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="h2E-4L-5Ah" id="tMg-Gp-wSQ"/>
                         <outlet property="containerScrollView" destination="rLW-bU-M6S" id="fTb-31-YOC"/>
                         <outlet property="loginButton" destination="hJG-wI-dsS" id="Sk7-Td-brI"/>
                         <outlet property="passwordTextfield" destination="Rjc-ar-TLU" id="STs-iH-jdj"/>
@@ -239,6 +246,11 @@
                                             <outlet property="delegate" destination="RUB-Sq-mq8" id="lEg-er-Znd"/>
                                         </connections>
                                     </textField>
+                                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="whiteLarge" id="rbT-yC-q8W">
+                                        <rect key="frame" x="142" y="241" width="37" height="37"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="color" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    </activityIndicatorView>
                                 </subviews>
                                 <connections>
                                     <outlet property="delegate" destination="RUB-Sq-mq8" id="AHu-f9-OR7"/>
@@ -249,6 +261,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="NAL-4K-prn"/>
                     <connections>
+                        <outlet property="activityIndicator" destination="rbT-yC-q8W" id="cVQ-Fr-0bG"/>
                         <outlet property="addImageButton" destination="kO4-7b-Sli" id="yvm-Pw-d4F"/>
                         <outlet property="containerScrollView" destination="VtG-8R-QSL" id="bnP-PK-UzR"/>
                         <outlet property="emailTextField" destination="y6F-y6-PiW" id="n9s-t9-BqS"/>

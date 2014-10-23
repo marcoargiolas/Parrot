@@ -21,6 +21,7 @@
 @synthesize usernameTextfield;
 @synthesize passwordTextfield;
 @synthesize containerScrollView;
+@synthesize activityIndicator;
 
 - (void)viewDidLoad
 {
@@ -31,6 +32,8 @@
     loginButton.layer.cornerRadius = 2;
     [loginButton.layer setShadowRadius:2.0];
     [loginButton.layer setBorderWidth:1];
+    
+    [activityIndicator removeFromSuperview];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasHidden:) name:UIKeyboardWillHideNotification object:nil];
@@ -54,7 +57,10 @@
         [passwordTextfield becomeFirstResponder];
     }
     else
+    {
         [theTextField resignFirstResponder];
+        [self loginButtonPressed:nil];
+    }
 
     return YES;
 }
@@ -118,10 +124,17 @@
         [alert show];
     else
     {
+        [usernameTextfield resignFirstResponder];
+        [passwordTextfield resignFirstResponder];
+        UIView *loadingView = [[UIView alloc]initWithFrame:self.view.frame];
+        [loadingView setBackgroundColor:[UIColor grayColor]];
+        [loadingView setAlpha:0.5];
+        [self.view addSubview:loadingView];
+        [self.view addSubview:activityIndicator];
+        [activityIndicator startAnimating];
         [PFUser logInWithUsernameInBackground:usernameTextfield.text password:passwordTextfield.text block:^(PFUser *user, NSError *error) {
             if (user)
             {
-                NSLog(@"USER %@", user);
                 NSMutableDictionary *currentProfile = [[NSMutableDictionary alloc] init];
                 
                 UserProfile *userProf = [UserProfile sharedProfile];
@@ -130,9 +143,9 @@
                 
                 [currentProfile setObject:user.objectId forKey:USER_ID];
 
-                if (user.username != nil)
+                if ([user objectForKey:USER_FULL_NAME] != nil)
                 {
-                    [currentProfile setObject:user.username forKey:USER_FULL_NAME];
+                    [currentProfile setObject:[user objectForKey:USER_FULL_NAME] forKey:USER_FULL_NAME];
                 }
                 
                 NSData *imageData;
@@ -152,11 +165,20 @@
                 [[NSNotificationCenter defaultCenter]postNotificationName:PROFILE_LOADED_FROM_FACEBOOK object:nil];
                 [[NSUserDefaults standardUserDefaults] setObject:[userProf.currentUser objectId] forKey:USER_ID];
                 [userProf saveProfileLocal];
+                
+                [activityIndicator stopAnimating];
+                [activityIndicator removeFromSuperview];
+                [loadingView removeFromSuperview];
             }
             else
             {
                 NSString *errorString = [error userInfo][@"error"];
                 NSLog(@"ERROR STRING %@", errorString);
+                UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:errorString delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                [alertView show];
+                [activityIndicator stopAnimating];
+                [activityIndicator removeFromSuperview];
+                [loadingView removeFromSuperview];
             }
             
         }];

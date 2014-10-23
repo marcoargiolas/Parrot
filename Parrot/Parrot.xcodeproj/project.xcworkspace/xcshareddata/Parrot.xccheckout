@@ -14,7 +14,7 @@
 		<string>https://github.com/marcoargiolas/Parrot.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
-	<string>Parrot/Parrot.xcodeproj/project.xcworkspace</string>
+	<string>Parrot/Parrot.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
 		<key>77AB035413FA23C7F258A53869E52133A29A1D45</key>

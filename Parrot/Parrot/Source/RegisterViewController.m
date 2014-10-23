@@ -26,6 +26,7 @@
 @synthesize termsButton;
 @synthesize privacyButton;
 @synthesize containerScrollView;
+@synthesize activityIndicator;
 
 - (void)viewDidLoad
 {
@@ -54,6 +55,7 @@
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardWillShowNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasHidden:) name:UIKeyboardWillHideNotification object:nil];
+    [activityIndicator removeFromSuperview];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -90,6 +92,7 @@
     if (theTextField == passwordTextField)
     {
         [passwordTextField resignFirstResponder];
+        [self registerAction];
     }
     return YES;
 }
@@ -105,10 +108,10 @@
     
     containerScrollView.contentSize = CGSizeMake(containerScrollView.frame.size.width, containerScrollView.frame.size.height + keyboardSize.height);
 
-//    if([userNameTextField isFirstResponder])
-//    {
-//        [containerScrollView scrollRectToVisible:CGRectMake(0, userNameTextField.frame.origin.y + userNameTextField.frame.size.height, containerScrollView.frame.size.width, containerScrollView.frame.size.height) animated:YES];
-//    }
+    if([userNameTextField isFirstResponder])
+    {
+        [containerScrollView scrollRectToVisible:CGRectMake(0, userNameTextField.frame.origin.y + userNameTextField.frame.size.height, containerScrollView.frame.size.width, containerScrollView.frame.size.height) animated:YES];
+    }
     if([emailTextField isFirstResponder])
     {
         [containerScrollView scrollRectToVisible:CGRectMake(0, emailTextField.frame.origin.y + emailTextField.frame.size.height, containerScrollView.frame.size.width, containerScrollView.frame.size.height) animated:YES];
@@ -186,7 +189,27 @@
 
 - (IBAction)registerButtonPressed:(id)sender
 {
-    UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"Is This Correct ?" message:[NSString stringWithFormat:@"You entered your email as: %@", emailTextField.text]  delegate:self cancelButtonTitle:@"Change" otherButtonTitles:@"Ok", nil];
+    UIAlertView *alert;
+    if (imageData == nil)
+    {
+        alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Please choose your image" delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+    }
+    else if ([userNameTextField.text length] == 0)
+    {
+        alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Please insert your username" delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+    }
+    else if ([emailTextField.text length] == 0)
+    {
+        alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Please insert your email" delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+    }
+    else if ([passwordTextField.text length] == 0)
+    {
+        alert = [[UIAlertView alloc]initWithTitle:@"" message:@"Please insert your password" delegate:nil cancelButtonTitle:@"Cancel" otherButtonTitles:nil, nil];
+    }
+    else
+    {
+        alert = [[UIAlertView alloc]initWithTitle:@"Is This Correct ?" message:[NSString stringWithFormat:@"You entered your email as: %@", emailTextField.text]  delegate:self cancelButtonTitle:@"Change" otherButtonTitles:@"Ok", nil];
+    }
     [alert show];
 }
 
@@ -214,7 +237,16 @@
         [alert show];
     else
     {
-        user.username = userNameTextField.text;
+        UIView *loadingView = [[UIView alloc]initWithFrame:self.view.frame];
+        [loadingView setBackgroundColor:[UIColor grayColor]];
+        [loadingView setAlpha:0.5];
+        [self.view addSubview:loadingView];
+        [userNameTextField resignFirstResponder];
+        [emailTextField resignFirstResponder];
+        [passwordTextField resignFirstResponder];
+        [self.view addSubview:activityIndicator];
+        [activityIndicator startAnimating];
+        user.username = emailTextField.text;
         user.password = passwordTextField.text;
         user.email = emailTextField.text;
         
@@ -228,11 +260,11 @@
                 userProf.spokesArray = [[NSMutableArray alloc]init];
                 NSMutableDictionary *currentProfile = [[NSMutableDictionary alloc] init];
                 
-                [currentProfile setObject:user.username forKey:USER_FULL_NAME];
+                [currentProfile setObject:userNameTextField.text forKey:USER_FULL_NAME];
                 [currentProfile setObject:imageData forKey:USER_IMAGE_DATA];
                 
                 [userProf.currentUser setObject:userProf.spokesArray forKey:USER_SPOKES_ARRAY];
-                [userProf.currentUser setObject:user.username forKey:@"fullName"];
+                [userProf.currentUser setObject:userNameTextField.text forKey:USER_FULL_NAME];
                 
                 [userProf.currentUser setObject:currentProfile forKey:USER_PROFILE];
                 
@@ -243,25 +275,39 @@
                 [userImage setObject:ownerImage forKey:@"userImage"];
                 [userImage setObject:user forKey:@"User"];
                 [userImage saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                    if (!error) {
+                    if (!error)
+                    {
                         NSLog(@"SAVE");
+                        [userProf.currentUser saveInBackground];
+                        //            [self updateProfile];
+                        [[NSNotificationCenter defaultCenter]postNotificationName:PROFILE_LOADED_FROM_FACEBOOK object:nil];
+                        [[NSUserDefaults standardUserDefaults] setObject:[userProf.currentUser objectId] forKey:USER_ID];
+                        [userProf saveProfileLocal];
+                        [activityIndicator stopAnimating];
+                        [activityIndicator removeFromSuperview];
+                        [loadingView removeFromSuperview];
                     }
-                    else{
-                        // Log details of the failure
+                    else
+                    {
+                        NSString *errorString = [error userInfo][@"error"];
                         NSLog(@"Error: %@ %@", error, [error userInfo]);
+                        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:errorString delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                        [alertView show];
+                        [activityIndicator stopAnimating];
+                        [activityIndicator removeFromSuperview];
+                        [loadingView removeFromSuperview];
                     }
                 }];
-                
-                [userProf.currentUser saveInBackground];
-                //            [self updateProfile];
-                [[NSNotificationCenter defaultCenter]postNotificationName:PROFILE_LOADED_FROM_FACEBOOK object:nil];
-                [[NSUserDefaults standardUserDefaults] setObject:[userProf.currentUser objectId] forKey:USER_ID];
-                [userProf saveProfileLocal];
             }
             else
             {
                 NSString *errorString = [error userInfo][@"error"];
                 NSLog(@"ERROR STRING %@", errorString);
+                UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:nil message:errorString delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil, nil];
+                [alertView show];
+                [activityIndicator stopAnimating];
+                [activityIndicator removeFromSuperview];
+                [loadingView removeFromSuperview];
             }
         }];
     }
@@ -281,19 +327,19 @@
 
 - (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo
 {
-//    CGSize sz = CGSizeMake(100, 100);
-//    UIGraphicsBeginImageContext(sz);
-//    [image drawInRect:CGRectMake(0,0,100,100)];
-//    UIImage *im2 = UIGraphicsGetImageFromCurrentImageContext();
-//    UIGraphicsEndImageContext();
+    CGSize sz = CGSizeMake(100, 100);
+    UIGraphicsBeginImageContext(sz);
+    [image drawInRect:CGRectMake(0,0,100,100)];
+    UIImage *im2 = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
     
-    [addImageButton setBackgroundImage:image forState:UIControlStateNormal];
+    [addImageButton setBackgroundImage:im2 forState:UIControlStateNormal];
     [addImageButton setTitle:@"" forState:UIControlStateNormal];
     userInsertedImage = YES;
     
     if(image != nil)
     {
-        imageData = UIImageJPEGRepresentation(image, 0.9);
+        imageData = UIImagePNGRepresentation(im2);
     }
 
     [picker dismissViewControllerAnimated:YES completion:nil];

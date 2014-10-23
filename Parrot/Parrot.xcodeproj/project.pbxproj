@@ -12,6 +12,7 @@
 		DE1D898A197C3D4200B552B4 /* button_main_record_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE1D8989197C3D4200B552B4 /* button_main_record_active@2x.png */; };
 		DE1D898C197C409300B552B4 /* startRecord.wav in Resources */ = {isa = PBXBuildFile; fileRef = DE1D898B197C409300B552B4 /* startRecord.wav */; };
 		DE20056919F041F9002759C9 /* EnterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE20056819F041F9002759C9 /* EnterViewController.m */; };
+		DE5B754E19F69E2D00726E8D /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE5B754D19F69E2D00726E8D /* ImageIO.framework */; };
 		DE6388F619684748008D5B9D /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6388F519684748008D5B9D /* Utilities.m */; };
 		DE63890A19687EFF008D5B9D /* button_bar_options_enabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE6388F719687EFF008D5B9D /* button_bar_options_enabled@2x.png */; };
 		DE63890B19687EFF008D5B9D /* button_bar_pause_enabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE6388F819687EFF008D5B9D /* button_bar_pause_enabled@2x.png */; };
@@ -124,6 +125,7 @@
 		DE1D898B197C409300B552B4 /* startRecord.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = startRecord.wav; path = Parrot/Resources/startRecord.wav; sourceTree = "<group>"; };
 		DE20056719F041F9002759C9 /* EnterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EnterViewController.h; path = Source/EnterViewController.h; sourceTree = "<group>"; };
 		DE20056819F041F9002759C9 /* EnterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EnterViewController.m; path = Source/EnterViewController.m; sourceTree = "<group>"; };
+		DE5B754D19F69E2D00726E8D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		DE6388F419684748008D5B9D /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utilities.h; path = Source/Utilities.h; sourceTree = "<group>"; };
 		DE6388F519684748008D5B9D /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Utilities.m; path = Source/Utilities.m; sourceTree = "<group>"; };
 		DE6388F719687EFF008D5B9D /* button_bar_options_enabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_bar_options_enabled@2x.png"; sourceTree = "<group>"; };
@@ -255,6 +257,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DE5B754E19F69E2D00726E8D /* ImageIO.framework in Frameworks */,
 				DEAA9022196355CF0036B6BF /* GLKit.framework in Frameworks */,
 				DECADBD11961EA300024D067 /* UIKit.framework in Frameworks */,
 				DECADC251961ED010024D067 /* SystemConfiguration.framework in Frameworks */,
@@ -426,6 +429,7 @@
 		DECADBCB1961EA300024D067 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DE5B754D19F69E2D00726E8D /* ImageIO.framework */,
 				DEAA9021196355CF0036B6BF /* GLKit.framework */,
 				DECADC241961ED010024D067 /* SystemConfiguration.framework */,
 				DECADC221961ECF90024D067 /* StoreKit.framework */,
@@ -857,8 +861,8 @@
 		DECADBFC1961EA310024D067 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Luis Guimaraes (GYA6495S2J)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Luis Guimaraes (GYA6495S2J)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libs",
@@ -877,8 +881,8 @@
 		DECADBFD1961EA310024D067 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Developer: Luis Guimaraes (GYA6495S2J)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Luis Guimaraes (GYA6495S2J)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libs",
