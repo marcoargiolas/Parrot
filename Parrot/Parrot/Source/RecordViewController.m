@@ -61,7 +61,6 @@
     [saveButton setAlpha:0.2];
     [hintContainerView setFrame:CGRectMake(hintContainerView.frame.origin.x, buttonsContainerView.frame.origin.y - hintContainerView.frame.size.height, hintContainerView.frame.size.width, hintContainerView.frame.size.height)];
     
-    userProf = [UserProfile sharedProfile];
     if(startRecord)
     {
         [self prepareToRecord];
@@ -204,17 +203,17 @@
 {
     startRecord = NO;
     [self.recorder closeAudioFile];
-    if(userProf.spokesArray == nil)
+    if([UserProfile sharedProfile].spokesArray == nil)
     {
-        userProf.spokesArray = [[NSMutableArray alloc]init];
+        [UserProfile sharedProfile].spokesArray = [[NSMutableArray alloc]init];
     }
 
     UserProfile *prof = [UserProfile sharedProfile];
     Spoke *spokeObj = [[Spoke alloc]init];
-    spokeObj.ownerID = [userProf getUserID];
+    spokeObj.ownerID = [[UserProfile sharedProfile] getUserID];
     spokeObj.spokeID = [Utilities soundFilePathString];
     spokeObj.creationDate = [NSDate date];
-    spokeObj.updateDate = [NSDate date];
+//    spokeObj.updateDate = [NSDate date];
 
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
@@ -234,17 +233,19 @@
             respokenVC.currentSpoke.listOfRespokeID = [[NSMutableArray alloc]init];
         }
         [respokenVC.currentSpoke.listOfRespokeID addObject:spokeObj.spokeID];
-        [userProf updateRespokenList:respokenVC.currentSpoke.spokeID respokeID:spokeObj.spokeID];
+        [[UserProfile sharedProfile] updateRespokenList:respokenVC.currentSpoke.spokeID respokeID:spokeObj.spokeID];
     }
    
-    [userProf.spokesArray addObject:spokeObj];
-    [userProf.cacheSpokesArray addObject:spokeObj];
-    [userProf saveProfileLocal];
-    [userProf saveSpokesArrayRemote:spokeObj];
+    [[UserProfile sharedProfile].spokesArray addObject:spokeObj];
+    [[UserProfile sharedProfile].cacheSpokesArray addObject:spokeObj];
+    [[UserProfile sharedProfile] saveProfileLocal];
+    [[UserProfile sharedProfile] saveSpokesArrayRemote:spokeObj];
     
     [saveButton setEnabled:NO];
     [saveButton setAlpha:0.2];
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewControllerAnimated:YES completion:^{
+        [[NSNotificationCenter defaultCenter]postNotificationName:RELOAD_SPOKES_LIST object:nil];
+    }];
 }
 
 #pragma mark - EZMicrophoneDelegate

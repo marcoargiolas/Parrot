@@ -25,7 +25,6 @@
 @synthesize wallTableView;
 @synthesize currentPlayingTag;
 @synthesize player;
-@synthesize userProf;
 @synthesize buttonContainerView;
 @synthesize recordButton;
 @synthesize playerInPause;
@@ -45,7 +44,6 @@
 {
     [super viewDidLoad];
     
-    userProf = [UserProfile sharedProfile];
     wallSpokesArray = [[NSMutableArray alloc]init];
     maskImage = [UIImage ellipsedMaskFromRect:CGRectMake(0, 0, IMAGE_WIDTH, IMAGE_WIDTH) inSize:CGSizeMake(IMAGE_WIDTH, IMAGE_WIDTH)];
     
@@ -63,18 +61,23 @@
     [self.navigationController setNavigationBarHidden:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadWallTableView:) name:WALL_SPOKES_ARRIVED object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadWallTableView:) name:FIRST_SPOKES_ARRIVED object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadWallSpokes) name:RELOAD_SPOKES_LIST object:nil];
+    [mainVC wallButtonPressed:nil];
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [self loadWallSpokes];
-}
+//-(void)viewWillAppear:(BOOL)animated
+//{
+//    if ([[UserProfile sharedProfile].cacheSpokesArray count] > 0 )
+//    {
+//        [self loadWallSpokes];
+//    }
+//}
 
 -(void)loadWallSpokes
 {
-    if([userProf.cacheSpokesArray count] > 0 )
+    if([[UserProfile sharedProfile].cacheSpokesArray count] > 0 )
     {
-        wallSpokesArray = [Utilities orderByDate:userProf.cacheSpokesArray];
+        wallSpokesArray = [Utilities orderByDate:[UserProfile sharedProfile].cacheSpokesArray];
         [wallTableView reloadData];
     }
     else
@@ -91,9 +94,9 @@
 {
     startRecord = NO;
     [player stop];
-    if ([userProf.cacheSpokesArray count] == 0)
+    if ([[UserProfile sharedProfile].cacheSpokesArray count] == 0)
     {
-        [userProf saveLocalSpokesCache:userProf.cacheSpokesArray];
+        [[UserProfile sharedProfile] saveLocalSpokesCache:[UserProfile sharedProfile].cacheSpokesArray];
     }
 }
 
@@ -123,14 +126,13 @@
     if([notification.name isEqualToString:FIRST_SPOKES_ARRIVED])
     {
         wallSpokesArray = (NSMutableArray*)[[notification userInfo]objectForKey:FIRST_RESULTS_ARRAY];
-        [userProf saveLocalSpokesCache:wallSpokesArray];
     }
     else if([notification.name isEqualToString:WALL_SPOKES_ARRIVED])
     {
         wallSpokesArray = (NSMutableArray*)[[notification userInfo]objectForKey:RESULTS_ARRAY];
-        [userProf saveLocalSpokesCache:wallSpokesArray];
     }
     
+    [[UserProfile sharedProfile] saveLocalSpokesCache:wallSpokesArray];
     wallSpokesArray = [Utilities orderByDate:wallSpokesArray];
     [wallTableView reloadData];
     [refreshControl endRefreshing];
@@ -193,7 +195,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"count %d",[wallSpokesArray count]);
+    NSLog(@"count %d",(int)[wallSpokesArray count]);
     return [wallSpokesArray count];
 }
 
@@ -250,7 +252,7 @@
     [cell.spokeNameButton setTitle:spokeObj.ownerName forState:UIControlStateNormal];
     
     cell.currentSpoke = spokeObj;
-    cell.currentSpokeIndex = indexPath.row;
+    cell.currentSpokeIndex = (int)indexPath.row;
     NSError *dataError;
     NSData *soundData = [[NSData alloc] initWithData:spokeObj.audioData];
     if(dataError != nil)
@@ -278,11 +280,10 @@
     [format setDateFormat:@"dd MMM yyyy"];
     NSString *dateString = [Utilities getDateString:spokeObj.creationDate WithFormat:format];
     [cell.spokeDateLabel setText:dateString];
-    [cell.respokeTotalLabel setText:[NSString stringWithFormat:@"%d",[spokeObj.listOfRespokeID count]]];
+    [cell.respokeTotalLabel setText:[NSString stringWithFormat:@"%d",(int)[spokeObj.listOfRespokeID count]]];
 
     NSString *likeString = @"like";
-    NSLog(@"total likes %d for USER %@", [spokeObj.listOfThankersID count], spokeObj.ownerName);
-    if ([spokeObj.listOfThankersID containsObject:[userProf getUserID]])
+    if ([spokeObj.listOfThankersID containsObject:[[UserProfile sharedProfile] getUserID]])
         cell.likeButton.selected = YES;
     if (spokeObj.totalLikes > 1)
     {
@@ -310,7 +311,7 @@
         [cell.currentTimeLabel removeFromSuperview];
         [cell.pausePlayButton removeFromSuperview];
 
-        if([userProf spokeAlreadyListened:spokeObj])
+        if([[UserProfile sharedProfile] spokeAlreadyListened:spokeObj])
             [cell.playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
         else
             [cell.playButton setImage:[UIImage imageNamed:@"button_big_play_enabled.png"] forState:UIControlStateNormal];
@@ -335,7 +336,7 @@
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
     Spoke *spokeObj = [wallSpokesArray objectAtIndex:indexPath.row];
-    if([spokeObj.ownerID isEqualToString:[userProf getUserID]])
+    if([spokeObj.ownerID isEqualToString:[[UserProfile sharedProfile] getUserID]])
         return YES;
     return NO;
 }
@@ -347,12 +348,15 @@
     {
         [wallTableView beginUpdates];
         Spoke *spokeToDelete = [wallSpokesArray objectAtIndex:indexPath.row];
-        [userProf.cacheSpokesArray removeObject:spokeToDelete];
-        [userProf.spokesArray removeObject:spokeToDelete];
-        [userProf deleteSpoke:[wallSpokesArray objectAtIndex:indexPath.row]];
+        [[UserProfile sharedProfile].cacheSpokesArray removeObject:spokeToDelete];
+        [[UserProfile sharedProfile].spokesArray removeObject:spokeToDelete];
+        [[UserProfile sharedProfile] deleteSpoke:[wallSpokesArray objectAtIndex:indexPath.row]];
         [wallSpokesArray removeObjectAtIndex:indexPath.row];
         [wallTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         [wallTableView endUpdates];
+        
+        [[UserProfile sharedProfile] saveProfileLocal];
+        [[UserProfile sharedProfile] saveLocalSpokesCache:[UserProfile sharedProfile].cacheSpokesArray];
     }
 }
 

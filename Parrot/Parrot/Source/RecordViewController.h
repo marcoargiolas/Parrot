@@ -19,7 +19,6 @@
     NSString *spokeFileName;
     IBOutlet UIView *buttonsContainerView;
     IBOutlet UIButton *recordButton;
-    UserProfile *userProf;
     IBOutlet UIView *hintContainerView;
     IBOutlet UIButton *saveButton;
     BOOL startRecord;

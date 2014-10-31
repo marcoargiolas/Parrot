@@ -28,7 +28,6 @@
 @synthesize userImageView;
 @synthesize spokesTableView;
 @synthesize player;
-@synthesize userProf;
 @synthesize currentPlayingTag;
 @synthesize myProfile;
 @synthesize playerInPause;
@@ -53,9 +52,9 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMySpokesArray) name:@"loadUserWall" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMyWallTableView:) name:USER_WALL_SPOKEN_ARRIVED object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadSpokesTableView) name:RELOAD_SPOKES_LIST object:nil];
     [super viewDidLoad];
-    userProf = [UserProfile sharedProfile];
-    profile = [userProf.currentUser objectForKey:USER_PROFILE];
+    profile = [[UserProfile sharedProfile].currentUser objectForKey:USER_PROFILE];
     
     NSString *name;
     NSString *info;
@@ -63,13 +62,13 @@
     {
         name = [profile objectForKey:USER_FULL_NAME];
         info = [profile objectForKey:USER_BIO];
-        userId = [userProf getUserID];
+        userId = [[UserProfile sharedProfile] getUserID];
     }
     else
     {
         name = userName;
         info = @"Info";
-        [userProf loadBioFromRemoteForUser:userId];
+        [[UserProfile sharedProfile] loadBioFromRemoteForUser:userId];
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadInfoLabel:) name:BIO_LOADED object:nil];
         [buttonContainerView removeFromSuperview];
         [settingsButton setImage:nil forState:UIControlStateNormal];
@@ -139,43 +138,53 @@
 
 -(void)viewWillAppear:(BOOL)animated
 {
-    if (!userProfile)
-    {
-        if ([userProf.spokesArray count] > 0)
-        {
-            userProf.spokesArray = [Utilities orderByDate:userProf.spokesArray];
-            currentSpokenArray = [NSMutableArray arrayWithArray:userProf.spokesArray];
-            [spokesTableView reloadData];
-        }
-        else
-        {
-            if (!isLoading)
-            {
-                isLoading = YES;
-                [self reloadMySpokesArray];
-            }
-        }
-    }
-    else
-    {
-        if (!isLoading)
-        {
-            isLoading = YES;
-            [self reloadMySpokesArray];
-        }
-    }
+//    if (!userProfile)
+//    {
+//        if ([userProf.spokesArray count] > 0)
+//        {
+//            userProf.spokesArray = [Utilities orderByDate:userProf.spokesArray];
+//            currentSpokenArray = [NSMutableArray arrayWithArray:userProf.spokesArray];
+//            [spokesTableView reloadData];
+//        }
+//        else
+//        {
+//            if (!isLoading)
+//            {
+//                isLoading = YES;
+//                [self reloadMySpokesArray];
+//            }
+//        }
+//    }
+//    else
+//    {
+//        if (!isLoading)
+//        {
+//            isLoading = YES;
+//            [self reloadMySpokesArray];
+//        }
+//    }
 }
 
 -(void)loadSpokesTableView
 {
-    if (userProf.currentUserSpokesArray == nil)
+    [totalSpokensLabel setText:[NSString stringWithFormat:@"%d", (int)[[UserProfile sharedProfile].spokesArray count]]];
+    if ([currentSpokenArray count] > 1)
+    {
+        [totalSpokensSubLabel setText:@"Spokens"];
+    }
+    else
+    {
+        [totalSpokensSubLabel setText:@"Spoken"];
+    }
+
+    if ([UserProfile sharedProfile].currentUserSpokesArray == nil)
     {
         if (!userProfile)
         {
-            if ([userProf.spokesArray count] > 0)
+            if ([[UserProfile sharedProfile].spokesArray count] > 0)
             {
-                userProf.spokesArray = [Utilities orderByDate:userProf.spokesArray];
-                currentSpokenArray = [NSMutableArray arrayWithArray:userProf.spokesArray];
+                [UserProfile sharedProfile].spokesArray = [Utilities orderByDate:[UserProfile sharedProfile].spokesArray];
+                currentSpokenArray = [NSMutableArray arrayWithArray:[UserProfile sharedProfile].spokesArray];
                 [spokesTableView reloadData];
             }
             else
@@ -208,17 +217,17 @@
 {
     [refreshControl beginRefreshing];
     isLoading = YES;
-    [userProf loadSpokesFromRemoteForUser:userId];
+    [[UserProfile sharedProfile] loadSpokesFromRemoteForUser:userId];
 }
 
 -(void)reloadMyWallTableView:(NSNotification*)notification
 {
     NSMutableArray *spokenArrived = (NSMutableArray*)[[notification userInfo]objectForKey:SPOKEN_ARRAY_ARRIVED];
     currentSpokenArray = [Utilities orderByDate:spokenArrived];
-    [userProf saveProfileLocal];
+    [[UserProfile sharedProfile] saveProfileLocal];
     [spokesTableView reloadData];
     [refreshControl endRefreshing];
-    [totalSpokensLabel setText:[NSString stringWithFormat:@"%d", [currentSpokenArray count]]];
+    [totalSpokensLabel setText:[NSString stringWithFormat:@"%d", (int)[currentSpokenArray count]]];
     if ([currentSpokenArray count] > 1)
     {
         [totalSpokensSubLabel setText:@"Spokens"];
@@ -406,7 +415,7 @@
     newPlayer.delegate = self;
 
     cell.spokePlayer = newPlayer;
-    cell.currentSpokeIndex = indexPath.row;
+    cell.currentSpokeIndex = (int)indexPath.row;
     
     cell.totalTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)cell.spokePlayer.duration / 60, (int)cell.spokePlayer.duration % 60, nil];
 
@@ -427,7 +436,7 @@
     [cell.spokeDateLabel setText:[Utilities getDateString:spokeObj.creationDate WithFormat:format]];
     
     NSString *likeString = @"like";
-    if ([spokeObj.listOfThankersID containsObject:[userProf getUserID]])
+    if ([spokeObj.listOfThankersID containsObject:[[UserProfile sharedProfile] getUserID]])
         cell.likeButton.selected = YES;
     if (spokeObj.totalLikes > 1)
     {
@@ -437,7 +446,7 @@
     [cell.heardLabel setText:[NSString stringWithFormat:@"%d heard",spokeObj.totalHeards]];
     
     cell.spokeSlider.tag = indexPath.row;
-    [cell.respokeTotalLabel setText:[NSString stringWithFormat:@"%d",[spokeObj.listOfRespokeID count]]];
+    [cell.respokeTotalLabel setText:[NSString stringWithFormat:@"%d",(int)[spokeObj.listOfRespokeID count]]];
     
     if(([player isPlaying] || playerInPause) && [[player data]isEqualToData:[cell.spokePlayer data]])
     {
@@ -456,7 +465,7 @@
         [cell.currentTimeLabel removeFromSuperview];
         [cell.pausePlayButton removeFromSuperview];
         
-        if([userProf spokeAlreadyListened:spokeObj])
+        if([[UserProfile sharedProfile] spokeAlreadyListened:spokeObj])
             [cell.playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
         else
             [cell.playButton setImage:[UIImage imageNamed:@"button_big_play_enabled.png"] forState:UIControlStateNormal];
@@ -473,7 +482,7 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if([userId isEqualToString:[userProf getUserID]])
+    if([userId isEqualToString:[[UserProfile sharedProfile] getUserID]])
         return YES;
     return NO;
 }
@@ -485,12 +494,35 @@
     {
         [spokesTableView beginUpdates];
         Spoke *spokeToDelete = [currentSpokenArray objectAtIndex:indexPath.row];
-        [userProf.cacheSpokesArray removeObject:spokeToDelete];
-        [userProf.spokesArray removeObject:spokeToDelete];
-        [userProf deleteSpoke:[currentSpokenArray objectAtIndex:indexPath.row]];
+        
+        for(int i = 0; i < [[UserProfile sharedProfile].cacheSpokesArray count]; i++)
+        {
+            Spoke *tempSpoke = [[UserProfile sharedProfile].cacheSpokesArray objectAtIndex:i];
+            if ([tempSpoke.spokeID isEqualToString:spokeToDelete.spokeID])
+            {
+                [[UserProfile sharedProfile].cacheSpokesArray removeObjectAtIndex:i];
+                break;
+            }
+        }
+
+        [[UserProfile sharedProfile].spokesArray removeObject:spokeToDelete];
+        [[UserProfile sharedProfile] deleteSpoke:[currentSpokenArray objectAtIndex:indexPath.row]];
         [currentSpokenArray removeObjectAtIndex:indexPath.row];
         [spokesTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         [spokesTableView endUpdates];
+        
+        [totalSpokensLabel setText:[NSString stringWithFormat:@"%d", (int)[[UserProfile sharedProfile].spokesArray count]]];
+        if ([currentSpokenArray count] > 1)
+        {
+            [totalSpokensSubLabel setText:@"Spokens"];
+        }
+        else
+        {
+            [totalSpokensSubLabel setText:@"Spoken"];
+        }
+
+        [[UserProfile sharedProfile] saveProfileLocal];
+        [[UserProfile sharedProfile] saveLocalSpokesCache:[UserProfile sharedProfile].cacheSpokesArray];
     }
 }
 

@@ -64,8 +64,11 @@
 
 - (void)applicationDidEnterBackground:(UIApplication *)application
 {
-    [userProf saveProfileLocal];
-    [userProf saveLocalSpokesCache:userProf.cacheSpokesArray];
+    if ([userProf getUserID] != nil)
+    {
+        [userProf saveProfileLocal];
+        [userProf saveLocalSpokesCache:userProf.cacheSpokesArray];
+    }
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application

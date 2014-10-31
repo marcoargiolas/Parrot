@@ -16,7 +16,6 @@
 @class MainViewController;
 @interface ProfileViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, UITabBarDelegate,EZAudioFileDelegate,EZOutputDataSource, AVAudioPlayerDelegate, AVAudioSessionDelegate,AVAudioRecorderDelegate, UIGestureRecognizerDelegate>
 {
-    UserProfile *userProf;
     NSMutableDictionary *profile;
     IBOutlet UIButton *recordButton;
     IBOutlet UIView *buttonContainerView;
@@ -56,7 +55,6 @@
 @property (nonatomic, assign) BOOL myProfile;
 @property (nonatomic, assign) BOOL playerInPause;
 @property (nonatomic, assign) int currentPlayingTag;
-@property (strong, nonatomic) UserProfile *userProf;
 @property (strong, nonatomic) AVAudioPlayer *player;
 @property (strong, nonatomic) IBOutlet UIImageView *userImageView;
 @property (strong, nonatomic) IBOutlet UILabel *nameLabel;

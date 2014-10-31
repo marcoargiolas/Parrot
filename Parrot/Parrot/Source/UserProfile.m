@@ -118,69 +118,49 @@ static UserProfile *shared = nil;
         }
         else
         {
-            switch ([tempSpoke.updateDate compare:lastUpdate])
+            switch ([tempSpoke.creationDate compare:lastUpdate])
             {
                 case NSOrderedAscending:
+                {
                     NSLog(@"NSOrderedAscending");
+                }
                     break;
                 case NSOrderedSame:
                     NSLog(@"NSOrderedSame");
                     break;
                 case NSOrderedDescending:
                 {
-                    BOOL found = NO;
                     NSLog(@"NSOrderedDescending");
+                    BOOL found = NO;
+                    int indexToReplace = -1;
                     for (int j = 0; j < [cacheSpokesArray count]; j++)
                     {
                         Spoke *cacheSpoke = [cacheSpokesArray objectAtIndex:j];
                         if ([cacheSpoke.spokeID isEqualToString:tempSpoke.spokeID])
                         {
                             found = YES;
+                            indexToReplace = j;
                             break;
                         }
                     }
-                    if (found)
+                    if (found && indexToReplace != -1)
                     {
                         [cacheSpokesArray replaceObjectAtIndex:i withObject:tempSpoke];
                     }
-//                    else
-//                    {
-//                        [cacheSpokesArray addObject:tempSpoke];
-//                    }
+                    else
+                    {
+                        [cacheSpokesArray addObject:tempSpoke];
+                    }                    
                 }
                     break;
             }
         }
+    }
+    if ([cacheSpokesArray count] > 5)
+    {
+        [[NSUserDefaults standardUserDefaults]setObject:[NSDate date] forKey:LAST_UPDATE];
     }
     
-    for (int i = 0; i < [cacheSpokesArray count]; i++)
-    {
-        Spoke *tempSpoke = [cacheSpokesArray objectAtIndex:i];
-        if([tempSpoke.ownerID isEqualToString:[self getUserID]])
-        {
-            BOOL spokeFound = NO;
-            int indexFound = -1;
-            for (int j = 0; j < [spokesArray count]; j++)
-            {
-                Spoke *myTempSpoke = [spokesArray objectAtIndex:j];
-                if ([myTempSpoke.spokeID isEqualToString:tempSpoke.spokeID])
-                {
-                    spokeFound = YES;
-                    indexFound = j;
-                    break;
-                }
-            }
-            if (spokeFound)
-            {
-                [spokesArray replaceObjectAtIndex:indexFound withObject:tempSpoke];
-            }
-            else
-            {
-                [spokesArray addObject:tempSpoke];
-            }
-        }
-    }
-    [[NSUserDefaults standardUserDefaults]setObject:[NSDate date] forKey:LAST_UPDATE];
 //   [[NSUserDefaults standardUserDefaults]removeObjectForKey:LAST_UPDATE];
     NSDate *lastUpdate = [[NSUserDefaults standardUserDefaults]objectForKey:LAST_UPDATE];
     NSLog(@"LAST UPDATE DATE %@", lastUpdate);
@@ -332,7 +312,7 @@ static UserProfile *shared = nil;
     PFObject *obj = [PFObject objectWithClassName:@"spoke"];
     [obj setObject:spokeToSave.spokeID forKey:@"spokeID"];
     [obj setObject:spokeToSave.creationDate forKey:@"creationDate"];
-    [obj setObject:spokeToSave.updateDate forKey:@"updateDate"];
+//    [obj setObject:spokeToSave.updateDate forKey:@"updateDate"];
     [obj setObject:[NSString stringWithFormat:@"%d",spokeToSave.totalHeards] forKey:@"totalHeards"];
     PFFile *audioDataFile = [PFFile fileWithData:spokeToSave.audioData];
     [obj setObject:audioDataFile forKey:@"audioData"];
@@ -383,7 +363,7 @@ static UserProfile *shared = nil;
                 
                 NSLog(@"THANKS ARRAY DOPO %@", thanksTempArray);
                 [object setObject:thanksTempArray forKey:@"listOfThankersID"];
-                [object setObject:[NSDate date] forKey:@"updateDate"];
+//                [object setObject:[NSDate date] forKey:@"updateDate"];
                 [object saveInBackground];
                 
                 NSNotificationCenter* nc = [NSNotificationCenter defaultCenter];
@@ -426,7 +406,7 @@ static UserProfile *shared = nil;
                     }
                     [heardTempArray addObject:userHeardID];
                     [object setObject:heardTempArray forKey:@"listOfHeardsID"];
-                    [object setObject:[NSDate date] forKey:@"updateDate"];
+//                    [object setObject:[NSDate date] forKey:@"updateDate"];
                     [object saveInBackground];
 //                    if([userHeardID isEqualToString:[self getUserID]])
 //                    {
@@ -469,7 +449,7 @@ static UserProfile *shared = nil;
                     }
                     [respokeTempArray addObject:respokeID];
                     [object setObject:respokeTempArray forKey:@"listOfRespokeID"];
-                    [object setObject:[NSDate date] forKey:@"updateDate"];
+//                    [object setObject:[NSDate date] forKey:@"updateDate"];
                     [object saveInBackground];
   
                     break;
@@ -496,12 +476,12 @@ static UserProfile *shared = nil;
             spokeType currentType;
             if ([userID isEqualToString:[self getUserID]])
             {
-                mySpokesCount = [objects count];
+                mySpokesCount = (int)[objects count];
                 currentType = mySpoke;
             }
             else
             {
-                otherUserSpokesCount = [objects count];
+                otherUserSpokesCount = (int)[objects count];
                 currentType = otherUserSpoke;
                 currentUserSpokesArray = [[NSMutableArray alloc] init];
             }
@@ -582,7 +562,7 @@ static UserProfile *shared = nil;
     [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
         if (!error)
         {
-            allResultObjectsCount = [objects count];
+            allResultObjectsCount = (int)[objects count];
             for (PFObject *object in objects)
             {
                 [self createSpokeFromPFObject:object forSpokeType:allSpoke];
@@ -692,7 +672,7 @@ static UserProfile *shared = nil;
                     [spokesArray addObject:spokeObj];
                 }
 
-                NSLog(@"SPOKES ARRAY COUNT %d", [spokesArray count]);
+                NSLog(@"SPOKES ARRAY COUNT %d", (int)[spokesArray count]);
                 NSLog(@"MY SPOKES COUNT %d", mySpokesCount);
 
                 if ([spokesArray count] == mySpokesCount)

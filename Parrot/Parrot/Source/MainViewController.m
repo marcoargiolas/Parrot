@@ -94,7 +94,6 @@
     wallVC.mainVC = self;
 
     [userProf loadLocalSpokesCache];
-    [self wallButtonPressed:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -184,12 +183,12 @@
     
     profileVC.myProfile = YES;
     
-    if ([userProf.spokesArray count] > 0)
-    {
-        profileVC.currentSpokenArray = [NSMutableArray arrayWithArray:userProf.spokesArray];
-        [profileVC.spokesTableView reloadData];
-    }
-    else
+//    if ([userProf.spokesArray count] > 0)
+//    {
+//        profileVC.currentSpokenArray = [NSMutableArray arrayWithArray:userProf.spokesArray];
+//        [profileVC.spokesTableView reloadData];
+//    }
+//    else
     {
         [profileVC reloadMySpokesArray];
     }
@@ -223,7 +222,7 @@
 
     profileVC.myProfile = NO;
     
-    if ([userProf.cacheSpokesArray count] > 0)
+//    if ([userProf.cacheSpokesArray count] > 0)
     {
         [wallVC loadWallSpokes];
     }

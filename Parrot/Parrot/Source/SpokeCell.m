@@ -187,33 +187,50 @@
     [playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
     if(profileVC != nil)
     {
-        if(![currentSpoke.listOfHeardsID containsObject:[profileVC.userProf getUserID]])
+        if(![currentSpoke.listOfHeardsID containsObject:[[UserProfile sharedProfile] getUserID]])
         {
             [profileVC.currentSpokenArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
-            if ([profileVC.userProf.cacheSpokesArray count] < currentSpokeIndex)
+            if ([[UserProfile sharedProfile].cacheSpokesArray count] < currentSpokeIndex)
             {
-                [profileVC.userProf.cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
+                [[UserProfile sharedProfile].cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
             }
             
-            [currentSpoke.listOfHeardsID addObject:[profileVC.userProf getUserID]];
+            [currentSpoke.listOfHeardsID addObject:[[UserProfile sharedProfile] getUserID]];
         }
 
-        [profileVC.userProf updateTotalSpokeHeard:currentSpoke.spokeID heardID:[profileVC.userProf getUserID]];
+        [[UserProfile sharedProfile] updateTotalSpokeHeard:currentSpoke.spokeID heardID:[[UserProfile sharedProfile] getUserID]];
     }
     else if(wallVC != nil)
     {
-        if(![currentSpoke.listOfHeardsID containsObject:[wallVC.userProf getUserID]])
+        if(![currentSpoke.listOfHeardsID containsObject:[[UserProfile sharedProfile] getUserID]])
         {
-            if ([wallVC.userProf.cacheSpokesArray count] < currentSpokeIndex)
+            if ([[UserProfile sharedProfile].cacheSpokesArray count] < currentSpokeIndex)
             {
-                [wallVC.userProf.cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
+                [[UserProfile sharedProfile].cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
             }
             
-            [currentSpoke.listOfHeardsID addObject:[wallVC.userProf getUserID]];
+            [currentSpoke.listOfHeardsID addObject:[[UserProfile sharedProfile] getUserID]];
         }
         
 
-        [wallVC.userProf updateTotalSpokeHeard:currentSpoke.spokeID heardID:[wallVC.userProf getUserID]];
+        [[UserProfile sharedProfile] updateTotalSpokeHeard:currentSpoke.spokeID heardID:[[UserProfile sharedProfile] getUserID]];
+        
+//        for (int i = currentSpokeIndex; i < [wallVC.wallSpokesArray count]; i++)
+//        {
+//            Spoke *tempSpoke = [wallVC.wallSpokesArray objectAtIndex:i];
+//            if ([tempSpoke.listOfHeardsID containsObject:[wallVC.userProf getUserID]])
+//            {
+//                NSLog(@"GIA SENTITO MAREMMA MERDA");
+//            }
+//            else
+//            {
+//                NSLog(@"SENTIAMO IL PROSSIMO MAREMMA CAZZO");
+//                currentSpoke = tempSpoke;
+//                wallVC.currentPlayingTag = i+1;
+//                [self playButtonPressed:nil];
+//                break;
+//            }
+//        }
     }
     else if(respokenVC != nil)
     {
@@ -230,7 +247,7 @@
         
         [respokenVC.userProf updateTotalSpokeHeard:currentSpoke.spokeID heardID:[respokenVC.userProf getUserID]];
     }
-    int totalHeard = [currentSpoke.listOfHeardsID count];
+    int totalHeard = (int)[currentSpoke.listOfHeardsID count];
     currentSpoke.totalHeards = totalHeard;
     heardLabel.text = [NSString stringWithFormat:@"%d heard", totalHeard];
 }
@@ -290,35 +307,35 @@
     {
         if(!likeButton.selected)
         {
-            if(![currentSpoke.listOfThankersID containsObject:[profileVC.userProf getUserID]])
-                [currentSpoke.listOfThankersID addObject:[profileVC.userProf getUserID]];
+            if(![currentSpoke.listOfThankersID containsObject:[[UserProfile sharedProfile] getUserID]])
+                [currentSpoke.listOfThankersID addObject:[[UserProfile sharedProfile] getUserID]];
         }
         else
         {
-            if([currentSpoke.listOfThankersID containsObject:[profileVC.userProf getUserID]])
-                [currentSpoke.listOfThankersID removeObject:[profileVC.userProf getUserID]];
+            if([currentSpoke.listOfThankersID containsObject:[[UserProfile sharedProfile] getUserID]])
+                [currentSpoke.listOfThankersID removeObject:[[UserProfile sharedProfile] getUserID]];
         }
 
         [profileVC.currentSpokenArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
-        [profileVC.userProf.cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
-        [profileVC.userProf updateTotalSpokeLike:currentSpoke.spokeID thanksID:[profileVC.userProf getUserID]addLike:!likeButton.selected totalLikes:[currentSpoke.listOfThankersID count]];
+        [[UserProfile sharedProfile].cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
+        [[UserProfile sharedProfile] updateTotalSpokeLike:currentSpoke.spokeID thanksID:[[UserProfile sharedProfile] getUserID]addLike:!likeButton.selected totalLikes:(int)[currentSpoke.listOfThankersID count]];
     }
     else if (wallVC != nil)
     {
         if(!likeButton.selected)
         {
-            if(![currentSpoke.listOfThankersID containsObject:[wallVC.userProf getUserID]])
-                [currentSpoke.listOfThankersID addObject:[wallVC.userProf getUserID]];
+            if(![currentSpoke.listOfThankersID containsObject:[[UserProfile sharedProfile] getUserID]])
+                [currentSpoke.listOfThankersID addObject:[[UserProfile sharedProfile] getUserID]];
         }
         else
         {
-            if([currentSpoke.listOfThankersID containsObject:[wallVC.userProf getUserID]])
-                [currentSpoke.listOfThankersID removeObject:[wallVC.userProf getUserID]];
+            if([currentSpoke.listOfThankersID containsObject:[[UserProfile sharedProfile] getUserID]])
+                [currentSpoke.listOfThankersID removeObject:[[UserProfile sharedProfile] getUserID]];
         }
 
-        currentSpoke.totalLikes = [currentSpoke.listOfThankersID count];
-        [wallVC.userProf.cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
-        [wallVC.userProf updateTotalSpokeLike:currentSpoke.spokeID thanksID:[wallVC.userProf getUserID]addLike:!likeButton.selected totalLikes:[currentSpoke.listOfThankersID count]];
+        currentSpoke.totalLikes = (int)[currentSpoke.listOfThankersID count];
+        [[UserProfile sharedProfile].cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
+        [[UserProfile sharedProfile] updateTotalSpokeLike:currentSpoke.spokeID thanksID:[[UserProfile sharedProfile] getUserID]addLike:!likeButton.selected totalLikes:(int)[currentSpoke.listOfThankersID count]];
     }
     else if (respokenVC != nil)
     {
@@ -333,17 +350,17 @@
                 [currentSpoke.listOfThankersID removeObject:[respokenVC.userProf getUserID]];
         }
         
-        currentSpoke.totalLikes = [currentSpoke.listOfThankersID count];
+        currentSpoke.totalLikes = (int)[currentSpoke.listOfThankersID count];
         [respokenVC.respokenArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
         [respokenVC.userProf.cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
-        [respokenVC.userProf updateTotalSpokeLike:currentSpoke.spokeID thanksID:[respokenVC.userProf getUserID]addLike:!likeButton.selected totalLikes:[currentSpoke.listOfThankersID count]];
+        [respokenVC.userProf updateTotalSpokeLike:currentSpoke.spokeID thanksID:[respokenVC.userProf getUserID]addLike:!likeButton.selected totalLikes:(int)[currentSpoke.listOfThankersID count]];
     }
     likeButton.selected = !likeButton.selected;
     
     if([currentSpoke.listOfThankersID count] <= 1)
-        likesLabel.text = [NSString stringWithFormat:@"%d like", [currentSpoke.listOfThankersID count]];
+        likesLabel.text = [NSString stringWithFormat:@"%d like", (int)[currentSpoke.listOfThankersID count]];
     else
-        likesLabel.text = [NSString stringWithFormat:@"%d likes", [currentSpoke.listOfThankersID count]];
+        likesLabel.text = [NSString stringWithFormat:@"%d likes", (int)[currentSpoke.listOfThankersID count]];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikes:) name:@"updateLikes" object:nil];
 }
 

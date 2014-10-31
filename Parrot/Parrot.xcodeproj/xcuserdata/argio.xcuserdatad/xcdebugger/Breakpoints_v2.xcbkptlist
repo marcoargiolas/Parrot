@@ -9,29 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Parrot/Source/ProfileViewController.m"
-            timestampString = "432412291.180513"
+            filePath = "Parrot/Source/RecordViewController.m"
+            timestampString = "436467127.442483"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "171"
-            endingLineNumber = "171"
-            landmarkName = "-loadSpokesTableView"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Parrot/Source/UserProfile.m"
-            timestampString = "434126186.807038"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "473"
-            endingLineNumber = "473"
-            landmarkName = "-updateRespokenList:respokeID:"
+            startingLineNumber = "241"
+            endingLineNumber = "241"
+            landmarkName = "-saveButtonPressed:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
