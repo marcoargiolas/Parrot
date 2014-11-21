@@ -90,6 +90,11 @@
      See also applicationDidEnterBackground:.
      */
     [[PFFacebookUtils session] close];
+    if ([userProf getUserID] != nil)
+    {
+        [userProf saveProfileLocal];
+        [userProf saveLocalSpokesCache:userProf.cacheSpokesArray];
+    }
 }
 
 @end

@@ -60,6 +60,8 @@
 }
 
 @property (strong, nonatomic) actionBarView *actionView;
+@property (strong, nonatomic) ProfileViewController *profileVC;
+@property (strong, nonatomic) WallViewController *wallVC;
 @property (strong, nonatomic) IBOutlet UIView *profileBackgroundView;
 @property (strong, nonatomic) IBOutlet UIView *wallBackgroundView;
 @property (strong, nonatomic) IBOutlet UIView *searchBackgroundView;
@@ -75,5 +77,6 @@
 
 -(void)openUserProfile:(Spoke*)sender;
 -(void)openRespokenView:(Spoke*)sender;
+-(void)_performReloadCall;
 
 @end

@@ -28,7 +28,6 @@
 @synthesize buttonContainerView;
 @synthesize recordButton;
 @synthesize playerInPause;
-@synthesize wallSpokesArray;
 @synthesize mainVC;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
@@ -44,7 +43,7 @@
 {
     [super viewDidLoad];
     
-    wallSpokesArray = [[NSMutableArray alloc]init];
+    [UserProfile sharedProfile].cacheSpokesArray = [[NSMutableArray alloc]init];
     maskImage = [UIImage ellipsedMaskFromRect:CGRectMake(0, 0, IMAGE_WIDTH, IMAGE_WIDTH) inSize:CGSizeMake(IMAGE_WIDTH, IMAGE_WIDTH)];
     
     currentPlayingTag = -1;
@@ -75,10 +74,13 @@
 
 -(void)loadWallSpokes
 {
-    if([[UserProfile sharedProfile].cacheSpokesArray count] > 0 )
+//    [[UserProfile sharedProfile].cacheSpokesArray removeAllObjects];
+    BOOL newSpoke = [[[NSUserDefaults standardUserDefaults]objectForKey:NEW_SPOKE_ADDED] boolValue];
+    if([[UserProfile sharedProfile].cacheSpokesArray count] > 0 && newSpoke)
     {
-        wallSpokesArray = [Utilities orderByDate:[UserProfile sharedProfile].cacheSpokesArray];
+        [UserProfile sharedProfile].cacheSpokesArray = [Utilities orderByDate:[UserProfile sharedProfile].cacheSpokesArray];
         [wallTableView reloadData];
+        [[NSUserDefaults standardUserDefaults]setObject:[NSNumber numberWithBool:NO] forKey:NEW_SPOKE_ADDED];
     }
     else
     {
@@ -108,8 +110,8 @@
 
 -(void)reloadSpokeArray:(NSNotification *)notification
 {
-    [refreshControl beginRefreshing];
-    if ([wallSpokesArray count] == 0)
+//    [self beginRefreshingTableView];
+    if ([[UserProfile sharedProfile].cacheSpokesArray count] == 0)
     {
         [[UserProfile sharedProfile] loadFirstResults:5];
     }
@@ -119,21 +121,21 @@
 
 -(void)reloadWallTableView:(NSNotification*)notification
 {
-    if (wallSpokesArray == nil)
+    if ([UserProfile sharedProfile].cacheSpokesArray == nil)
     {
-        wallSpokesArray = [[NSMutableArray alloc]init];
+        [UserProfile sharedProfile].cacheSpokesArray = [[NSMutableArray alloc]init];
     }
     if([notification.name isEqualToString:FIRST_SPOKES_ARRIVED])
     {
-        wallSpokesArray = (NSMutableArray*)[[notification userInfo]objectForKey:FIRST_RESULTS_ARRAY];
+        [UserProfile sharedProfile].cacheSpokesArray = (NSMutableArray*)[[notification userInfo]objectForKey:FIRST_RESULTS_ARRAY];
     }
     else if([notification.name isEqualToString:WALL_SPOKES_ARRIVED])
     {
-        wallSpokesArray = (NSMutableArray*)[[notification userInfo]objectForKey:RESULTS_ARRAY];
+        [UserProfile sharedProfile].cacheSpokesArray = (NSMutableArray*)[[notification userInfo]objectForKey:RESULTS_ARRAY];
     }
     
-    [[UserProfile sharedProfile] saveLocalSpokesCache:wallSpokesArray];
-    wallSpokesArray = [Utilities orderByDate:wallSpokesArray];
+    [[UserProfile sharedProfile] saveLocalSpokesCache:[UserProfile sharedProfile].cacheSpokesArray];
+    [UserProfile sharedProfile].cacheSpokesArray = [Utilities orderByDate:[UserProfile sharedProfile].cacheSpokesArray];
     [wallTableView reloadData];
     [refreshControl endRefreshing];
     
@@ -159,6 +161,21 @@
     }
 }
 
+- (void)beginRefreshingTableView
+{
+    [refreshControl beginRefreshing];
+    
+    if (wallTableView.contentOffset.y == 0) {
+        
+        [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionBeginFromCurrentState animations:^(void){
+            
+            wallTableView.contentOffset = CGPointMake(0, -refreshControl.frame.size.height);
+            
+        } completion:^(BOOL finished){
+            
+        }];
+    }
+}
 
 #pragma mark - Navigation
 
@@ -195,8 +212,8 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    NSLog(@"count %d",(int)[wallSpokesArray count]);
-    return [wallSpokesArray count];
+    NSLog(@"count %d",(int)[[UserProfile sharedProfile].cacheSpokesArray count]);
+    return [[UserProfile sharedProfile].cacheSpokesArray count];
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -239,7 +256,7 @@
     cell.wallVC = self;
     cell.playButton.tag = indexPath.row;
     
-    Spoke *spokeObj = [wallSpokesArray objectAtIndex:indexPath.row];
+    Spoke *spokeObj = [[UserProfile sharedProfile].cacheSpokesArray objectAtIndex:indexPath.row];
 
     NSData *img_data = spokeObj.ownerImageData;
     UIImage *userImageLoad = [UIImage imageWithData:img_data];
@@ -335,7 +352,7 @@
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Spoke *spokeObj = [wallSpokesArray objectAtIndex:indexPath.row];
+    Spoke *spokeObj = [[UserProfile sharedProfile].cacheSpokesArray objectAtIndex:indexPath.row];
     if([spokeObj.ownerID isEqualToString:[[UserProfile sharedProfile] getUserID]])
         return YES;
     return NO;
@@ -347,11 +364,68 @@
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
         [wallTableView beginUpdates];
-        Spoke *spokeToDelete = [wallSpokesArray objectAtIndex:indexPath.row];
-        [[UserProfile sharedProfile].cacheSpokesArray removeObject:spokeToDelete];
-        [[UserProfile sharedProfile].spokesArray removeObject:spokeToDelete];
-        [[UserProfile sharedProfile] deleteSpoke:[wallSpokesArray objectAtIndex:indexPath.row]];
-        [wallSpokesArray removeObjectAtIndex:indexPath.row];
+        Spoke *spokeToDelete = [[UserProfile sharedProfile].cacheSpokesArray objectAtIndex:indexPath.row];
+        NSIndexPath *indexToRefresh;
+        if (spokeToDelete.respokeToSpokeID != nil)
+        {
+            for(int i = 0; i < [[UserProfile sharedProfile].cacheSpokesArray count]; i++)
+            {
+                Spoke *tempSpoke = [[UserProfile sharedProfile].cacheSpokesArray objectAtIndex:i];
+                if ([tempSpoke.spokeID isEqualToString:spokeToDelete.respokeToSpokeID])
+                {
+                    for (int j = 0; j < [tempSpoke.listOfRespokeID count]; j++)
+                    {
+                        NSString *spokeID = [tempSpoke.listOfRespokeID objectAtIndex:j];
+                        if ([spokeID isEqualToString:spokeToDelete.spokeID])
+                        {
+                            [tempSpoke.listOfRespokeID removeObjectAtIndex:j];
+                            [[UserProfile sharedProfile].cacheSpokesArray replaceObjectAtIndex:i withObject:tempSpoke];
+                            [[UserProfile sharedProfile] updateRespokenList:tempSpoke.spokeID respokeID:spokeID removeRespoken:YES];
+                            indexToRefresh = [NSIndexPath indexPathForRow:i inSection:0];
+                            break;
+                        }
+                    }
+                }
+            }
+            if([spokeToDelete.ownerID isEqualToString:[[UserProfile sharedProfile] getUserID]])
+            {
+                for(int i = 0; i < [[UserProfile sharedProfile].spokesArray count]; i++)
+                {
+                    Spoke *tempSpoke = [[UserProfile sharedProfile].spokesArray objectAtIndex:i];
+                    if ([tempSpoke.spokeID isEqualToString:spokeToDelete.respokeToSpokeID])
+                    {
+                        for (int j = 0; j < [tempSpoke.listOfRespokeID count]; j++)
+                        {
+                            NSString *spokeID = [tempSpoke.listOfRespokeID objectAtIndex:j];
+                            if ([spokeID isEqualToString:spokeToDelete.spokeID])
+                            {
+                                [tempSpoke.listOfRespokeID removeObjectAtIndex:j];
+                                [[UserProfile sharedProfile].spokesArray replaceObjectAtIndex:i withObject:tempSpoke];
+                                indexToRefresh = [NSIndexPath indexPathForRow:i inSection:0];
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        
+        for(int i = 0; i < [[UserProfile sharedProfile].spokesArray count]; i++)
+        {
+            Spoke *tempSpoke = [[UserProfile sharedProfile].spokesArray objectAtIndex:i];
+            if ([tempSpoke.spokeID isEqualToString:spokeToDelete.spokeID])
+            {
+                [[UserProfile sharedProfile].spokesArray removeObjectAtIndex:i];
+                break;
+            }
+        }
+
+        [[UserProfile sharedProfile] deleteSpoke:spokeToDelete];
+        [[UserProfile sharedProfile].cacheSpokesArray removeObjectAtIndex:indexPath.row];
+        if (indexToRefresh != nil)
+        {
+            [wallTableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexToRefresh, nil] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
         [wallTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         [wallTableView endUpdates];
         
@@ -420,7 +494,7 @@
     if (!success)
         NSLog(@"AVAudioSession error activating: %@",error);
     else
-        NSLog(@"audioSession active");
+        NSLog(@" WALL VIEW CONTROLLER audioSession active");
 }
 
 @end

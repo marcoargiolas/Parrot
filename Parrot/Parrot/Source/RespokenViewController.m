@@ -164,9 +164,10 @@
     }
     
     [respokenVC.userProf updateTotalSpokeHeard:respokenVC.currentSpoke.spokeID heardID:[respokenVC.userProf getUserID]];
-    int totalHeard = [respokenVC.currentSpoke.listOfHeardsID count];
+    int totalHeard = (int)[respokenVC.currentSpoke.listOfHeardsID count];
     respokenVC.currentSpoke.totalHeards = totalHeard;
     heardLabel.text = [NSString stringWithFormat:@"%d heard", totalHeard];
+    
 }
 
 - (IBAction)pausePlayButtonPressed:(id)sender
@@ -277,10 +278,18 @@
 {
     startRecord = NO;
     [player stop];
+    BOOL newSpoke = [[[NSUserDefaults standardUserDefaults]objectForKey:NEW_SPOKE_ADDED] boolValue];
+    if (newSpoke)
+    {
+        [mainVC _performReloadCall];
+    }
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    [[NSNotificationCenter defaultCenter]removeObserver:mainVC.wallVC name:RELOAD_SPOKES_LIST object:nil];
+    [[NSNotificationCenter defaultCenter]removeObserver:mainVC.profileVC name:RELOAD_SPOKES_LIST object:nil];
+    
     if(userProf == nil)
         userProf = [UserProfile sharedProfile];
     respokenTableView.delegate = nil;
@@ -375,7 +384,7 @@
     [respokenHeader.respokenDateLabel setText:dateString];
     
     NSString *likeString = @"like";
-    NSLog(@"total likes %d for USER %@", [currentSpoke.listOfThankersID count], currentSpoke.ownerName);
+    NSLog(@"total likes %d for USER %@", (int)[currentSpoke.listOfThankersID count], currentSpoke.ownerName);
     if ([currentSpoke.listOfThankersID containsObject:[userProf getUserID]])
         respokenHeader.likeButton.selected = YES;
     if (currentSpoke.totalLikes > 1)

@@ -45,6 +45,7 @@
     BOOL isLoading;
 }
 
+@property (strong, nonatomic) UIRefreshControl *refreshControl;
 @property (strong, nonatomic) MainViewController *mainVC;
 @property (strong, nonatomic) NSString *userName;
 @property (strong, nonatomic) NSString *userId;
@@ -68,5 +69,6 @@
 -(void)openRespokenView:(Spoke*)sender;
 -(void)reloadMySpokesArray;
 -(void)loadSpokesTableView;
+- (void)sensorStateChange:(NSNotificationCenter *)notification;
 
 @end

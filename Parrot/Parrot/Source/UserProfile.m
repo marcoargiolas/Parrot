@@ -430,7 +430,7 @@ static UserProfile *shared = nil;
     }];
 }
 
--(void)updateRespokenList:(NSString*)spokeID respokeID:(NSString*)respokeID
+-(void)updateRespokenList:(NSString*)spokeID respokeID:(NSString*)respokeID removeRespoken:(BOOL)remove
 {
     PFQuery *query = [PFQuery queryWithClassName:@"spoke"];
     [query whereKey:@"spokeID" equalTo:spokeID];
@@ -447,7 +447,22 @@ static UserProfile *shared = nil;
                     {
                         respokeTempArray = [[NSMutableArray alloc]init];
                     }
-                    [respokeTempArray addObject:respokeID];
+                    if (remove)
+                    {
+                        for (int i = 0; i < [respokeTempArray count]; i++)
+                        {
+                            NSString *tempId = [respokeTempArray objectAtIndex:i];
+                            if ([tempId isEqualToString:respokeID])
+                            {
+                                [respokeTempArray removeObjectAtIndex:i];
+                            }
+                        }
+                    }
+                    else
+                    {
+                        [respokeTempArray addObject:respokeID];
+                    }
+                    
                     [object setObject:respokeTempArray forKey:@"listOfRespokeID"];
 //                    [object setObject:[NSDate date] forKey:@"updateDate"];
                     [object saveInBackground];
@@ -710,6 +725,7 @@ static UserProfile *shared = nil;
             {
                 [object deleteEventually];
                 [self saveProfileLocal];
+                [self saveLocalSpokesCache:self.cacheSpokesArray];
             }
         }
         else

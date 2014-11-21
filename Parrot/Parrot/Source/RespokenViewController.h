@@ -97,5 +97,6 @@
 -(void)openUserProfile:(Spoke*)sender;
 - (IBAction)recordButtonPressed:(id)sender;
 -(void) stopRespokenPlayer;
+- (void)sensorStateChange:(NSNotification *)notification;
 
 @end

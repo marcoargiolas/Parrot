@@ -36,3 +36,4 @@
 #define FIRST_RESULTS_ARRAY             @"firstResultsArray"
 #define FIRST_SPOKES_ARRIVED            @"firstSpokesArrived"
 #define RELOAD_SPOKES_LIST              @"reloadSpokesList"
+#define NEW_SPOKE_ADDED                 @"newSpokeAdded"

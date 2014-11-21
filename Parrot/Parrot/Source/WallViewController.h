@@ -16,7 +16,6 @@
     IBOutlet UITableView *wallTableView;
     AVAudioPlayer *player;
     int currentPlayingTag;
-    NSMutableArray *wallSpokesArray;
     UIImage *maskImage;
     UIRefreshControl *refreshControl;
     IBOutlet UIView *buttonContainerView;
@@ -29,7 +28,6 @@
 }
 
 @property (nonatomic, strong) MainViewController *mainVC;
-@property (nonatomic, strong) NSMutableArray *wallSpokesArray;
 @property (nonatomic, assign) BOOL playerInPause;
 @property (strong, nonatomic) IBOutlet UIButton *recordButton;
 @property (strong, nonatomic) IBOutlet UIView *buttonContainerView;
@@ -43,5 +41,6 @@
 -(void)openRespokenView:(Spoke*)sender;
 -(void)reloadSpokeArray:(NSNotification*)notification;
 -(void)loadWallSpokes;
+- (void)sensorStateChange:(NSNotification *)notification;
 
 @end

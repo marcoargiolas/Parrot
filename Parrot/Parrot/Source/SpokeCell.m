@@ -178,7 +178,7 @@
 
 -(void)changePlayButtonImage
 {
-    NSLog(@"CHANGE PLAY BUTTON IMAGE");
+    NSLog(@"SPOKE CELL ----------------------------------------- CHANGE PLAY BUTTON IMAGE");
     [updateTimer invalidate];
     [spokeSlider removeFromSuperview];
     [currentTimeLabel removeFromSuperview];
@@ -199,6 +199,7 @@
         }
 
         [[UserProfile sharedProfile] updateTotalSpokeHeard:currentSpoke.spokeID heardID:[[UserProfile sharedProfile] getUserID]];
+        [profileVC sensorStateChange:nil];
     }
     else if(wallVC != nil)
     {
@@ -215,10 +216,15 @@
 
         [[UserProfile sharedProfile] updateTotalSpokeHeard:currentSpoke.spokeID heardID:[[UserProfile sharedProfile] getUserID]];
         
-//        for (int i = currentSpokeIndex; i < [wallVC.wallSpokesArray count]; i++)
+        [wallVC sensorStateChange:nil];
+//        int i = currentSpokeIndex;
+//        while (i > 0)
 //        {
+//            NSLog(@"SPOKE CELL I: %d", i);
+//            i = i-1;
 //            Spoke *tempSpoke = [wallVC.wallSpokesArray objectAtIndex:i];
-//            if ([tempSpoke.listOfHeardsID containsObject:[wallVC.userProf getUserID]])
+//
+//            if ([tempSpoke.listOfHeardsID containsObject:[[UserProfile sharedProfile] getUserID]])
 //            {
 //                NSLog(@"GIA SENTITO MAREMMA MERDA");
 //            }
@@ -226,8 +232,38 @@
 //            {
 //                NSLog(@"SENTIAMO IL PROSSIMO MAREMMA CAZZO");
 //                currentSpoke = tempSpoke;
-//                wallVC.currentPlayingTag = i+1;
-//                [self playButtonPressed:nil];
+//                wallVC.currentPlayingTag = i;
+//                //Remember to check boundaries before just setting an indexpath or your app will crash!
+//                NSIndexPath *currentSelection = [NSIndexPath indexPathForRow:currentSpokeIndex - 1  inSection:0];
+//                
+//                [wallVC.wallTableView selectRowAtIndexPath:currentSelection animated:YES scrollPosition: UITableViewScrollPositionTop];
+//                currentSpoke = [wallVC.wallSpokesArray objectAtIndex:i];
+//                [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
+//                if(![wallVC.player isPlaying])
+//                {
+//                    NSData *soundData = [[NSData alloc] initWithData:currentSpoke.audioData];
+//                    NSError *error;
+//                    AVAudioPlayer *newPlayer =[[AVAudioPlayer alloc] initWithData: soundData error: &error];
+//                    newPlayer.delegate = self;
+//                    
+//                    wallVC.player = newPlayer;
+//                    
+//                    updateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
+//                    
+//                    spokeSlider.minimumValue = 0;
+//                    spokeSlider.maximumValue = wallVC.player.duration;
+//                    
+//                    [wallVC playSelectedAudio];
+//                    
+//                    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changePlayButtonImage) name:PLAYBACK_STOP object:nil];
+//                    [playButton removeFromSuperview];
+//                    
+//                    [playContainerView addSubview:spokeSlider];
+//                    [playContainerView addSubview:currentTimeLabel];
+//                    [playContainerView addSubview:pausePlayButton];
+//                }
+//
+////                [self playButtonPressed:nil];
 //                break;
 //            }
 //        }
@@ -245,6 +281,7 @@
             [currentSpoke.listOfHeardsID addObject:[respokenVC.userProf getUserID]];
         }
         
+        [respokenVC sensorStateChange:nil];
         [respokenVC.userProf updateTotalSpokeHeard:currentSpoke.spokeID heardID:[respokenVC.userProf getUserID]];
     }
     int totalHeard = (int)[currentSpoke.listOfHeardsID count];
@@ -254,9 +291,10 @@
 
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
-    NSLog(@"AUDIO PLAYER DID FINISH");
+    NSLog(@"SPOKE CELL ------------------------------ AUDIO PLAYER DID FINISH");
     [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
     [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
+    
 }
 
 -(void)updateHeardLabel
@@ -317,8 +355,6 @@
         }
 
         [profileVC.currentSpokenArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
-        [[UserProfile sharedProfile].cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
-        [[UserProfile sharedProfile] updateTotalSpokeLike:currentSpoke.spokeID thanksID:[[UserProfile sharedProfile] getUserID]addLike:!likeButton.selected totalLikes:(int)[currentSpoke.listOfThankersID count]];
     }
     else if (wallVC != nil)
     {
@@ -332,10 +368,6 @@
             if([currentSpoke.listOfThankersID containsObject:[[UserProfile sharedProfile] getUserID]])
                 [currentSpoke.listOfThankersID removeObject:[[UserProfile sharedProfile] getUserID]];
         }
-
-        currentSpoke.totalLikes = (int)[currentSpoke.listOfThankersID count];
-        [[UserProfile sharedProfile].cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
-        [[UserProfile sharedProfile] updateTotalSpokeLike:currentSpoke.spokeID thanksID:[[UserProfile sharedProfile] getUserID]addLike:!likeButton.selected totalLikes:(int)[currentSpoke.listOfThankersID count]];
     }
     else if (respokenVC != nil)
     {
@@ -350,11 +382,14 @@
                 [currentSpoke.listOfThankersID removeObject:[respokenVC.userProf getUserID]];
         }
         
-        currentSpoke.totalLikes = (int)[currentSpoke.listOfThankersID count];
         [respokenVC.respokenArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
-        [respokenVC.userProf.cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
-        [respokenVC.userProf updateTotalSpokeLike:currentSpoke.spokeID thanksID:[respokenVC.userProf getUserID]addLike:!likeButton.selected totalLikes:(int)[currentSpoke.listOfThankersID count]];
     }
+    
+    [[UserProfile sharedProfile].cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
+    [[UserProfile sharedProfile].spokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
+    [[UserProfile sharedProfile] updateTotalSpokeLike:currentSpoke.spokeID thanksID:[[UserProfile sharedProfile] getUserID]addLike:!likeButton.selected totalLikes:(int)[currentSpoke.listOfThankersID count]];
+
+    currentSpoke.totalLikes = (int)[currentSpoke.listOfThankersID count];
     likeButton.selected = !likeButton.selected;
     
     if([currentSpoke.listOfThankersID count] <= 1)

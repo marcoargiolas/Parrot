@@ -52,6 +52,8 @@
 @synthesize searchBackgroundView;
 @synthesize actionView;
 @synthesize buttonsContainerView;
+@synthesize profileVC;
+@synthesize wallVC;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -183,6 +185,8 @@
     
     profileVC.myProfile = YES;
     
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_performReloadCall) object:nil];
+    [self performSelector:@selector(_performReloadCall) withObject:nil afterDelay:0.5];
 //    if ([userProf.spokesArray count] > 0)
 //    {
 //        profileVC.currentSpokenArray = [NSMutableArray arrayWithArray:userProf.spokesArray];
@@ -190,7 +194,7 @@
 //    }
 //    else
     {
-        [profileVC reloadMySpokesArray];
+//        [profileVC reloadMySpokesArray];
     }
 
 }
@@ -201,7 +205,6 @@
     {
         return;
     }
-    
     [UIView animateWithDuration:.25
                      animations:^{
                          [profileContainerView setFrame:CGRectMake(-self.view.frame.size.width, profileContainerView.frame.origin.y, profileContainerView.frame.size.width, profileContainerView.frame.size.height)];
@@ -222,9 +225,12 @@
 
     profileVC.myProfile = NO;
     
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(_performReloadCall) object:nil];
+    [self performSelector:@selector(_performReloadCall) withObject:nil afterDelay:0.5];
+    
 //    if ([userProf.cacheSpokesArray count] > 0)
     {
-        [wallVC loadWallSpokes];
+//        [wallVC loadWallSpokes];
     }
 }
 
@@ -288,6 +294,29 @@
         respokenVC.currentSpoke = currentSpokeChoose;
         respokenVC.mainVC = self;
         currentSpokeChoose = nil;
+    }
+}
+
+-(void)_performReloadCall
+{
+    if ([actionView.profileButton isSelected])
+    {
+        [[NSNotificationCenter defaultCenter]removeObserver:wallVC name:RELOAD_SPOKES_LIST object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:profileVC selector:@selector(loadSpokesTableView) name:RELOAD_SPOKES_LIST object:nil];
+        NSLog(@"*************");
+        NSLog(@"MY PROFILE");
+        NSLog(@"*************");
+        [profileVC loadSpokesTableView];
+        
+    }
+    else if([actionView.wallButton isSelected])
+    {
+        [[NSNotificationCenter defaultCenter]removeObserver:profileVC name:RELOAD_SPOKES_LIST object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:wallVC selector:@selector(loadWallSpokes) name:RELOAD_SPOKES_LIST object:nil];
+        NSLog(@"------------------");
+        NSLog(@"WALL VIEW");
+        NSLog(@"------------------");
+        [wallVC loadWallSpokes];
     }
 }
 

@@ -52,7 +52,7 @@ typedef enum
 -(NSMutableArray*)loadSpokesFromRemoteForUser:(NSString*)userID;
 -(void)loadBioFromRemoteForUser:(NSString*)userID;
 -(void)respokenForSpokeID:(NSString*)spokeID;
--(void)updateRespokenList:(NSString*)spokeID respokeID:(NSString*)respokeID;
+-(void)updateRespokenList:(NSString*)spokeID respokeID:(NSString*)respokeID removeRespoken:(BOOL)remove;
 //CACHE MANAGEMENT
 -(void)saveLocalSpokesCache:(NSMutableArray*)arrivedSpokesArray;
 - (void)loadLocalSpokesCache;

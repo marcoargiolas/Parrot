@@ -233,16 +233,34 @@
             respokenVC.currentSpoke.listOfRespokeID = [[NSMutableArray alloc]init];
         }
         [respokenVC.currentSpoke.listOfRespokeID addObject:spokeObj.spokeID];
-        [[UserProfile sharedProfile] updateRespokenList:respokenVC.currentSpoke.spokeID respokeID:spokeObj.spokeID];
+        [[UserProfile sharedProfile] updateRespokenList:respokenVC.currentSpoke.spokeID respokeID:spokeObj.spokeID removeRespoken:NO];
+ 
+        for (int i = 0; i < [[UserProfile sharedProfile].cacheSpokesArray count]; i++)
+        {
+            Spoke *tempSpoke = [[UserProfile sharedProfile].cacheSpokesArray objectAtIndex:i];
+            if ([tempSpoke.spokeID isEqualToString:respokenVC.currentSpoke.spokeID])
+            {
+                [[UserProfile sharedProfile].cacheSpokesArray replaceObjectAtIndex:i withObject:respokenVC.currentSpoke];
+            }
+        }
+        for (int i = 0; i < [[UserProfile sharedProfile].spokesArray count]; i++)
+        {
+            Spoke *tempSpoke = [[UserProfile sharedProfile].spokesArray objectAtIndex:i];
+            if ([tempSpoke.spokeID isEqualToString:respokenVC.currentSpoke.spokeID])
+            {
+                [[UserProfile sharedProfile].spokesArray replaceObjectAtIndex:i withObject:respokenVC.currentSpoke];
+            }
+        }
     }
    
     [[UserProfile sharedProfile].spokesArray addObject:spokeObj];
     [[UserProfile sharedProfile].cacheSpokesArray addObject:spokeObj];
     [[UserProfile sharedProfile] saveProfileLocal];
     [[UserProfile sharedProfile] saveSpokesArrayRemote:spokeObj];
-    
+    [[NSUserDefaults standardUserDefaults]setObject:[NSNumber numberWithBool:YES] forKey:NEW_SPOKE_ADDED];
     [saveButton setEnabled:NO];
     [saveButton setAlpha:0.2];
+    
     [self dismissViewControllerAnimated:YES completion:^{
         [[NSNotificationCenter defaultCenter]postNotificationName:RELOAD_SPOKES_LIST object:nil];
     }];
