@@ -10,27 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Parrot/Source/RespokenViewController.m"
-            timestampString = "438213067.889905"
+            timestampString = "438285277.959673"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "627"
-            endingLineNumber = "627"
-            landmarkName = "-audioPlayerDidFinishPlaying:successfully:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Parrot/Source/WallViewController.m"
-            timestampString = "438278263.524887"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "457"
-            endingLineNumber = "457"
+            startingLineNumber = "630"
+            endingLineNumber = "630"
             landmarkName = "-audioPlayerDidFinishPlaying:successfully:"
             landmarkType = "5">
          </BreakpointContent>
@@ -48,6 +32,22 @@
             startingLineNumber = "155"
             endingLineNumber = "155"
             landmarkName = "-spokeChanged"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Parrot/Source/ProfileViewController.m"
+            timestampString = "438285277.959673"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "616"
+            endingLineNumber = "616"
+            landmarkName = "-recordButtonPressed:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

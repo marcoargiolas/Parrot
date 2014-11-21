@@ -53,7 +53,7 @@
 {
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMySpokesArray) name:@"loadUserWall" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(reloadMyWallTableView:) name:USER_WALL_SPOKEN_ARRIVED object:nil];
-//    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadSpokesTableView) name:RELOAD_SPOKES_LIST object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadSpokesTableView) name:RELOAD_SPOKES_LIST object:nil];
     [super viewDidLoad];
     profile = [[UserProfile sharedProfile].currentUser objectForKey:USER_PROFILE];
     
@@ -604,8 +604,11 @@
 
 - (void)longPress:(UILongPressGestureRecognizer*)gesture
 {
-    startRecord = YES;
-    [self recordButtonPressed:nil];
+    if (gesture.state == UIGestureRecognizerStateBegan)
+    {
+        startRecord = YES;
+        [self recordButtonPressed:nil];
+    }
 }
 
 - (IBAction)recordButtonPressed:(id)sender

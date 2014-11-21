@@ -599,8 +599,11 @@
 
 - (void)longPress:(UILongPressGestureRecognizer*)gesture
 {
-    startRecord = YES;
-    [self recordButtonPressed:nil];
+    if (gesture.state == UIGestureRecognizerStateBegan)
+    {
+        startRecord = YES;
+        [self recordButtonPressed:nil];
+    }
 }
 
 -(void)openUserProfile:(Spoke*)sender

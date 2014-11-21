@@ -75,6 +75,8 @@
 
 -(void)viewWillDisappear:(BOOL)animated
 {
+    [self.microphone stopFetchingAudio];
+    self.isRecording = NO;
     respokenVC = nil;
     startRecord = NO;
     [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];

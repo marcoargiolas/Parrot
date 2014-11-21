@@ -54,6 +54,7 @@
     
     UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
     [recordButton addGestureRecognizer:longPress];
+    
     [self setupRefreshControl];
     [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent];
     
@@ -436,8 +437,11 @@
 
 - (void)longPress:(UILongPressGestureRecognizer*)gesture
 {
-    startRecord = YES;
-    [self recordButtonPressed:nil];
+    if (gesture.state == UIGestureRecognizerStateBegan)
+    {
+        startRecord = YES;
+        [self recordButtonPressed:nil];
+    }
 }
 
 - (IBAction)recordButtonPressed:(id)sender

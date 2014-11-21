@@ -301,8 +301,8 @@
 {
     if ([actionView.profileButton isSelected])
     {
-        [[NSNotificationCenter defaultCenter]removeObserver:wallVC name:RELOAD_SPOKES_LIST object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:profileVC selector:@selector(loadSpokesTableView) name:RELOAD_SPOKES_LIST object:nil];
+//        [[NSNotificationCenter defaultCenter]removeObserver:wallVC name:RELOAD_SPOKES_LIST object:nil];
+//        [[NSNotificationCenter defaultCenter] addObserver:profileVC selector:@selector(loadSpokesTableView) name:RELOAD_SPOKES_LIST object:nil];
         NSLog(@"*************");
         NSLog(@"MY PROFILE");
         NSLog(@"*************");
@@ -311,8 +311,8 @@
     }
     else if([actionView.wallButton isSelected])
     {
-        [[NSNotificationCenter defaultCenter]removeObserver:profileVC name:RELOAD_SPOKES_LIST object:nil];
-        [[NSNotificationCenter defaultCenter] addObserver:wallVC selector:@selector(loadWallSpokes) name:RELOAD_SPOKES_LIST object:nil];
+//        [[NSNotificationCenter defaultCenter]removeObserver:profileVC name:RELOAD_SPOKES_LIST object:nil];
+//        [[NSNotificationCenter defaultCenter] addObserver:wallVC selector:@selector(loadWallSpokes) name:RELOAD_SPOKES_LIST object:nil];
         NSLog(@"------------------");
         NSLog(@"WALL VIEW");
         NSLog(@"------------------");
