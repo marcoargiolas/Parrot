@@ -36,16 +36,17 @@
 
 - (IBAction)playButtonPressed:(id)sender
 {
+    [[NSNotificationCenter defaultCenter]removeObserver:self name:PLAYBACK_STOP object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
     [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"spokeChanged" object:nil];
-    NSLog(@"PLAY BUTTON PRESSED");
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changePlayButtonImage) name:PLAYBACK_STOP object:nil];
+    [self spokeChanged];
     if(profileVC != nil)
     {
         if(profileVC.currentPlayingTag != playButton.tag)
         {
             profileVC.currentPlayingTag = (int)playButton.tag;
         }
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
         if(![profileVC.player isPlaying])
         {
             NSData *soundData = [[NSData alloc] initWithData:currentSpoke.audioData];
@@ -61,7 +62,7 @@
             
             [profileVC playSelectedAudio];
             
-            [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changePlayButtonImage) name:PLAYBACK_STOP object:nil];
+            
             [playButton removeFromSuperview];
             
             [playContainerView addSubview:spokeSlider];
@@ -75,14 +76,14 @@
         {
             wallVC.currentPlayingTag = (int)playButton.tag;
         }
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
+        
         if(![wallVC.player isPlaying])
         {
             NSData *soundData = [[NSData alloc] initWithData:currentSpoke.audioData];
             NSError *error;
             AVAudioPlayer *newPlayer =[[AVAudioPlayer alloc] initWithData: soundData error: &error];
             newPlayer.delegate = self;
-
+            
             wallVC.player = newPlayer;
             
             updateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
@@ -92,7 +93,6 @@
             
             [wallVC playSelectedAudio];
             
-            [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changePlayButtonImage) name:PLAYBACK_STOP object:nil];
             [playButton removeFromSuperview];
             
             [playContainerView addSubview:spokeSlider];
@@ -106,9 +106,9 @@
         {
             respokenVC.currentPlayingTag = (int)playButton.tag;
         }
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopRespokenPlayer) name:RESPOKEN_HEADER_PLAY object:nil];
 
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopRespokenPlayer) name:RESPOKEN_HEADER_PLAY object:nil];
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:CELL_PLAY_STARTED object:nil];
         
         if(![respokenVC.player isPlaying] || respokenVC.currentPlayingTag != -1)
@@ -123,7 +123,7 @@
             NSError *error;
             AVAudioPlayer *newPlayer =[[AVAudioPlayer alloc] initWithData: soundData error: &error];
             newPlayer.delegate = self;
-
+            
             respokenVC.player = newPlayer;
             updateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
             
@@ -132,7 +132,6 @@
             
             [respokenVC playSelectedAudio];
             
-            [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changePlayButtonImage) name:PLAYBACK_STOP object:nil];
             [playButton removeFromSuperview];
             
             [playContainerView addSubview:spokeSlider];
@@ -152,7 +151,7 @@
 
 -(void)spokeChanged
 {
-    NSLog(@"SPOKE CHANGED");
+    NSLog(@"SPOKE CELL SPOKE CHANGED");
     [self changePlayButtonImage];
     if(profileVC != nil)
     {
@@ -185,6 +184,11 @@
     [pausePlayButton removeFromSuperview];
     [playContainerView addSubview:playButton];
     [playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
+}
+
+-(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+{
+    NSLog(@"SPOKE CELL ------------------------------ AUDIO PLAYER DID FINISH");
     if(profileVC != nil)
     {
         if(![currentSpoke.listOfHeardsID containsObject:[[UserProfile sharedProfile] getUserID]])
@@ -197,9 +201,12 @@
             
             [currentSpoke.listOfHeardsID addObject:[[UserProfile sharedProfile] getUserID]];
         }
-
+        
         [[UserProfile sharedProfile] updateTotalSpokeHeard:currentSpoke.spokeID heardID:[[UserProfile sharedProfile] getUserID]];
+        [profileVC spokeEnded];
         [profileVC sensorStateChange:nil];
+        
+        [self playSequence];
     }
     else if(wallVC != nil)
     {
@@ -213,60 +220,12 @@
             [currentSpoke.listOfHeardsID addObject:[[UserProfile sharedProfile] getUserID]];
         }
         
-
         [[UserProfile sharedProfile] updateTotalSpokeHeard:currentSpoke.spokeID heardID:[[UserProfile sharedProfile] getUserID]];
+
+        [self spokeEnded];
+        [self sensorStateChange:nil];
         
-        [wallVC sensorStateChange:nil];
-//        int i = currentSpokeIndex;
-//        while (i > 0)
-//        {
-//            NSLog(@"SPOKE CELL I: %d", i);
-//            i = i-1;
-//            Spoke *tempSpoke = [wallVC.wallSpokesArray objectAtIndex:i];
-//
-//            if ([tempSpoke.listOfHeardsID containsObject:[[UserProfile sharedProfile] getUserID]])
-//            {
-//                NSLog(@"GIA SENTITO MAREMMA MERDA");
-//            }
-//            else
-//            {
-//                NSLog(@"SENTIAMO IL PROSSIMO MAREMMA CAZZO");
-//                currentSpoke = tempSpoke;
-//                wallVC.currentPlayingTag = i;
-//                //Remember to check boundaries before just setting an indexpath or your app will crash!
-//                NSIndexPath *currentSelection = [NSIndexPath indexPathForRow:currentSpokeIndex - 1  inSection:0];
-//                
-//                [wallVC.wallTableView selectRowAtIndexPath:currentSelection animated:YES scrollPosition: UITableViewScrollPositionTop];
-//                currentSpoke = [wallVC.wallSpokesArray objectAtIndex:i];
-//                [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
-//                if(![wallVC.player isPlaying])
-//                {
-//                    NSData *soundData = [[NSData alloc] initWithData:currentSpoke.audioData];
-//                    NSError *error;
-//                    AVAudioPlayer *newPlayer =[[AVAudioPlayer alloc] initWithData: soundData error: &error];
-//                    newPlayer.delegate = self;
-//                    
-//                    wallVC.player = newPlayer;
-//                    
-//                    updateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
-//                    
-//                    spokeSlider.minimumValue = 0;
-//                    spokeSlider.maximumValue = wallVC.player.duration;
-//                    
-//                    [wallVC playSelectedAudio];
-//                    
-//                    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changePlayButtonImage) name:PLAYBACK_STOP object:nil];
-//                    [playButton removeFromSuperview];
-//                    
-//                    [playContainerView addSubview:spokeSlider];
-//                    [playContainerView addSubview:currentTimeLabel];
-//                    [playContainerView addSubview:pausePlayButton];
-//                }
-//
-////                [self playButtonPressed:nil];
-//                break;
-//            }
-//        }
+        [self playSequence];
     }
     else if(respokenVC != nil)
     {
@@ -281,20 +240,55 @@
             [currentSpoke.listOfHeardsID addObject:[respokenVC.userProf getUserID]];
         }
         
-        [respokenVC sensorStateChange:nil];
         [respokenVC.userProf updateTotalSpokeHeard:currentSpoke.spokeID heardID:[respokenVC.userProf getUserID]];
+
+        [respokenVC spokeEnded];
+        [respokenVC sensorStateChange:nil];
+        
+        [self playSequence];
     }
+
     int totalHeard = (int)[currentSpoke.listOfHeardsID count];
     currentSpoke.totalHeards = totalHeard;
     heardLabel.text = [NSString stringWithFormat:@"%d heard", totalHeard];
+    
+    [self changePlayButtonImage];
 }
 
--(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
+-(void)playSequence
 {
-    NSLog(@"SPOKE CELL ------------------------------ AUDIO PLAYER DID FINISH");
-    [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
-    [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
-    
+    int i = currentSpokeIndex;
+    while (i > 0)
+    {
+        NSLog(@"SPOKE CELL I: %d", i);
+        i = i-1;
+        Spoke *tempSpoke = [[UserProfile sharedProfile].cacheSpokesArray objectAtIndex:i];
+        
+        if ([tempSpoke.listOfHeardsID containsObject:[[UserProfile sharedProfile] getUserID]])
+        {
+            NSLog(@"GIA SENTITO MAREMMA MERDA");
+        }
+        else
+        {
+            NSLog(@"SENTIAMO IL PROSSIMO");
+            currentSpoke = tempSpoke;
+            wallVC.currentPlayingTag = i;
+            if(profileVC != nil)
+            {
+                [profileVC changeCell:i];
+            }
+            else if(wallVC != nil)
+            {
+                [wallVC changeCell:i];
+            }
+            else if (respokenVC != nil)
+            {
+                [respokenVC changeCell:i];
+            }
+            
+            break;
+        }
+    }
 }
 
 -(void)updateHeardLabel
@@ -551,6 +545,51 @@
     {
         [respokenVC openUserProfile:currentSpoke];
     }
+}
+
+-(void)spokeEnded
+{
+    useSpeaker = YES;
+}
+
+- (void)sensorStateChange:(NSNotification *)notification
+{
+    AVAudioSession* session = [AVAudioSession sharedInstance];
+    BOOL success;
+    NSError* error;
+    
+    success = [session setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
+    
+    if (!success)
+        NSLog(@"AVAudioSession error setting category:%@",error);
+    
+    if ([[UIDevice currentDevice] proximityState] == YES)// && !useSpeaker)
+    {
+        NSLog(@"ORECCHIO");
+        success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:&error];
+    }
+    else
+    {
+        NSLog(@"SPEAKER");
+        success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+    }
+    
+    if (useSpeaker)
+    {
+        NSLog(@"SPOKE ENDED");
+        success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+        useSpeaker = NO;
+        [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+        [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
+    }
+    
+    if (!success)
+        NSLog(@"AVAudioSession error overrideOutputAudioPort:%@",error);
+    
+    //activate the audio session
+    success = [session setActive:YES error:&error];
+    if (!success)
+        NSLog(@"AVAudioSession error activating: %@",error);
 }
 
 @end

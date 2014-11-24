@@ -435,6 +435,13 @@
     }
 }
 
+-(void)changeCell:(int)cellIndex
+{
+    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:cellIndex inSection:0];
+    SpokeCell *cell = (SpokeCell*)[wallTableView cellForRowAtIndexPath:indexPath];
+    [cell playButtonPressed:nil];
+}
+
 - (void)longPress:(UILongPressGestureRecognizer*)gesture
 {
     if (gesture.state == UIGestureRecognizerStateBegan)
@@ -451,7 +458,6 @@
 
 -(void)playSelectedAudio
 {
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
     [player prepareToPlay];
     [player play];
 }
@@ -459,46 +465,7 @@
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
     [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
 }
 
-- (void)sensorStateChange:(NSNotification *)notification
-{
-    AVAudioSession* session = [AVAudioSession sharedInstance];
-    
-    //error handling
-    BOOL success;
-    NSError* error;
-    
-    success = [session setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
-    
-    if (!success)
-        NSLog(@"AVAudioSession error setting category:%@",error);
-    
-    if ([[UIDevice currentDevice] proximityState] == YES)
-    {
-        NSLog(@"ORECCHIO");
-        //get your app's audioSession singleton object
-        
-        //set the audioSession override
-        success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideNone
-                                             error:&error];
-    }
-    else
-    {
-        NSLog(@"SPEAKER");
-        success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
-    }
-    
-    if (!success)
-        NSLog(@"AVAudioSession error overrideOutputAudioPort:%@",error);
-    
-    //activate the audio session
-    success = [session setActive:YES error:&error];
-    if (!success)
-        NSLog(@"AVAudioSession error activating: %@",error);
-    else
-        NSLog(@" WALL VIEW CONTROLLER audioSession active");
-}
 
 @end

@@ -64,6 +64,7 @@
         name = [profile objectForKey:USER_FULL_NAME];
         info = [profile objectForKey:USER_BIO];
         userId = [[UserProfile sharedProfile] getUserID];
+        [mainVC profileButtonPressed:nil];
     }
     else
     {
@@ -93,6 +94,7 @@
         self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
         [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
         [self.navigationController.navigationBar setBackgroundColor:[UIColor blackColor]];
+        [self reloadMySpokesArray];
     }
     currentPlayingTag = -1;
     
@@ -632,6 +634,18 @@
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
 }
 
+-(void)changeCell:(int)cellIndex
+{
+    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:cellIndex inSection:0];
+    SpokeCell *cell = (SpokeCell*)[spokesTableView cellForRowAtIndexPath:indexPath];
+    [cell playButtonPressed:nil];
+}
+
+-(void)spokeEnded
+{
+    useSpeaker = YES;
+}
+
 - (void)sensorStateChange:(NSNotificationCenter *)notification
 {
     AVAudioSession* session = [AVAudioSession sharedInstance];
@@ -660,6 +674,14 @@
         success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
     }
 
+    if (useSpeaker)
+    {
+        NSLog(@"PROFILE VIEW CONTROLLER SPOKE ENDED");
+        success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+        useSpeaker = NO;
+        [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+    }
+    
     if (!success)
         NSLog(@"AVAudioSession error overrideOutputAudioPort:%@",error);
     
@@ -667,8 +689,6 @@
     success = [session setActive:YES error:&error];
     if (!success)
         NSLog(@"AVAudioSession error activating: %@",error);
-    else
-        NSLog(@"audioSession active");
 }
 
 -(void)openUserProfile:(Spoke*)sender

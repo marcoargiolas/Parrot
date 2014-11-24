@@ -43,6 +43,7 @@
     MainViewController *mainVC;
     float tableViewOffset_y;
     BOOL isLoading;
+    BOOL useSpeaker;
 }
 
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
@@ -70,5 +71,7 @@
 -(void)reloadMySpokesArray;
 -(void)loadSpokesTableView;
 - (void)sensorStateChange:(NSNotificationCenter *)notification;
+-(void)spokeEnded;
+-(void)changeCell:(int)cellIndex;
 
 @end

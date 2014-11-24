@@ -41,6 +41,6 @@
 -(void)openRespokenView:(Spoke*)sender;
 -(void)reloadSpokeArray:(NSNotification*)notification;
 -(void)loadWallSpokes;
-- (void)sensorStateChange:(NSNotification *)notification;
+-(void)changeCell:(int)cellIndex;
 
 @end

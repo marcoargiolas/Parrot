@@ -167,7 +167,6 @@
     int totalHeard = (int)[respokenVC.currentSpoke.listOfHeardsID count];
     respokenVC.currentSpoke.totalHeards = totalHeard;
     heardLabel.text = [NSString stringWithFormat:@"%d heard", totalHeard];
-    
 }
 
 - (IBAction)pausePlayButtonPressed:(id)sender
@@ -496,7 +495,7 @@
     [cell.spokeNameButton setTitle:spokeObj.ownerName forState:UIControlStateNormal];
     
     cell.currentSpoke = spokeObj;
-    cell.currentSpokeIndex = indexPath.row;
+    cell.currentSpokeIndex = (int)indexPath.row;
     NSError *dataError;
     NSData *soundData = [[NSData alloc] initWithData:spokeObj.audioData];
     if(dataError != nil)
@@ -637,6 +636,11 @@
     [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
 }
 
+-(void)spokeEnded
+{
+    useSpeaker = YES;
+}
+
 - (void)sensorStateChange:(NSNotificationCenter *)notification
 {
     AVAudioSession* session = [AVAudioSession sharedInstance];
@@ -653,15 +657,20 @@
     if ([[UIDevice currentDevice] proximityState] == YES)
     {
         NSLog(@"ORECCHIO");
-        //get your app's audioSession singleton object
-        
-        //set the audioSession override
         success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:&error];
     }
     else
     {
         NSLog(@"SPEAKER");
         success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+    }
+    
+    if (useSpeaker)
+    {
+        NSLog(@"WALL VIEW CONTROLLER SPOKE ENDED");
+        success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+        useSpeaker = NO;
+        [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
     }
     
     if (!success)
@@ -685,6 +694,13 @@
         recordVC.startRecord = startRecord;
         startRecord = NO;
     }
+}
+
+-(void)changeCell:(int)cellIndex
+{
+    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:cellIndex inSection:0];
+    SpokeCell *cell = (SpokeCell*)[respokenTableView cellForRowAtIndexPath:indexPath];
+    [cell playButtonPressed:nil];
 }
 
 @end

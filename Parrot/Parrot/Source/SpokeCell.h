@@ -41,6 +41,7 @@
     int currentSpokeIndex;
     IBOutlet UIButton *spokeNameButton;
     RespokenViewController *respokenVC;
+    BOOL useSpeaker;
 }
 
 @property (strong, nonatomic) RespokenViewController *respokenVC;

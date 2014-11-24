@@ -277,10 +277,10 @@
     {
         [actionView removeFromSuperview];
         ProfileViewController *profVC = [segue destinationViewController];
-        profVC.userProfile = YES;
         profVC.userImageLoad = [UIImage imageWithData:currentSpokeChoose.ownerImageData];
         profVC.userName = [NSString stringWithFormat:@"%@ %@",currentSpokeChoose.ownerName, currentSpokeChoose.ownerSurname];
         profVC.userId = currentSpokeChoose.ownerID;
+        profVC.userProfile = YES;
         profVC.mainVC = self;
         currentSpokeChoose = nil;
     }
@@ -323,7 +323,14 @@
 -(void)openUserProfile:(Spoke*)sender
 {
     currentSpokeChoose = (Spoke*)sender;
-    [self performSegueWithIdentifier:@"userProfileAction" sender:nil];
+    if ([currentSpokeChoose.ownerID isEqualToString:[[UserProfile sharedProfile] getUserID]])
+    {
+        [self profileButtonPressed:nil];
+    }
+    else
+    {
+        [self performSegueWithIdentifier:@"userProfileAction" sender:nil];
+    }
 }
 
 -(void)openRespokenView:(Spoke*)sender

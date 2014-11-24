@@ -75,6 +75,7 @@
     UIImage *userImageLoad;
     Spoke *currentSpoke;
     BOOL fromRecordView;
+    BOOL useSpeaker;
 }
 
 @property (nonatomic, assign) BOOL fromRecordView;
@@ -98,5 +99,7 @@
 - (IBAction)recordButtonPressed:(id)sender;
 -(void) stopRespokenPlayer;
 - (void)sensorStateChange:(NSNotification *)notification;
+-(void)spokeEnded;
+-(void)changeCell:(int)cellIndex;
 
 @end
