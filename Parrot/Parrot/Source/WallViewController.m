@@ -77,11 +77,15 @@
 {
 //    [[UserProfile sharedProfile].cacheSpokesArray removeAllObjects];
     BOOL newSpoke = [[[NSUserDefaults standardUserDefaults]objectForKey:NEW_SPOKE_ADDED] boolValue];
-    if([[UserProfile sharedProfile].cacheSpokesArray count] > 0 && newSpoke)
+    BOOL updateHeard = [[[NSUserDefaults standardUserDefaults]objectForKey:UPDATE_HEARDS] boolValue];
+    BOOL updateLike = [[[NSUserDefaults standardUserDefaults]objectForKey:UPDATE_LIKES] boolValue];
+    if([[UserProfile sharedProfile].cacheSpokesArray count] > 0 && (newSpoke || updateLike || updateHeard))
     {
         [UserProfile sharedProfile].cacheSpokesArray = [Utilities orderByDate:[UserProfile sharedProfile].cacheSpokesArray];
         [wallTableView reloadData];
         [[NSUserDefaults standardUserDefaults]setObject:[NSNumber numberWithBool:NO] forKey:NEW_SPOKE_ADDED];
+        [[NSUserDefaults standardUserDefaults]setObject:[NSNumber numberWithBool:NO] forKey:UPDATE_HEARDS];
+        [[NSUserDefaults standardUserDefaults]setObject:[NSNumber numberWithBool:NO] forKey:UPDATE_LIKES];
     }
     else
     {

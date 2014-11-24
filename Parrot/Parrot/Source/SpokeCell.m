@@ -193,13 +193,12 @@
     {
         if(![currentSpoke.listOfHeardsID containsObject:[[UserProfile sharedProfile] getUserID]])
         {
+            [currentSpoke.listOfHeardsID addObject:[[UserProfile sharedProfile] getUserID]];
             [profileVC.currentSpokenArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
-            if ([[UserProfile sharedProfile].cacheSpokesArray count] < currentSpokeIndex)
+            if (currentSpokeIndex < [[UserProfile sharedProfile].cacheSpokesArray count])
             {
                 [[UserProfile sharedProfile].cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
             }
-            
-            [currentSpoke.listOfHeardsID addObject:[[UserProfile sharedProfile] getUserID]];
         }
         
         [[UserProfile sharedProfile] updateTotalSpokeHeard:currentSpoke.spokeID heardID:[[UserProfile sharedProfile] getUserID]];
@@ -212,12 +211,20 @@
     {
         if(![currentSpoke.listOfHeardsID containsObject:[[UserProfile sharedProfile] getUserID]])
         {
-            if ([[UserProfile sharedProfile].cacheSpokesArray count] < currentSpokeIndex)
+            [currentSpoke.listOfHeardsID addObject:[[UserProfile sharedProfile] getUserID]];
+            if (currentSpokeIndex < [[UserProfile sharedProfile].cacheSpokesArray count])
             {
                 [[UserProfile sharedProfile].cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
             }
-            
-            [currentSpoke.listOfHeardsID addObject:[[UserProfile sharedProfile] getUserID]];
+        }
+        
+        for (int i = 0; i < [[UserProfile sharedProfile].spokesArray count]; i++)
+        {
+            Spoke *tempSpoke = [[UserProfile sharedProfile].spokesArray objectAtIndex:i];
+            if ([tempSpoke.spokeID isEqualToString:currentSpoke.spokeID])
+            {
+                [[UserProfile sharedProfile].spokesArray replaceObjectAtIndex:i withObject:currentSpoke];
+            }
         }
         
         [[UserProfile sharedProfile] updateTotalSpokeHeard:currentSpoke.spokeID heardID:[[UserProfile sharedProfile] getUserID]];
@@ -231,13 +238,13 @@
     {
         if(![currentSpoke.listOfHeardsID containsObject:[respokenVC.userProf getUserID]])
         {
-            if ([respokenVC.userProf.cacheSpokesArray count] < currentSpokeIndex)
+            [currentSpoke.listOfHeardsID addObject:[respokenVC.userProf getUserID]];
+            if (currentSpokeIndex < [respokenVC.userProf.cacheSpokesArray count])
             {
                 [respokenVC.userProf.cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
             }
             
             [respokenVC.wallSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
-            [currentSpoke.listOfHeardsID addObject:[respokenVC.userProf getUserID]];
         }
         
         [respokenVC.userProf updateTotalSpokeHeard:currentSpoke.spokeID heardID:[respokenVC.userProf getUserID]];
@@ -251,7 +258,7 @@
     int totalHeard = (int)[currentSpoke.listOfHeardsID count];
     currentSpoke.totalHeards = totalHeard;
     heardLabel.text = [NSString stringWithFormat:@"%d heard", totalHeard];
-    
+    [[NSUserDefaults standardUserDefaults]setObject:[NSNumber numberWithBool:YES] forKey:UPDATE_HEARDS];
     [self changePlayButtonImage];
 }
 
@@ -382,7 +389,7 @@
     [[UserProfile sharedProfile].cacheSpokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
     [[UserProfile sharedProfile].spokesArray replaceObjectAtIndex:currentSpokeIndex withObject:currentSpoke];
     [[UserProfile sharedProfile] updateTotalSpokeLike:currentSpoke.spokeID thanksID:[[UserProfile sharedProfile] getUserID]addLike:!likeButton.selected totalLikes:(int)[currentSpoke.listOfThankersID count]];
-
+    
     currentSpoke.totalLikes = (int)[currentSpoke.listOfThankersID count];
     likeButton.selected = !likeButton.selected;
     
@@ -390,6 +397,7 @@
         likesLabel.text = [NSString stringWithFormat:@"%d like", (int)[currentSpoke.listOfThankersID count]];
     else
         likesLabel.text = [NSString stringWithFormat:@"%d likes", (int)[currentSpoke.listOfThankersID count]];
+    [[NSUserDefaults standardUserDefaults]setObject:[NSNumber numberWithBool:YES] forKey:UPDATE_LIKES];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikes:) name:@"updateLikes" object:nil];
 }
 

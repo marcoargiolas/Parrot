@@ -359,7 +359,7 @@ static UserProfile *shared = nil;
                     [thanksTempArray removeObject:userThanksID];
                 }
                 
-                [object setObject:[NSString stringWithFormat:@"%d",[thanksTempArray count]] forKey:@"totalLikes"];
+                [object setObject:[NSString stringWithFormat:@"%d",(int)[thanksTempArray count]] forKey:@"totalLikes"];
                 
                 NSLog(@"THANKS ARRAY DOPO %@", thanksTempArray);
                 [object setObject:thanksTempArray forKey:@"listOfThankersID"];

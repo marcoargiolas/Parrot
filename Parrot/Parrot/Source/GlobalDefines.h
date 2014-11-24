@@ -37,3 +37,5 @@
 #define FIRST_SPOKES_ARRIVED            @"firstSpokesArrived"
 #define RELOAD_SPOKES_LIST              @"reloadSpokesList"
 #define NEW_SPOKE_ADDED                 @"newSpokeAdded"
+#define UPDATE_LIKES                    @"updateLikes"
+#define UPDATE_HEARDS                   @"updateHeards"
