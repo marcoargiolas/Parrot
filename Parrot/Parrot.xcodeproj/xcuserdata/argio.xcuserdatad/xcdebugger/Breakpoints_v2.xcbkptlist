@@ -57,13 +57,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Parrot/Source/SpokeCell.m"
-            timestampString = "438542702.445068"
+            filePath = "Parrot/Source/ProfileViewController.m"
+            timestampString = "438542822.050538"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "194"
-            endingLineNumber = "194"
-            landmarkName = "-audioPlayerDidFinishPlaying:successfully:"
+            startingLineNumber = "623"
+            endingLineNumber = "623"
+            landmarkName = "-playSelectedAudio"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -74,12 +74,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Parrot/Source/ProfileViewController.m"
-            timestampString = "438542822.050538"
+            timestampString = "438543534.958118"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "623"
-            endingLineNumber = "623"
-            landmarkName = "-playSelectedAudio"
+            startingLineNumber = "173"
+            endingLineNumber = "173"
+            landmarkName = "-loadSpokesTableView"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Parrot/Source/WallViewController.m"
+            timestampString = "438543667.00386"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "79"
+            endingLineNumber = "79"
+            landmarkName = "-loadWallSpokes"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

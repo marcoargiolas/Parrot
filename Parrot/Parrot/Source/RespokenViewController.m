@@ -285,10 +285,7 @@
 }
 
 -(void)viewWillAppear:(BOOL)animated
-{
-    [[NSNotificationCenter defaultCenter]removeObserver:mainVC.wallVC name:RELOAD_SPOKES_LIST object:nil];
-    [[NSNotificationCenter defaultCenter]removeObserver:mainVC.profileVC name:RELOAD_SPOKES_LIST object:nil];
-    
+{    
     if(userProf == nil)
         userProf = [UserProfile sharedProfile];
     respokenTableView.delegate = nil;
