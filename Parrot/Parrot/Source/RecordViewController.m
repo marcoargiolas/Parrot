@@ -229,6 +229,7 @@
     {
         spokeObj.respokeToSpokeID = respokenSpoke.spokeID;
         [respokenVC.respokenArray addObject:spokeObj];
+        respokenVC.respokenArray = [Utilities orderByDate:respokenVC.respokenArray];
         respokenVC.fromRecordView = YES;
         if(respokenVC.currentSpoke.listOfRespokeID == nil)
         {

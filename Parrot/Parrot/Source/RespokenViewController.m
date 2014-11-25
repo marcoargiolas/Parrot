@@ -309,7 +309,7 @@
 
 -(void)reloadRespokenArray:(NSNotification*)notification
 {
-    respokenArray = (NSMutableArray*)[[notification userInfo]objectForKey:RESPOKEN_ARRAY];
+    respokenArray = [Utilities orderByDate:(NSMutableArray*)[[notification userInfo]objectForKey:RESPOKEN_ARRAY]];
     [refreshControl endRefreshing];
     
     respokenTableView.delegate = self;
