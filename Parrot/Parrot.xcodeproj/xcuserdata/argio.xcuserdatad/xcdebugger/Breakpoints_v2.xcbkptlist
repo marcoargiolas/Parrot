@@ -73,13 +73,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "Parrot/Source/ProfileViewController.m"
-            timestampString = "438543534.958118"
+            filePath = "Parrot/Source/SpokeCell.m"
+            timestampString = "438735075.069269"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "173"
-            endingLineNumber = "173"
-            landmarkName = "-loadSpokesTableView"
+            startingLineNumber = "192"
+            endingLineNumber = "192"
+            landmarkName = "-changePlayButtonImage"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

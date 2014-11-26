@@ -76,5 +76,6 @@
 - (IBAction)progressSliderMoved:(UISlider*)sender;
 - (IBAction)pausePlayButtonPressed:(id)sender;
 - (IBAction)spokeImageButtonPressed:(id)sender;
+-(void)changePlayButtonImage;
 
 @end

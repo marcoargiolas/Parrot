@@ -36,18 +36,22 @@
 
 - (IBAction)playButtonPressed:(id)sender
 {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"spokeChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:PLAYBACK_STOP object:nil];
+    
     [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
 
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changePlayButtonImage) name:PLAYBACK_STOP object:nil];
-    [self spokeChanged];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"spokeChanged" object:nil];
     if(profileVC != nil)
     {
         if(profileVC.currentPlayingTag != playButton.tag)
         {
             profileVC.currentPlayingTag = (int)playButton.tag;
         }
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
         if(![profileVC.player isPlaying])
         {
             NSData *soundData = [[NSData alloc] initWithData:currentSpoke.audioData];
@@ -77,7 +81,8 @@
         {
             wallVC.currentPlayingTag = (int)playButton.tag;
         }
-        
+        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
+
         if(![wallVC.player isPlaying])
         {
             NSData *soundData = [[NSData alloc] initWithData:currentSpoke.audioData];
@@ -153,7 +158,12 @@
 -(void)spokeChanged
 {
     NSLog(@"SPOKE CELL SPOKE CHANGED");
-    [self changePlayButtonImage];
+    [updateTimer invalidate];
+    [spokeSlider removeFromSuperview];
+    [currentTimeLabel removeFromSuperview];
+    [pausePlayButton removeFromSuperview];
+    [playContainerView addSubview:playButton];
+//    [self changePlayButtonImage];
     if(profileVC != nil)
     {
         [profileVC.player stop];
@@ -177,14 +187,17 @@
 }
 
 -(void)changePlayButtonImage
-{ [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+{
     NSLog(@"SPOKE CELL ----------------------------------------- CHANGE PLAY BUTTON IMAGE");
     [updateTimer invalidate];
     [spokeSlider removeFromSuperview];
     [currentTimeLabel removeFromSuperview];
     [pausePlayButton removeFromSuperview];
     [playContainerView addSubview:playButton];
-    [playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
+//    if([[UserProfile sharedProfile] spokeAlreadyListened:currentSpoke])
+        [playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
+//    else
+//        [playButton setImage:[UIImage imageNamed:@"button_big_play_enabled.png"] forState:UIControlStateNormal];
 }
 
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
@@ -231,7 +244,7 @@
         [[UserProfile sharedProfile] updateTotalSpokeHeard:currentSpoke.spokeID heardID:[[UserProfile sharedProfile] getUserID]];
 
         [self spokeEnded];
-//        [self sensorStateChange:nil];
+        [self sensorStateChange:nil];
         
         [self playSequence];
     }
@@ -270,17 +283,27 @@
     {
         NSLog(@"SPOKE CELL I: %d", i);
         i = i-1;
-        Spoke *tempSpoke = [[UserProfile sharedProfile].cacheSpokesArray objectAtIndex:i];
+        Spoke *tempSpoke;
+        if(profileVC != nil)
+        {
+            tempSpoke = [[UserProfile sharedProfile].spokesArray objectAtIndex:i];
+        }
+        else if(wallVC != nil)
+        {
+           tempSpoke = [[UserProfile sharedProfile].cacheSpokesArray objectAtIndex:i];
+        }
+        else if (respokenVC != nil)
+        {
+            tempSpoke = [respokenVC.respokenArray objectAtIndex:i];
+        }
         
         if ([tempSpoke.listOfHeardsID containsObject:[[UserProfile sharedProfile] getUserID]])
         {
-            NSLog(@"GIA SENTITO MAREMMA MERDA");
+            NSLog(@"GIA SENTITO");
         }
         else
         {
             NSLog(@"SENTIAMO IL PROSSIMO");
-            currentSpoke = tempSpoke;
-            wallVC.currentPlayingTag = i;
             if(profileVC != nil)
             {
                 [profileVC changeCell:i];
@@ -580,13 +603,13 @@
         success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
         if (useSpeaker)
         {
+            NSLog(@"DISABILITA PROXIMITY");
             useSpeaker = NO;
             [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
             [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
         }
         
     }
-    
     
     if (!success)
         NSLog(@"AVAudioSession error overrideOutputAudioPort:%@",error);
