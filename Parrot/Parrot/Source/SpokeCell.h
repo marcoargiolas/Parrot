@@ -42,6 +42,7 @@
     IBOutlet UIButton *spokeNameButton;
     RespokenViewController *respokenVC;
     BOOL useSpeaker;
+    BOOL newStart;
 }
 
 @property (strong, nonatomic) RespokenViewController *respokenVC;

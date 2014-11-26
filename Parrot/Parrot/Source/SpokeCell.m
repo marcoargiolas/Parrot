@@ -36,9 +36,10 @@
 
 - (IBAction)playButtonPressed:(id)sender
 {
-    [[NSNotificationCenter defaultCenter]removeObserver:self name:PLAYBACK_STOP object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
     [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
+
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
+
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changePlayButtonImage) name:PLAYBACK_STOP object:nil];
     [self spokeChanged];
     if(profileVC != nil)
@@ -176,7 +177,7 @@
 }
 
 -(void)changePlayButtonImage
-{
+{ [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
     NSLog(@"SPOKE CELL ----------------------------------------- CHANGE PLAY BUTTON IMAGE");
     [updateTimer invalidate];
     [spokeSlider removeFromSuperview];
@@ -230,7 +231,7 @@
         [[UserProfile sharedProfile] updateTotalSpokeHeard:currentSpoke.spokeID heardID:[[UserProfile sharedProfile] getUserID]];
 
         [self spokeEnded];
-        [self sensorStateChange:nil];
+//        [self sensorStateChange:nil];
         
         [self playSequence];
     }
@@ -568,10 +569,7 @@
     
     success = [session setCategory:AVAudioSessionCategoryPlayAndRecord error:&error];
     
-    if (!success)
-        NSLog(@"AVAudioSession error setting category:%@",error);
-    
-    if ([[UIDevice currentDevice] proximityState] == YES)// && !useSpeaker)
+    if ([[UIDevice currentDevice] proximityState] == YES)
     {
         NSLog(@"ORECCHIO");
         success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideNone error:&error];
@@ -580,16 +578,15 @@
     {
         NSLog(@"SPEAKER");
         success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+        if (useSpeaker)
+        {
+            useSpeaker = NO;
+            [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+            [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
+        }
+        
     }
     
-    if (useSpeaker)
-    {
-        NSLog(@"SPOKE ENDED");
-        success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
-        useSpeaker = NO;
-        [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
-        [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
-    }
     
     if (!success)
         NSLog(@"AVAudioSession error overrideOutputAudioPort:%@",error);

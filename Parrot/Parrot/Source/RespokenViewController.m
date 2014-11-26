@@ -81,15 +81,15 @@
             }
         }
 
-        respokenVC.currentSpoke.totalLikes = [respokenVC.currentSpoke.listOfThankersID count];
-        [respokenVC.userProf updateTotalSpokeLike:respokenVC.currentSpoke.spokeID thanksID:[respokenVC.userProf getUserID]addLike:!likeButton.selected totalLikes:[respokenVC.currentSpoke.listOfThankersID count]];
+        respokenVC.currentSpoke.totalLikes = (int)[respokenVC.currentSpoke.listOfThankersID count];
+        [respokenVC.userProf updateTotalSpokeLike:respokenVC.currentSpoke.spokeID thanksID:[respokenVC.userProf getUserID]addLike:!likeButton.selected totalLikes:(int)[respokenVC.currentSpoke.listOfThankersID count]];
     }
     likeButton.selected = !likeButton.selected;
     
     if([respokenVC.currentSpoke.listOfThankersID count] <= 1)
-        likesLabel.text = [NSString stringWithFormat:@"%d like", [respokenVC.currentSpoke.listOfThankersID count]];
+        likesLabel.text = [NSString stringWithFormat:@"%d like", (int)[respokenVC.currentSpoke.listOfThankersID count]];
     else
-        likesLabel.text = [NSString stringWithFormat:@"%d likes", [respokenVC.currentSpoke.listOfThankersID count]];
+        likesLabel.text = [NSString stringWithFormat:@"%d likes", (int)[respokenVC.currentSpoke.listOfThankersID count]];
     //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikes:) name:@"updateLikes" object:nil];
 }
 
