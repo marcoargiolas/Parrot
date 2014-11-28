@@ -8,6 +8,7 @@
 
 #import "SpokeCell.h"
 #import "GlobalDefines.h"
+#import "Utilities.h"
 
 @implementation SpokeCell
 
@@ -77,12 +78,16 @@
     }
     else if(wallVC != nil)
     {
+        NSLog(@"********************************");
+        NSLog(@"CURRENT PLAYING TAG %d", wallVC.currentPlayingTag);
+        NSLog(@"PLAY BUTTON TAG %d", playButton.tag);
+        NSLog(@"SPOKE ID MAREMMA PUTTANA %@", currentSpoke.spokeID);
+        NSLog(@"********************************");
         if(wallVC.currentPlayingTag != playButton.tag)
         {
             wallVC.currentPlayingTag = (int)playButton.tag;
         }
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
-
         if(![wallVC.player isPlaying])
         {
             NSData *soundData = [[NSData alloc] initWithData:currentSpoke.audioData];
@@ -194,10 +199,8 @@
     [currentTimeLabel removeFromSuperview];
     [pausePlayButton removeFromSuperview];
     [playContainerView addSubview:playButton];
-//    if([[UserProfile sharedProfile] spokeAlreadyListened:currentSpoke])
-        [playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
-//    else
-//        [playButton setImage:[UIImage imageNamed:@"button_big_play_enabled.png"] forState:UIControlStateNormal];
+    [playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
+    [self playSequence];
 }
 
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
@@ -218,8 +221,6 @@
         [[UserProfile sharedProfile] updateTotalSpokeHeard:currentSpoke.spokeID heardID:[[UserProfile sharedProfile] getUserID]];
         [profileVC spokeEnded];
         [profileVC sensorStateChange:nil];
-        
-        [self playSequence];
     }
     else if(wallVC != nil)
     {
@@ -245,8 +246,6 @@
 
         [self spokeEnded];
         [self sensorStateChange:nil];
-        
-        [self playSequence];
     }
     else if(respokenVC != nil)
     {
@@ -265,8 +264,6 @@
 
         [respokenVC spokeEnded];
         [respokenVC sensorStateChange:nil];
-        
-        [self playSequence];
     }
 
     int totalHeard = (int)[currentSpoke.listOfHeardsID count];
@@ -278,7 +275,7 @@
 
 -(void)playSequence
 {
-    int i = currentSpokeIndex;
+    int i = playButton.tag;
     while (i > 0)
     {
         NSLog(@"SPOKE CELL I: %d", i);
@@ -290,13 +287,13 @@
         }
         else if(wallVC != nil)
         {
-           tempSpoke = [[UserProfile sharedProfile].cacheSpokesArray objectAtIndex:i];
+            tempSpoke = [[UserProfile sharedProfile].cacheSpokesArray objectAtIndex:i];
         }
         else if (respokenVC != nil)
         {
             tempSpoke = [respokenVC.respokenArray objectAtIndex:i];
         }
-        
+        NSLog(@"TEMP SPOKE ID %@", tempSpoke.spokeID);
         if ([tempSpoke.listOfHeardsID containsObject:[[UserProfile sharedProfile] getUserID]])
         {
             NSLog(@"GIA SENTITO");
@@ -310,7 +307,7 @@
             }
             else if(wallVC != nil)
             {
-                [wallVC changeCell:i];
+                [wallVC changeCell:tempSpoke andIndex:i];
             }
             else if (respokenVC != nil)
             {

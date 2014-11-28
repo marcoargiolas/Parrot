@@ -516,6 +516,7 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
+        [player stop];
         [spokesTableView beginUpdates];
         Spoke *spokeToDelete = [currentSpokenArray objectAtIndex:indexPath.row];
         

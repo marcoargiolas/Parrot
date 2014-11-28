@@ -7,7 +7,6 @@
 //
 
 #import "WallViewController.h"
-#import "ProfileViewController.h"
 #import "UIImage+Additions.h"
 #import "GlobalDefines.h"
 #import "Utilities.h"
@@ -47,7 +46,7 @@
     maskImage = [UIImage ellipsedMaskFromRect:CGRectMake(0, 0, IMAGE_WIDTH, IMAGE_WIDTH) inSize:CGSizeMake(IMAGE_WIDTH, IMAGE_WIDTH)];
     
     currentPlayingTag = -1;
-    
+    cellsDict = [[NSMutableDictionary alloc]init];
     [wallTableView setSeparatorStyle:UITableViewCellSeparatorStyleNone];
     
     [buttonContainerView setFrame:CGRectMake(buttonContainerView.frame.origin.x, self.view.frame.size.height - 65 - buttonContainerView.frame.size.height, buttonContainerView.frame.size.width, buttonContainerView.frame.size.height)];
@@ -340,7 +339,8 @@
     }
 
     [cell setBackgroundColor:[UIColor clearColor]];
-    
+
+    [cellsDict setValue:cell forKey:spokeObj.spokeID];
 //    int lastRow = (int)[tableView numberOfRowsInSection:indexPath.section]-1;
 //    if(lastRow == indexPath.row && indexPath.row == 4)
 //    {
@@ -368,6 +368,7 @@
 {
     if (editingStyle == UITableViewCellEditingStyleDelete)
     {
+        [player stop];
         [wallTableView beginUpdates];
         Spoke *spokeToDelete = [[UserProfile sharedProfile].cacheSpokesArray objectAtIndex:indexPath.row];
         NSIndexPath *indexToRefresh;
@@ -432,6 +433,7 @@
             [wallTableView reloadRowsAtIndexPaths:[NSArray arrayWithObjects:indexToRefresh, nil] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
         [wallTableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [cellsDict removeObjectForKey:spokeToDelete.spokeID];
         [wallTableView endUpdates];
         
         [[UserProfile sharedProfile] saveProfileLocal];
@@ -439,10 +441,14 @@
     }
 }
 
--(void)changeCell:(int)cellIndex
+-(void)changeCell:(Spoke*)spokeToPlay andIndex:(int)cellIndex
 {
-    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:cellIndex inSection:0];
-    SpokeCell *cell = (SpokeCell*)[wallTableView cellForRowAtIndexPath:indexPath];
+    SpokeCell *cell = [cellsDict objectForKey:spokeToPlay.spokeID];
+    cell.currentSpoke = spokeToPlay;
+    cell.playButton.tag = cellIndex;
+    cell.wallVC = self;
+    cell.currentSpokeIndex = cellIndex;
+    self.currentPlayingTag = cellIndex;
     [cell playButtonPressed:nil];
 }
 

@@ -77,5 +77,6 @@
 - (IBAction)pausePlayButtonPressed:(id)sender;
 - (IBAction)spokeImageButtonPressed:(id)sender;
 -(void)changePlayButtonImage;
+-(void)playSequence;
 
 @end

@@ -10,6 +10,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "UserProfile.h"
 
+@class SpokeCell;
 @class MainViewController;
 @interface WallViewController : UIViewController <AVAudioPlayerDelegate, AVAudioSessionDelegate,AVAudioRecorderDelegate, UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate>
 {
@@ -25,6 +26,7 @@
     MainViewController *mainVC;
     BOOL firstResults;
     BOOL isLoading;
+    NSMutableDictionary *cellsDict;
 }
 
 @property (nonatomic, strong) MainViewController *mainVC;
@@ -41,6 +43,6 @@
 -(void)openRespokenView:(Spoke*)sender;
 -(void)reloadSpokeArray:(NSNotification*)notification;
 -(void)loadWallSpokes;
--(void)changeCell:(int)cellIndex;
+-(void)changeCell:(Spoke*)spokeToPlay andIndex:(int)cellIndex;
 
 @end
