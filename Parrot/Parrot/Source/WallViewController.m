@@ -81,6 +81,7 @@
     if([[UserProfile sharedProfile].cacheSpokesArray count] > 0 && (newSpoke || updateLike || updateHeard))
     {
         [UserProfile sharedProfile].cacheSpokesArray = [Utilities orderByDate:[UserProfile sharedProfile].cacheSpokesArray];
+        [wallTableView setContentOffset:CGPointZero animated:YES];
         [wallTableView reloadData];
         [[NSUserDefaults standardUserDefaults]setObject:[NSNumber numberWithBool:NO] forKey:NEW_SPOKE_ADDED];
         [[NSUserDefaults standardUserDefaults]setObject:[NSNumber numberWithBool:NO] forKey:UPDATE_HEARDS];
@@ -139,7 +140,7 @@
     }
     
     [[UserProfile sharedProfile] saveLocalSpokesCache:[UserProfile sharedProfile].cacheSpokesArray];
-    [UserProfile sharedProfile].cacheSpokesArray = [Utilities orderByDate:[UserProfile sharedProfile].cacheSpokesArray];
+    [UserProfile sharedProfile].cacheSpokesArray = [Utilities orderByDate:[UserProfile sharedProfile].cacheSpokesArray]; 
     [wallTableView reloadData];
     [refreshControl endRefreshing];
     
@@ -340,7 +341,7 @@
 
     [cell setBackgroundColor:[UIColor clearColor]];
 
-    [cellsDict setValue:cell forKey:spokeObj.spokeID];
+    [cellsDict setObject:cell forKey:spokeObj.spokeID];
 //    int lastRow = (int)[tableView numberOfRowsInSection:indexPath.section]-1;
 //    if(lastRow == indexPath.row && indexPath.row == 4)
 //    {
@@ -446,9 +447,12 @@
     SpokeCell *cell = [cellsDict objectForKey:spokeToPlay.spokeID];
     cell.currentSpoke = spokeToPlay;
     cell.playButton.tag = cellIndex;
-    cell.wallVC = self;
-    cell.currentSpokeIndex = cellIndex;
-    self.currentPlayingTag = cellIndex;
+
+//    cell.currentSpokeIndex = cellIndex;
+//    self.currentPlayingTag = cellIndex;
+    NSIndexPath *selectedIndex = [NSIndexPath indexPathForRow:cellIndex inSection:0];
+    [wallTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndex] withRowAnimation:UITableViewRowAnimationFade];
+
     [cell playButtonPressed:nil];
 }
 

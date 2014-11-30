@@ -38,13 +38,14 @@
 - (IBAction)playButtonPressed:(id)sender
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"spokeChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:PLAYBACK_STOP object:nil];
     
     [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
 
-    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(changePlayButtonImage) name:PLAYBACK_STOP object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changePlayButtonImage) name:PLAYBACK_STOP object:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"spokeChanged" object:nil];
     if(profileVC != nil)
     {
@@ -52,7 +53,7 @@
         {
             profileVC.currentPlayingTag = (int)playButton.tag;
         }
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
+//        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
         if(![profileVC.player isPlaying])
         {
             NSData *soundData = [[NSData alloc] initWithData:currentSpoke.audioData];
@@ -80,14 +81,14 @@
     {
         NSLog(@"********************************");
         NSLog(@"CURRENT PLAYING TAG %d", wallVC.currentPlayingTag);
-        NSLog(@"PLAY BUTTON TAG %d", playButton.tag);
+        NSLog(@"PLAY BUTTON TAG %d", (int)playButton.tag);
         NSLog(@"SPOKE ID MAREMMA PUTTANA %@", currentSpoke.spokeID);
         NSLog(@"********************************");
         if(wallVC.currentPlayingTag != playButton.tag)
         {
             wallVC.currentPlayingTag = (int)playButton.tag;
         }
-        [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
+        
         if(![wallVC.player isPlaying])
         {
             NSData *soundData = [[NSData alloc] initWithData:currentSpoke.audioData];
@@ -200,6 +201,7 @@
     [pausePlayButton removeFromSuperview];
     [playContainerView addSubview:playButton];
     [playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"spokeChanged" object:nil];
     [self playSequence];
 }
 
@@ -275,7 +277,7 @@
 
 -(void)playSequence
 {
-    int i = playButton.tag;
+    int i = (int)playButton.tag;
     while (i > 0)
     {
         NSLog(@"SPOKE CELL I: %d", i);
