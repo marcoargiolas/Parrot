@@ -37,6 +37,21 @@
 
 - (IBAction)playButtonPressed:(id)sender
 {
+    NSLog(@"SENDER %@", sender);
+    if (profileVC != nil)
+    {
+        currentSpoke = [[UserProfile sharedProfile].spokesArray objectAtIndex:(int)playButton.tag];
+    }
+    else if(wallVC != nil)
+    {
+        currentSpoke = [[UserProfile sharedProfile].cacheSpokesArray objectAtIndex:(int)playButton.tag];
+    }
+    else if(respokenVC != nil)
+    {
+        currentSpoke = [respokenVC.respokenArray objectAtIndex:(int)playButton.tag];
+    }
+    
+    NSLog(@"CURRENT SPOKE ID %@", currentSpoke.spokeID);
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"spokeChanged" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:PLAYBACK_STOP object:nil];
@@ -202,6 +217,7 @@
     [playContainerView addSubview:playButton];
     [playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"spokeChanged" object:nil];
+    NSLog(@"SELF %@", self);
     [self playSequence];
 }
 
@@ -302,10 +318,12 @@
         }
         else
         {
+            currentSpoke  = tempSpoke;
             NSLog(@"SENTIAMO IL PROSSIMO");
+            [[NSNotificationCenter defaultCenter] removeObserver:self name:@"spokeChanged" object:nil];
             if(profileVC != nil)
             {
-                [profileVC changeCell:i];
+                [profileVC changeCell:tempSpoke andIndex:i];
             }
             else if(wallVC != nil)
             {
@@ -313,7 +331,7 @@
             }
             else if (respokenVC != nil)
             {
-                [respokenVC changeCell:i];
+                [respokenVC changeCell:tempSpoke andIndex:i];
             }
             
             break;
@@ -477,6 +495,7 @@
 
 - (void)updateSlider
 {
+    NSLog(@"CURRENT INDEX %d", currentSpokeIndex);
     if(spokeSlider.tag == playButton.tag)
     {
         if(profileVC != nil)

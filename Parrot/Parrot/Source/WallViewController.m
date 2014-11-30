@@ -273,8 +273,8 @@
 
     [cell.spokeNameButton setTitle:spokeObj.ownerName forState:UIControlStateNormal];
     
-    cell.currentSpoke = spokeObj;
-    cell.currentSpokeIndex = (int)indexPath.row;
+//    cell.currentSpoke = spokeObj;
+//    cell.currentSpokeIndex = (int)indexPath.row;
     NSError *dataError;
     NSData *soundData = [[NSData alloc] initWithData:spokeObj.audioData];
     if(dataError != nil)
@@ -444,16 +444,20 @@
 
 -(void)changeCell:(Spoke*)spokeToPlay andIndex:(int)cellIndex
 {
+    NSLog(@"WALL VIEW CURRENT SPOKE ID %@", spokeToPlay.spokeID);
+
     SpokeCell *cell = [cellsDict objectForKey:spokeToPlay.spokeID];
+    
     cell.currentSpoke = spokeToPlay;
     cell.playButton.tag = cellIndex;
-
-//    cell.currentSpokeIndex = cellIndex;
-//    self.currentPlayingTag = cellIndex;
-    NSIndexPath *selectedIndex = [NSIndexPath indexPathForRow:cellIndex inSection:0];
-    [wallTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndex] withRowAnimation:UITableViewRowAnimationFade];
-
-    [cell playButtonPressed:nil];
+    cell.wallVC = self;
+    cell.currentSpokeIndex = cellIndex;
+    self.currentPlayingTag = cellIndex;
+   
+//    [wallTableView selectRowAtIndexPath:selectedIndex animated:NO scrollPosition:UITableViewScrollPositionNone];
+//    [wallTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndex] withRowAnimation:UITableViewRowAnimationFade];
+    [wallTableView reloadData];
+    [cell playButtonPressed:cell.playButton];
 }
 
 - (void)longPress:(UILongPressGestureRecognizer*)gesture

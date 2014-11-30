@@ -56,7 +56,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loadSpokesTableView) name:RELOAD_SPOKES_LIST object:nil];
     [super viewDidLoad];
     profile = [[UserProfile sharedProfile].currentUser objectForKey:USER_PROFILE];
-    
+    cellsDict = [[NSMutableDictionary alloc]init];
     NSString *name;
     NSString *info;
     if (!userProfile)
@@ -425,7 +425,6 @@
     }
     
     Spoke *spokeObj = [currentSpokenArray objectAtIndex:indexPath.row];
-    cell.currentSpoke = spokeObj;
 
     NSError *dataError;
     NSData *soundData = [[NSData alloc] initWithData:spokeObj.audioData];
@@ -439,7 +438,8 @@
     newPlayer.delegate = self;
 
     cell.spokePlayer = newPlayer;
-    cell.currentSpokeIndex = (int)indexPath.row;
+//     cell.currentSpoke = spokeObj;
+//    cell.currentSpokeIndex = (int)indexPath.row;
     
     cell.totalTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)cell.spokePlayer.duration / 60, (int)cell.spokePlayer.duration % 60, nil];
 
@@ -495,7 +495,7 @@
             [cell.playButton setImage:[UIImage imageNamed:@"button_big_play_enabled.png"] forState:UIControlStateNormal];
     }
     [cell setBackgroundColor:[UIColor clearColor]];
-    
+    [cellsDict setObject:cell forKey:spokeObj.spokeID];
     return cell;
 }
 
@@ -635,11 +635,18 @@
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
 }
 
--(void)changeCell:(int)cellIndex
+-(void)changeCell:(Spoke*)spokeToPlay andIndex:(int)cellIndex
 {
-    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:cellIndex inSection:0];
-    SpokeCell *cell = (SpokeCell*)[spokesTableView cellForRowAtIndexPath:indexPath];
-    [cell playButtonPressed:nil];
+    SpokeCell *cell = [cellsDict objectForKey:spokeToPlay.spokeID];
+    
+    cell.currentSpoke = spokeToPlay;
+    cell.playButton.tag = cellIndex;
+    cell.profileVC = self;
+    cell.currentSpokeIndex = cellIndex;
+    self.currentPlayingTag = cellIndex;
+    
+    [spokesTableView reloadData];
+    [cell playButtonPressed:cell.playButton];
 }
 
 -(void)spokeEnded

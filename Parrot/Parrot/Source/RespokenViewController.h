@@ -76,6 +76,7 @@
     Spoke *currentSpoke;
     BOOL fromRecordView;
     BOOL useSpeaker;
+    NSMutableDictionary *cellsDict;
 }
 
 @property (nonatomic, assign) BOOL fromRecordView;
@@ -100,6 +101,6 @@
 -(void) stopRespokenPlayer;
 - (void)sensorStateChange:(NSNotification *)notification;
 -(void)spokeEnded;
--(void)changeCell:(int)cellIndex;
+-(void)changeCell:(Spoke*)spokeToPlay andIndex:(int)cellIndex;
 
 @end

@@ -44,6 +44,7 @@
     float tableViewOffset_y;
     BOOL isLoading;
     BOOL useSpeaker;
+    NSMutableDictionary *cellsDict;
 }
 
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
@@ -72,6 +73,6 @@
 -(void)loadSpokesTableView;
 - (void)sensorStateChange:(NSNotificationCenter *)notification;
 -(void)spokeEnded;
--(void)changeCell:(int)cellIndex;
+-(void)changeCell:(Spoke*)spokeToPlay andIndex:(int)cellIndex;
 
 @end

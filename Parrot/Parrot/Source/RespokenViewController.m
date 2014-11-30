@@ -244,7 +244,7 @@
     maskImage = [UIImage ellipsedMaskFromRect:CGRectMake(0, 0, IMAGE_WIDTH, IMAGE_WIDTH) inSize:CGSizeMake(IMAGE_WIDTH, IMAGE_WIDTH)];
     
     currentPlayingTag = -1;
-    
+    cellsDict = [[NSMutableDictionary alloc]init];
     [buttonContainerView setFrame:CGRectMake(buttonContainerView.frame.origin.x, self.view.frame.size.height - 65 - buttonContainerView.frame.size.height, buttonContainerView.frame.size.width, buttonContainerView.frame.size.height)];
     
     [recordButton.layer setShadowColor:[UIColor blackColor].CGColor];
@@ -491,8 +491,8 @@
     
     [cell.spokeNameButton setTitle:spokeObj.ownerName forState:UIControlStateNormal];
     
-    cell.currentSpoke = spokeObj;
-    cell.currentSpokeIndex = (int)indexPath.row;
+//    cell.currentSpoke = spokeObj;
+//    cell.currentSpokeIndex = (int)indexPath.row;
     NSError *dataError;
     NSData *soundData = [[NSData alloc] initWithData:spokeObj.audioData];
     if(dataError != nil)
@@ -557,6 +557,8 @@
     }
     
     [cell setBackgroundColor:[UIColor clearColor]];
+    [cellsDict setObject:cell forKey:spokeObj.spokeID];
+    
     return cell;
 }
 
@@ -693,11 +695,18 @@
     }
 }
 
--(void)changeCell:(int)cellIndex
+-(void)changeCell:(Spoke*)spokeToPlay andIndex:(int)cellIndex
 {
-    NSIndexPath *indexPath=[NSIndexPath indexPathForRow:cellIndex inSection:0];
-    SpokeCell *cell = (SpokeCell*)[respokenTableView cellForRowAtIndexPath:indexPath];
-    [cell playButtonPressed:nil];
+    SpokeCell *cell = [cellsDict objectForKey:spokeToPlay.spokeID];
+    
+    cell.currentSpoke = spokeToPlay;
+    cell.playButton.tag = cellIndex;
+    cell.respokenVC = self;
+    cell.currentSpokeIndex = cellIndex;
+    self.currentPlayingTag = cellIndex;
+    
+    [respokenTableView reloadData];
+    [cell playButtonPressed:cell.playButton];
 }
 
 @end
