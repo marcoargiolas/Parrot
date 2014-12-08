@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14B25" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="0EU-XE-Tx2" customClass="PlayBarView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="cWX-Dc-bvL">
+                    <rect key="frame" x="241" y="12" width="36" height="36"/>
+                    <state key="normal" backgroundImage="button_bar_respoken_enabled@2x.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="respokenButtonPressed:" destination="0EU-XE-Tx2" eventType="touchUpInside" id="bTw-tN-qJj"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vXG-iN-85j">
+                    <rect key="frame" x="301" y="23" width="9" height="13"/>
+                    <state key="normal" backgroundImage="arrow_bar_right@2x.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="rightButtonPressed:" destination="0EU-XE-Tx2" eventType="touchUpInside" id="QXa-Lf-RwN"/>
+                    </connections>
+                </button>
+                <slider opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="CiK-sn-q48">
+                    <rect key="frame" x="101" y="23" width="118" height="31"/>
+                    <color key="tintColor" red="0.23529411764705882" green="0.39215686274509803" blue="0.66666666666666663" alpha="1" colorSpace="calibratedRGB"/>
+                    <connections>
+                        <action selector="progressSliderMoved:" destination="0EU-XE-Tx2" eventType="valueChanged" id="9bm-aD-Tgx"/>
+                    </connections>
+                </slider>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MjA-Zm-o2b">
+                    <rect key="frame" x="103" y="0.0" width="114" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZPa-6w-1m4">
+                    <rect key="frame" x="103" y="39" width="114" height="21"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="c3I-CQ-DyM">
+                    <rect key="frame" x="43" y="12" width="36" height="36"/>
+                    <state key="normal" backgroundImage="button_bar_pause_enabled@2x.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="selected" backgroundImage="button_bar_play_enabled@2x.png">
+                        <color key="titleColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </state>
+                    <state key="highlighted" backgroundImage="button_bar_play_enabled@2x.png"/>
+                    <connections>
+                        <action selector="playButtonPressed:" destination="0EU-XE-Tx2" eventType="touchUpInside" id="4MH-tq-LB9"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rvY-UT-pFU">
+                    <rect key="frame" x="10" y="23" width="8" height="13"/>
+                    <state key="normal" backgroundImage="arrow_bar_left@2x.png">
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="leftButtonPressed:" destination="0EU-XE-Tx2" eventType="touchUpInside" id="UZ8-GU-7xO"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="0.21568627450980393" green="0.70588235294117641" blue="0.29411764705882354" alpha="1" colorSpace="calibratedRGB"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="leftButton" destination="rvY-UT-pFU" id="ZpS-f3-L4X"/>
+                <outlet property="nameLabel" destination="ZPa-6w-1m4" id="OZ4-0P-Ml7"/>
+                <outlet property="playButton" destination="c3I-CQ-DyM" id="Rxh-Eh-uWp"/>
+                <outlet property="playSlider" destination="CiK-sn-q48" id="Ez8-f5-HTQ"/>
+                <outlet property="respokenButton" destination="cWX-Dc-bvL" id="LdY-p4-x17"/>
+                <outlet property="rightButton" destination="vXG-iN-85j" id="AfJ-Lw-afG"/>
+                <outlet property="timeLabel" destination="MjA-Zm-o2b" id="9Gt-AG-lYQ"/>
+            </connections>
+            <point key="canvasLocation" x="201" y="81"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="arrow_bar_left@2x.png" width="302" height="86"/>
+        <image name="arrow_bar_right@2x.png" width="302" height="86"/>
+        <image name="button_bar_pause_enabled@2x.png" width="302" height="86"/>
+        <image name="button_bar_play_enabled@2x.png" width="302" height="86"/>
+        <image name="button_bar_respoken_enabled@2x.png" width="302" height="86"/>
+    </resources>
+    <simulatedMetricsContainer key="defaultSimulatedMetrics">
+        <simulatedStatusBarMetrics key="statusBar"/>
+        <simulatedOrientationMetrics key="orientation"/>
+        <simulatedScreenMetrics key="destination" type="retina4"/>
+    </simulatedMetricsContainer>
+</document>

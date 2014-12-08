@@ -10,6 +10,7 @@
 #import "ProfileViewController.h"
 #import "SearchViewController.h"
 #import "WallViewController.h"
+#import "PlayBarView.h"
 
 @class MainViewController;
 @interface actionBarView : UIView
@@ -56,8 +57,12 @@
     actionBarView *actionView;
     Spoke *currentSpokeChoose;
     UserProfile *userProf;
+    PlayBarView *playBar;
+    IBOutlet UIView *mainView;
 }
 
+@property (strong, nonatomic) IBOutlet UIView *mainView;
+@property (strong, nonatomic) PlayBarView *playBar;
 @property (strong, nonatomic) actionBarView *actionView;
 @property (strong, nonatomic) ProfileViewController *profileVC;
 @property (strong, nonatomic) WallViewController *wallVC;
@@ -77,5 +82,7 @@
 -(void)openUserProfile:(Spoke*)sender;
 -(void)openRespokenView:(Spoke*)sender;
 -(void)_performReloadCall;
+-(void)addPlayBarView:(UIViewController*)currentVC withSpokeCell:(SpokeCell*)cell;
+-(void)hidePlayBarView:(UIViewController*)currentVC withSpokeCell:(SpokeCell*)cell;
 
 @end

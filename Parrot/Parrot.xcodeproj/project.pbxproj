@@ -12,6 +12,7 @@
 		DE1D898A197C3D4200B552B4 /* button_main_record_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE1D8989197C3D4200B552B4 /* button_main_record_active@2x.png */; };
 		DE1D898C197C409300B552B4 /* startRecord.wav in Resources */ = {isa = PBXBuildFile; fileRef = DE1D898B197C409300B552B4 /* startRecord.wav */; };
 		DE20056919F041F9002759C9 /* EnterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE20056819F041F9002759C9 /* EnterViewController.m */; };
+		DE568C781A3612D600760D55 /* PlayBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = DE568C771A3612D600760D55 /* PlayBarView.m */; };
 		DE5B754E19F69E2D00726E8D /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DE5B754D19F69E2D00726E8D /* ImageIO.framework */; };
 		DE6388F619684748008D5B9D /* Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6388F519684748008D5B9D /* Utilities.m */; };
 		DE63890A19687EFF008D5B9D /* button_bar_options_enabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE6388F719687EFF008D5B9D /* button_bar_options_enabled@2x.png */; };
@@ -99,6 +100,9 @@
 		DECADC251961ED010024D067 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DECADC241961ED010024D067 /* SystemConfiguration.framework */; };
 		DECADC291961EE3D0024D067 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DECADC281961EE3D0024D067 /* LoginViewController.m */; };
 		DECADC2C1961EEF50024D067 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DECADC2B1961EEF50024D067 /* MainViewController.m */; };
+		DECBFD2F1A30F3F600355336 /* button_bar_play_enabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DECBFD2E1A30F3F600355336 /* button_bar_play_enabled@2x.png */; };
+		DED22EC31A2F6AAE00A1E2EA /* button_bar_respoken_enabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DED22EC21A2F6AAE00A1E2EA /* button_bar_respoken_enabled@2x.png */; };
+		DED22EC51A2F6DBB00A1E2EA /* PlayBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DED22EC41A2F6DBB00A1E2EA /* PlayBarView.xib */; };
 		DEF176F619717B9F003F15A0 /* handle_slider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF176F519717B9F003F15A0 /* handle_slider@2x.png */; };
 		DEF8192F19962EBD00D086A7 /* ParrotNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF8192E19962EBD00D086A7 /* ParrotNavigationController.m */; };
 		DEF819311996592B00D086A7 /* background_navbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF819301996592B00D086A7 /* background_navbar@2x.png */; };
@@ -125,6 +129,8 @@
 		DE1D898B197C409300B552B4 /* startRecord.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = startRecord.wav; path = Parrot/Resources/startRecord.wav; sourceTree = "<group>"; };
 		DE20056719F041F9002759C9 /* EnterViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = EnterViewController.h; path = Source/EnterViewController.h; sourceTree = "<group>"; };
 		DE20056819F041F9002759C9 /* EnterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = EnterViewController.m; path = Source/EnterViewController.m; sourceTree = "<group>"; };
+		DE568C761A3612D600760D55 /* PlayBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlayBarView.h; path = Source/PlayBarView.h; sourceTree = "<group>"; };
+		DE568C771A3612D600760D55 /* PlayBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlayBarView.m; path = Source/PlayBarView.m; sourceTree = "<group>"; };
 		DE5B754D19F69E2D00726E8D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		DE6388F419684748008D5B9D /* Utilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Utilities.h; path = Source/Utilities.h; sourceTree = "<group>"; };
 		DE6388F519684748008D5B9D /* Utilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Utilities.m; path = Source/Utilities.m; sourceTree = "<group>"; };
@@ -242,6 +248,9 @@
 		DECADC281961EE3D0024D067 /* LoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LoginViewController.m; path = Source/LoginViewController.m; sourceTree = "<group>"; };
 		DECADC2A1961EEF50024D067 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = Source/MainViewController.h; sourceTree = "<group>"; };
 		DECADC2B1961EEF50024D067 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = Source/MainViewController.m; sourceTree = "<group>"; };
+		DECBFD2E1A30F3F600355336 /* button_bar_play_enabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_bar_play_enabled@2x.png"; sourceTree = "<group>"; };
+		DED22EC21A2F6AAE00A1E2EA /* button_bar_respoken_enabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_bar_respoken_enabled@2x.png"; sourceTree = "<group>"; };
+		DED22EC41A2F6DBB00A1E2EA /* PlayBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PlayBarView.xib; path = Parrot/Resources/Xib/PlayBarView.xib; sourceTree = "<group>"; };
 		DEF176F519717B9F003F15A0 /* handle_slider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "handle_slider@2x.png"; sourceTree = "<group>"; };
 		DEF8192D19962EBD00D086A7 /* ParrotNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ParrotNavigationController.h; path = Source/ParrotNavigationController.h; sourceTree = "<group>"; };
 		DEF8192E19962EBD00D086A7 /* ParrotNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ParrotNavigationController.m; path = Source/ParrotNavigationController.m; sourceTree = "<group>"; };
@@ -292,6 +301,7 @@
 		DE1D8980197ACBB600B552B4 /* Xib */ = {
 			isa = PBXGroup;
 			children = (
+				DED22EC41A2F6DBB00A1E2EA /* PlayBarView.xib */,
 				DEF819391996AFAA00D086A7 /* actionBar.xib */,
 				DE1D8983197ACC0600B552B4 /* SpokeCell.xib */,
 				DEF819371996AF6000D086A7 /* RespokenHeaderView.xib */,
@@ -329,6 +339,8 @@
 				DE9DFC651966062300908ED7 /* Spoke.m */,
 				DE1D8985197AEFA900B552B4 /* SpokeCell.h */,
 				DE1D8986197AEFA900B552B4 /* SpokeCell.m */,
+				DE568C761A3612D600760D55 /* PlayBarView.h */,
+				DE568C771A3612D600760D55 /* PlayBarView.m */,
 			);
 			name = Spoke;
 			sourceTree = "<group>";
@@ -509,6 +521,8 @@
 		DECADC031961EBF40024D067 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				DECBFD2E1A30F3F600355336 /* button_bar_play_enabled@2x.png */,
+				DED22EC21A2F6AAE00A1E2EA /* button_bar_respoken_enabled@2x.png */,
 				DEF819301996592B00D086A7 /* background_navbar@2x.png */,
 				DE1D8989197C3D4200B552B4 /* button_main_record_active@2x.png */,
 				DEF176F519717B9F003F15A0 /* handle_slider@2x.png */,
@@ -653,6 +667,7 @@
 				DE63891519687EFF008D5B9D /* button_nav_profile_enabled@2x.png in Resources */,
 				DE63891B19687EFF008D5B9D /* button_record_confirm_enabled@2x.png in Resources */,
 				DE63891419687EFF008D5B9D /* button_nav_events_enabled@2x.png in Resources */,
+				DED22EC31A2F6AAE00A1E2EA /* button_bar_respoken_enabled@2x.png in Resources */,
 				DE63892D19689B3A008D5B9D /* arrow_bar_right@2x.png in Resources */,
 				DEF819311996592B00D086A7 /* background_navbar@2x.png in Resources */,
 				DE1D898A197C3D4200B552B4 /* button_main_record_active@2x.png in Resources */,
@@ -681,6 +696,7 @@
 				DECADBD71961EA300024D067 /* InfoPlist.strings in Resources */,
 				DE6389331968A5CE008D5B9D /* iphone_retina_splashscreen@2x.png in Resources */,
 				DECADBE01961EA300024D067 /* Main.storyboard in Resources */,
+				DED22EC51A2F6DBB00A1E2EA /* PlayBarView.xib in Resources */,
 				DE63892819689A08008D5B9D /* button_recird_cancel_enabled@2x.png in Resources */,
 				DE63892719689A08008D5B9D /* button_nav_search_selected@2x.png in Resources */,
 				DECADC071961EBF40024D067 /* login-button-small.png in Resources */,
@@ -689,6 +705,7 @@
 				DE6389301968A546008D5B9D /* 1024_parrot_ios_full.png in Resources */,
 				DE63892519689A08008D5B9D /* button_nav_events_selected@2x.png in Resources */,
 				DE63892E19689B3A008D5B9D /* arrow_content_right@2x.png in Resources */,
+				DECBFD2F1A30F3F600355336 /* button_bar_play_enabled@2x.png in Resources */,
 				DEF176F619717B9F003F15A0 /* handle_slider@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -722,6 +739,7 @@
 				DEAA9040196356170036B6BF /* AEFloatConverter.m in Sources */,
 				DEB5128619E03F25007FB802 /* RegisterViewController.m in Sources */,
 				DEAA904B196356170036B6BF /* TPCircularBuffer.c in Sources */,
+				DE568C781A3612D600760D55 /* PlayBarView.m in Sources */,
 				DECADC0C1961EC160024D067 /* AppDelegate.m in Sources */,
 				DEAA9041196356170036B6BF /* EZAudio.m in Sources */,
 				DEB5129019E15AE7007FB802 /* PrivacyViewController.m in Sources */,

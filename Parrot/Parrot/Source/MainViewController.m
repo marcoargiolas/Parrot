@@ -54,6 +54,8 @@
 @synthesize buttonsContainerView;
 @synthesize profileVC;
 @synthesize wallVC;
+@synthesize playBar;
+@synthesize mainView;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -72,17 +74,6 @@
     [wallContainerView setFrame:CGRectMake(wallContainerView.frame.origin.x, wallContainerView.frame.origin.y, wallContainerView.frame.size.width, [UIScreen mainScreen].bounds.size.height)];
     [searchContainerView setFrame:CGRectMake(searchContainerView.frame.origin.x, searchContainerView.frame.origin.y, searchContainerView.frame.size.width, [UIScreen mainScreen].bounds.size.height)];
     
-
-//    UISwipeGestureRecognizer *swipeLeft = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeLeft:)];
-//    swipeLeft.direction = UISwipeGestureRecognizerDirectionLeft;
-//    [self.view addGestureRecognizer:swipeLeft];
-//    swipeLeft.delegate = self;
-//    
-//    UISwipeGestureRecognizer *swipeRight = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(swipeRight:)];
-//    swipeRight.direction = UISwipeGestureRecognizerDirectionRight;
-//    [self.view addGestureRecognizer:swipeRight];
-//    swipeRight.delegate = self;
-    
     [buttonsContainerView.layer setShadowColor:[UIColor blackColor].CGColor];
     [buttonsContainerView.layer setShadowOpacity:0.3];
     [buttonsContainerView.layer setShadowRadius:0];
@@ -94,8 +85,15 @@
     actionView.mainVC = self;
     profileVC.mainVC = self;
     wallVC.mainVC = self;
-
+    
     [userProf loadLocalSpokesCache];
+    
+    playBar = [[[NSBundle mainBundle]loadNibNamed:@"PlayBarView" owner:self options:nil] objectAtIndex:0];
+    [playBar setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.frame.size.height - 20, playBar.frame.size.width, playBar.frame.size.height)];
+    [playBar.playSlider setThumbImage:[UIImage imageNamed:@"handle_slider.png"] forState:UIControlStateNormal];
+    playBar.mainVC = self;
+    
+    [self.view addSubview:playBar];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -337,6 +335,45 @@
 {
     currentSpokeChoose = (Spoke*)sender;
     [self performSegueWithIdentifier:@"respokenAction" sender:nil];
+}
+
+-(void)addPlayBarView:(UIViewController*)currentVC withSpokeCell:(SpokeCell*)cell
+{
+    [UIView animateWithDuration:0.25 animations:^{
+        [playBar setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height - playBar.frame.size.height - self.navigationController.navigationBar.frame.size.height - 20, playBar.frame.size.width, playBar.frame.size.height)];
+    }completion:^(BOOL finished){
+    }];
+    Spoke *currentSpoke = cell.currentSpoke;
+    [playBar.nameLabel setText:currentSpoke.ownerName];
+    playBar.updateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
+    playBar.currentPlayingSpokeCell = cell;
+    [playBar.playButton setSelected:NO];
+    
+    if ([currentVC isKindOfClass:[ProfileViewController class]])
+    {
+        playBar.profileVC = (ProfileViewController*)currentVC;
+        playBar.wallVC = nil;
+        playBar.respokenVC = nil;
+    }
+    else if ([currentVC isKindOfClass:[WallViewController class]])
+    {
+        playBar.wallVC = (WallViewController*)currentVC;
+        playBar.respokenVC = nil;
+        playBar.profileVC = nil;
+    }
+}
+
+-(void)hidePlayBarView:(UIViewController*)currentVC withSpokeCell:(SpokeCell*)cell
+{
+    [UIView animateWithDuration:0.25 animations:^{
+        [playBar setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.frame.size.height - 20, playBar.frame.size.width, playBar.frame.size.height)];
+    }completion:^(BOOL finished){
+    }];
+}
+
+-(void)updateSlider
+{
+    [playBar updateSlider];
 }
 
 @end

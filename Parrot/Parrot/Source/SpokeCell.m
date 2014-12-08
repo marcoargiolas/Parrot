@@ -37,6 +37,7 @@
 
 - (IBAction)playButtonPressed:(id)sender
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hidePlayBarView) object:nil];
     NSLog(@"SENDER %@", sender);
     if (profileVC != nil)
     {
@@ -90,6 +91,8 @@
             [playContainerView addSubview:spokeSlider];
             [playContainerView addSubview:currentTimeLabel];
             [playContainerView addSubview:pausePlayButton];
+            
+            [profileVC addPlayBarView:self];
         }
     }
     else if(wallVC != nil)
@@ -97,7 +100,7 @@
         NSLog(@"********************************");
         NSLog(@"CURRENT PLAYING TAG %d", wallVC.currentPlayingTag);
         NSLog(@"PLAY BUTTON TAG %d", (int)playButton.tag);
-        NSLog(@"SPOKE ID MAREMMA PUTTANA %@", currentSpoke.spokeID);
+        NSLog(@"SPOKE ID %@", currentSpoke.spokeID);
         NSLog(@"********************************");
         if(wallVC.currentPlayingTag != playButton.tag)
         {
@@ -125,18 +128,23 @@
             [playContainerView addSubview:spokeSlider];
             [playContainerView addSubview:currentTimeLabel];
             [playContainerView addSubview:pausePlayButton];
+            
+            [wallVC addPlayBarView:self];
         }
     }
     else if(respokenVC != nil)
     {
+        NSLog(@"---------------------------");
+        NSLog(@"RESPOKEN PLAY CURRENT TAG PORCO IL CAZZO %d", respokenVC.currentPlayingTag);
+        NSLog(@"---------------------------");
         if(respokenVC.currentPlayingTag != playButton.tag)
         {
             respokenVC.currentPlayingTag = (int)playButton.tag;
         }
 
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopRespokenPlayer) name:RESPOKEN_HEADER_PLAY object:nil];
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:CELL_PLAY_STARTED object:nil];
+        [NSObject cancelPreviousPerformRequestsWithTarget:respokenVC selector:@selector(hidePlayBarView) object:nil];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:CELL_PLAY_STARTED object:nil];
         
         if(![respokenVC.player isPlaying] || respokenVC.currentPlayingTag != -1)
         {
@@ -164,6 +172,8 @@
             [playContainerView addSubview:spokeSlider];
             [playContainerView addSubview:currentTimeLabel];
             [playContainerView addSubview:pausePlayButton];
+            
+            [respokenVC addPlayBarView:self];
         }
     }
 }
@@ -337,8 +347,27 @@
             break;
         }
     }
+    if (i == 0)
+    {
+        [self performSelector:@selector(hidePlayBarView) withObject:nil afterDelay:2.0];
+    }
 }
 
+-(void)hidePlayBarView
+{
+    if(profileVC != nil)
+    {
+        [profileVC hidePlayBarView:self];
+    }
+    else if(wallVC != nil)
+    {
+        [wallVC hidePlayBarView:self];
+    }
+    else if (respokenVC != nil)
+    {
+        [respokenVC hidePlayBarView:self];
+    }
+}
 -(void)updateHeardLabel
 {
     NSLog(@"UPDATE HEARD LABEL");
@@ -351,10 +380,20 @@
 {
     if(profileVC != nil)
     {
+        if (currentSpoke == nil)
+        {
+            currentSpoke = [[UserProfile sharedProfile].spokesArray objectAtIndex:self.playButton.tag];
+        }
+        
         [profileVC openRespokenView:currentSpoke];
     }
     if(wallVC != nil)
     {
+        if (currentSpoke == nil)
+        {
+            currentSpoke = [[UserProfile sharedProfile].cacheSpokesArray objectAtIndex:self.playButton.tag];
+        }
+
         [wallVC openRespokenView:currentSpoke];
     }
     if(respokenVC != nil)
@@ -495,7 +534,6 @@
 
 - (void)updateSlider
 {
-    NSLog(@"CURRENT INDEX %d", currentSpokeIndex);
     if(spokeSlider.tag == playButton.tag)
     {
         if(profileVC != nil)

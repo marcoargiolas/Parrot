@@ -73,6 +73,9 @@
 -(void)loadSpokesTableView;
 - (void)sensorStateChange:(NSNotificationCenter *)notification;
 -(void)spokeEnded;
--(void)changeCell:(Spoke*)spokeToPlay andIndex:(int)cellIndex;
+-(SpokeCell*)changeCell:(Spoke*)spokeToPlay andIndex:(int)cellIndex;
+
+-(void)addPlayBarView:(SpokeCell*)cell;
+-(void)hidePlayBarView:(SpokeCell*)cell;
 
 @end

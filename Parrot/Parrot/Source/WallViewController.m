@@ -442,22 +442,25 @@
     }
 }
 
--(void)changeCell:(Spoke*)spokeToPlay andIndex:(int)cellIndex
+-(SpokeCell*)changeCell:(Spoke*)spokeToPlay andIndex:(int)cellIndex
 {
     NSLog(@"WALL VIEW CURRENT SPOKE ID %@", spokeToPlay.spokeID);
 
     SpokeCell *cell = [cellsDict objectForKey:spokeToPlay.spokeID];
-    
+    if (cell == nil)
+    {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:cellIndex inSection:0];
+        cell = (SpokeCell*)[self tableView:wallTableView cellForRowAtIndexPath:indexPath];
+    }
     cell.currentSpoke = spokeToPlay;
     cell.playButton.tag = cellIndex;
     cell.wallVC = self;
     cell.currentSpokeIndex = cellIndex;
     self.currentPlayingTag = cellIndex;
    
-//    [wallTableView selectRowAtIndexPath:selectedIndex animated:NO scrollPosition:UITableViewScrollPositionNone];
-//    [wallTableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:selectedIndex] withRowAnimation:UITableViewRowAnimationFade];
     [wallTableView reloadData];
     [cell playButtonPressed:cell.playButton];
+    return cell;
 }
 
 - (void)longPress:(UILongPressGestureRecognizer*)gesture
@@ -485,5 +488,17 @@
     [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
 }
 
+-(void)addPlayBarView:(SpokeCell*)cell
+{
+    mainVC.playBar.playSlider.minimumValue = 0;
+    mainVC.playBar.playSlider.maximumValue = self.player.duration;
+    
+    [mainVC addPlayBarView:self withSpokeCell:cell];
+}
+
+-(void)hidePlayBarView:(SpokeCell*)cell
+{
+    [mainVC hidePlayBarView:self withSpokeCell:cell];
+}
 
 @end

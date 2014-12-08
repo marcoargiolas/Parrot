@@ -635,10 +635,16 @@
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
 }
 
--(void)changeCell:(Spoke*)spokeToPlay andIndex:(int)cellIndex
+-(SpokeCell*)changeCell:(Spoke*)spokeToPlay andIndex:(int)cellIndex
 {
-    SpokeCell *cell = [cellsDict objectForKey:spokeToPlay.spokeID];
+    NSLog(@"PROFILE VIEW CURRENT SPOKE ID %@", spokeToPlay.spokeID);
     
+    SpokeCell *cell = [cellsDict objectForKey:spokeToPlay.spokeID];
+    if (cell == nil)
+    {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:cellIndex inSection:0];
+        cell = (SpokeCell*)[self tableView:spokesTableView cellForRowAtIndexPath:indexPath];
+    }
     cell.currentSpoke = spokeToPlay;
     cell.playButton.tag = cellIndex;
     cell.profileVC = self;
@@ -647,6 +653,7 @@
     
     [spokesTableView reloadData];
     [cell playButtonPressed:cell.playButton];
+    return cell;
 }
 
 -(void)spokeEnded
@@ -707,6 +714,19 @@
 -(void)openRespokenView:(Spoke*)sender
 {
     [mainVC openRespokenView:sender];
+}
+
+-(void)addPlayBarView:(SpokeCell*)cell
+{
+    mainVC.playBar.playSlider.minimumValue = 0;
+    mainVC.playBar.playSlider.maximumValue = self.player.duration;
+    
+    [mainVC addPlayBarView:self withSpokeCell:cell];
+}
+
+-(void)hidePlayBarView:(SpokeCell*)cell
+{
+    [mainVC hidePlayBarView:self withSpokeCell:cell];
 }
 
 @end

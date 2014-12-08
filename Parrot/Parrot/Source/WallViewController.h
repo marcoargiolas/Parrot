@@ -46,6 +46,9 @@
  Method called to load spokes list. Load all spokes from server if no spokes are present, otherwise load the cache list. If new spoke added, load only cache list
  */
 -(void)loadWallSpokes;
--(void)changeCell:(Spoke*)spokeToPlay andIndex:(int)cellIndex;
+-(SpokeCell*)changeCell:(Spoke*)spokeToPlay andIndex:(int)cellIndex;
+
+-(void)addPlayBarView:(SpokeCell*)cell;
+-(void)hidePlayBarView:(SpokeCell*)cell;
 
 @end
