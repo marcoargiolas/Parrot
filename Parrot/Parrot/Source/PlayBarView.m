@@ -38,8 +38,8 @@
         }
         else if(respokenVC != nil)
         {
-            Spoke *nextSpoke = [respokenVC.respokenArray objectAtIndex:currentIndex - 1];
-            currentPlayingSpokeCell = [respokenVC changeCell:nextSpoke andIndex:currentIndex - 1];
+//            Spoke *nextSpoke = [respokenVC.respokenArray objectAtIndex:currentIndex - 1];
+//            currentPlayingSpokeCell = [respokenVC changeCell:nextSpoke andIndex:currentIndex - 1];
         }
     }
 }

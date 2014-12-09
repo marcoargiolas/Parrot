@@ -136,6 +136,7 @@
     {
         NSLog(@"---------------------------");
         NSLog(@"RESPOKEN PLAY CURRENT TAG PORCO IL CAZZO %d", respokenVC.currentPlayingTag);
+        NSLog(@"RESPOKEN CURRENT SPOKE %@", currentSpoke.spokeID);
         NSLog(@"---------------------------");
         if(respokenVC.currentPlayingTag != playButton.tag)
         {
@@ -144,7 +145,7 @@
 
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopRespokenPlayer) name:RESPOKEN_HEADER_PLAY object:nil];
         [NSObject cancelPreviousPerformRequestsWithTarget:respokenVC selector:@selector(hidePlayBarView) object:nil];
-//        [[NSNotificationCenter defaultCenter] postNotificationName:CELL_PLAY_STARTED object:nil];
+        [[NSNotificationCenter defaultCenter] postNotificationName:CELL_PLAY_STARTED object:nil];
         
         if(![respokenVC.player isPlaying] || respokenVC.currentPlayingTag != -1)
         {
@@ -188,7 +189,7 @@
 
 -(void)spokeChanged
 {
-    NSLog(@"SPOKE CELL SPOKE CHANGED");
+//    NSLog(@"SPOKE CELL SPOKE CHANGED");
     [updateTimer invalidate];
     [spokeSlider removeFromSuperview];
     [currentTimeLabel removeFromSuperview];
@@ -227,7 +228,6 @@
     [playContainerView addSubview:playButton];
     [playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"spokeChanged" object:nil];
-    NSLog(@"SELF %@", self);
     [self playSequence];
 }
 
@@ -306,7 +306,7 @@
     int i = (int)playButton.tag;
     while (i > 0)
     {
-        NSLog(@"SPOKE CELL I: %d", i);
+//        NSLog(@"SPOKE CELL I: %d", i);
         i = i-1;
         Spoke *tempSpoke;
         if(profileVC != nil)
@@ -321,10 +321,10 @@
         {
             tempSpoke = [respokenVC.respokenArray objectAtIndex:i];
         }
-        NSLog(@"TEMP SPOKE ID %@", tempSpoke.spokeID);
+//        NSLog(@"TEMP SPOKE ID %@", tempSpoke.spokeID);
         if ([tempSpoke.listOfHeardsID containsObject:[[UserProfile sharedProfile] getUserID]])
         {
-            NSLog(@"GIA SENTITO");
+//            NSLog(@"GIA SENTITO");
         }
         else
         {
@@ -365,7 +365,7 @@
     }
     else if (respokenVC != nil)
     {
-        [respokenVC hidePlayBarView:self];
+//        [respokenVC hidePlayBarView:self];
     }
 }
 -(void)updateHeardLabel

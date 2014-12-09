@@ -122,7 +122,7 @@ static UserProfile *shared = nil;
             {
                 case NSOrderedAscending:
                 {
-                    NSLog(@"NSOrderedAscending");
+//                    NSLog(@"NSOrderedAscending");
                 }
                     break;
                 case NSOrderedSame:
