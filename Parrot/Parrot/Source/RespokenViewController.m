@@ -33,10 +33,14 @@
 @synthesize likesLabel;
 @synthesize updateTimer;
 
-- (IBAction)respokenUserNameButtonPressed:(id)sender {
+- (IBAction)respokenUserNameButtonPressed:(id)sender
+{
+    [respokenVC openUserProfile:respokenVC.headerSpoke];
 }
 
-- (IBAction)respokenUserButtonPressed:(id)sender {
+- (IBAction)respokenUserButtonPressed:(id)sender
+{
+    [respokenVC openUserProfile:respokenVC.headerSpoke];
 }
 
 - (IBAction)progressSliderMoved:(UISlider*)sender
@@ -636,12 +640,9 @@
     if([headerSpoke.ownerID isEqualToString:[[UserProfile sharedProfile] getUserID]])
     {
         [self.navigationController popViewControllerAnimated:YES];
-        [mainVC openUserProfile:sender];
     }
-    else
-    {
-        [self performSegueWithIdentifier:@"profileAction" sender:nil];
-    }
+
+    [mainVC openUserProfile:sender];
 }
 
 - (IBAction)recordButtonPressed:(id)sender
