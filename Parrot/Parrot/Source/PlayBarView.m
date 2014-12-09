@@ -133,16 +133,16 @@
     }
     else if(respokenVC != nil)
     {
-        if (currentIndex < [respokenVC.respokenArray count] || currentIndex == -1)
-        {
-            if (currentIndex == -1)
-            {
-                [[NSNotificationCenter defaultCenter] postNotificationName:CELL_PLAY_STARTED object:nil];
-            }
-            int nextIndex = currentIndex + 1;
-            Spoke *nextSpoke = [respokenVC.respokenArray objectAtIndex:nextIndex];
-            currentPlayingSpokeCell = [respokenVC changeCell:nextSpoke andIndex:nextIndex];
-        }
+//        if (currentIndex < [respokenVC.respokenArray count] || currentIndex == -1)
+//        {
+//            if (currentIndex == -1)
+//            {
+//                [[NSNotificationCenter defaultCenter] postNotificationName:CELL_PLAY_STARTED object:nil];
+//            }
+//            int nextIndex = currentIndex + 1;
+//            Spoke *nextSpoke = [respokenVC.respokenArray objectAtIndex:nextIndex];
+//            currentPlayingSpokeCell = [respokenVC changeCell:nextSpoke andIndex:nextIndex];
+//        }
     }
 }
 

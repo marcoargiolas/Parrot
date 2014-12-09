@@ -174,7 +174,7 @@
             [playContainerView addSubview:currentTimeLabel];
             [playContainerView addSubview:pausePlayButton];
             
-            [respokenVC addPlayBarView:self];
+//            [respokenVC addPlayBarView:self];
         }
     }
 }

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SpokeCell.h"
 
+@class PlayBarView;
 @class RespokenViewController;
 @interface RespokenHeaderView : UIView <AVAudioPlayerDelegate, AVAudioSessionDelegate,AVAudioRecorderDelegate>
 {
