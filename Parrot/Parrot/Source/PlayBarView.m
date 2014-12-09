@@ -46,6 +46,7 @@
     }
     else if(respokenVC != nil)
     {
+        [[NSUserDefaults standardUserDefaults]setBool:YES forKey:INVALIDATE_HIDE_PLAYBAR];
         if (currentIndex > 0)
         {
             Spoke *nextSpoke = [respokenVC.respokenArray objectAtIndex:currentIndex - 1];
@@ -53,15 +54,6 @@
         }
         else if(currentIndex == 0)
         {
-//            int rowNumber = (int)[respokenVC.respokenTableView numberOfRowsInSection:0];
-//            NSLog(@"RIGHE %d", rowNumber);
-//            for (int i = 0; i < rowNumber; i++)
-//            {
-//                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
-//                SpokeCell *cell = (SpokeCell*)[respokenVC tableView:respokenVC.respokenTableView cellForRowAtIndexPath:indexPath];
-//                [cell invalidateHidePlayBarViewSelector];
-//            }
-//            
             currentPlayingSpokeCell = [respokenVC changeCell:nil andIndex:-1];
         }
         else if(currentIndex == -1)
@@ -101,15 +93,11 @@
     }
     else if(respokenVC != nil)
     {
+        [[NSUserDefaults standardUserDefaults]setBool:YES forKey:INVALIDATE_HIDE_PLAYBAR];
         int nextIndex;
         Spoke *nextSpoke;
         if (currentIndex < [respokenVC.respokenArray count])
         {
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:currentIndex inSection:0];
-            SpokeCell *cell = (SpokeCell*)[respokenVC tableView:respokenVC.respokenTableView cellForRowAtIndexPath:indexPath];
-            [NSObject cancelPreviousPerformRequestsWithTarget:cell selector:@selector(playSequence) object:nil];
-//            [cell invalidateHidePlayBarViewSelector];
-            
             nextIndex = currentIndex + 1;
             nextSpoke = [respokenVC.respokenArray objectAtIndex:nextIndex];
         }

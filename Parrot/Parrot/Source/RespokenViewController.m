@@ -128,7 +128,7 @@
         [playContainerView addSubview:respokenSlider];
         [playContainerView addSubview:currentTimeLabel];
         [playContainerView addSubview:pausePlayButton];
-        
+        [[NSUserDefaults standardUserDefaults]setBool:YES forKey:INVALIDATE_HIDE_PLAYBAR];
         [respokenVC addPlayBarView:nil];
     }
 }
@@ -204,7 +204,8 @@
 
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
-//    [self performSelector:@selector(hidePlayBarView) withObject:nil afterDelay:2.0];
+    [self performSelector:@selector(hidePlayBarView) withObject:nil afterDelay:2.0];
+    [[NSUserDefaults standardUserDefaults]setBool:YES forKey:INVALIDATE_HIDE_PLAYBAR];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
     [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
     [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
@@ -293,7 +294,6 @@
     playBar = [[[NSBundle mainBundle]loadNibNamed:@"PlayBarView" owner:self options:nil] objectAtIndex:0];
     [playBar setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.frame.size.height - 20, playBar.frame.size.width, playBar.frame.size.height)];
     [playBar.playSlider setThumbImage:[UIImage imageNamed:@"handle_slider.png"] forState:UIControlStateNormal];
-    playBar.mainVC = self;
     
     [self.view addSubview:playBar];
 }
@@ -519,8 +519,8 @@
     
     [cell.spokeNameButton setTitle:spokeObj.ownerName forState:UIControlStateNormal];
     
-//    cell.currentSpoke = spokeObj;
-//    cell.currentSpokeIndex = (int)indexPath.row;
+    cell.currentSpoke = spokeObj;
+    cell.currentSpokeIndex = (int)indexPath.row;
     NSError *dataError;
     NSData *soundData = [[NSData alloc] initWithData:spokeObj.audioData];
     if(dataError != nil)
@@ -781,10 +781,10 @@
 
 -(void)hidePlayBarView:(SpokeCell*)cell
 {
-//    [UIView animateWithDuration:0.25 animations:^{
-//        [playBar setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.frame.size.height - 20, playBar.frame.size.width, playBar.frame.size.height)];
-//    }completion:^(BOOL finished){
-//    }];
+    [UIView animateWithDuration:0.25 animations:^{
+        [playBar setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.frame.size.height - 20, playBar.frame.size.width, playBar.frame.size.height)];
+    }completion:^(BOOL finished){
+    }];
 }
 
 -(void)updateSlider

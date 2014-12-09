@@ -43,6 +43,7 @@
 
 - (IBAction)playButtonPressed:(id)sender
 {
+    [[NSUserDefaults standardUserDefaults]setBool:NO forKey:INVALIDATE_HIDE_PLAYBAR];
     if (profileVC != nil)
     {
         currentSpoke = [[UserProfile sharedProfile].spokesArray objectAtIndex:(int)playButton.tag];
@@ -59,7 +60,6 @@
     
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"spokeChanged" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:PLAYBACK_STOP object:nil];
     
     [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
 
@@ -232,9 +232,13 @@
     [playContainerView addSubview:playButton];
     [playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"spokeChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:PLAYBACK_STOP object:nil];
     
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(playSequence) object:nil];
-    [self performSelector:@selector(playSequence) withObject:nil afterDelay:2.0];
+    BOOL invalidatePlayBar = [[NSUserDefaults standardUserDefaults]boolForKey:INVALIDATE_HIDE_PLAYBAR];
+    if (!invalidatePlayBar)
+    {
+        [self performSelector:@selector(playSequence) withObject:nil afterDelay:2.0];
+    }
 }
 
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
@@ -355,7 +359,11 @@
     }
     if (i == 0)
     {
-        [self hidePlayBarView];
+        BOOL invalidatePlayBar = [[NSUserDefaults standardUserDefaults]boolForKey:INVALIDATE_HIDE_PLAYBAR];
+        if (!invalidatePlayBar)
+        {
+            [self hidePlayBarView];
+        }
     }
 }
 

@@ -273,8 +273,8 @@
 
     [cell.spokeNameButton setTitle:spokeObj.ownerName forState:UIControlStateNormal];
     
-//    cell.currentSpoke = spokeObj;
-//    cell.currentSpokeIndex = (int)indexPath.row;
+    cell.currentSpoke = spokeObj;
+    cell.currentSpokeIndex = (int)indexPath.row;
     NSError *dataError;
     NSData *soundData = [[NSData alloc] initWithData:spokeObj.audioData];
     if(dataError != nil)
