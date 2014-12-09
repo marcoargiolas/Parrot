@@ -38,7 +38,6 @@
 - (IBAction)playButtonPressed:(id)sender
 {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hidePlayBarView) object:nil];
-    NSLog(@"SENDER %@", sender);
     if (profileVC != nil)
     {
         currentSpoke = [[UserProfile sharedProfile].spokesArray objectAtIndex:(int)playButton.tag];
@@ -52,7 +51,6 @@
         currentSpoke = [respokenVC.respokenArray objectAtIndex:(int)playButton.tag];
     }
     
-    NSLog(@"CURRENT SPOKE ID %@", currentSpoke.spokeID);
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"spokeChanged" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(spokeChanged) name:@"spokeChanged" object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:PLAYBACK_STOP object:nil];
@@ -97,11 +95,6 @@
     }
     else if(wallVC != nil)
     {
-        NSLog(@"********************************");
-        NSLog(@"CURRENT PLAYING TAG %d", wallVC.currentPlayingTag);
-        NSLog(@"PLAY BUTTON TAG %d", (int)playButton.tag);
-        NSLog(@"SPOKE ID %@", currentSpoke.spokeID);
-        NSLog(@"********************************");
         if(wallVC.currentPlayingTag != playButton.tag)
         {
             wallVC.currentPlayingTag = (int)playButton.tag;
@@ -135,9 +128,13 @@
     else if(respokenVC != nil)
     {
         NSLog(@"---------------------------");
-        NSLog(@"RESPOKEN PLAY CURRENT TAG PORCO IL CAZZO %d", respokenVC.currentPlayingTag);
+        NSLog(@"RESPOKEN PLAY CURRENT TAG %d", respokenVC.currentPlayingTag);
+        NSLog(@"HEADER SPOKE ID %@", respokenVC.headerSpoke.spokeID);
         NSLog(@"RESPOKEN CURRENT SPOKE %@", currentSpoke.spokeID);
         NSLog(@"---------------------------");
+        [respokenVC.respokenHeader.updateTimer invalidate];
+        [respokenVC.respokenHeader.playContainerView addSubview:respokenVC.respokenHeader.playButton];
+        
         if(respokenVC.currentPlayingTag != playButton.tag)
         {
             respokenVC.currentPlayingTag = (int)playButton.tag;
@@ -145,7 +142,7 @@
 
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopRespokenPlayer) name:RESPOKEN_HEADER_PLAY object:nil];
         [NSObject cancelPreviousPerformRequestsWithTarget:respokenVC selector:@selector(hidePlayBarView) object:nil];
-        [[NSNotificationCenter defaultCenter] postNotificationName:CELL_PLAY_STARTED object:nil];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:CELL_PLAY_STARTED object:nil];
         
         if(![respokenVC.player isPlaying] || respokenVC.currentPlayingTag != -1)
         {
@@ -165,7 +162,6 @@
             
             spokeSlider.minimumValue = 0;
             spokeSlider.maximumValue = respokenVC.player.duration;
-            
             [respokenVC playSelectedAudio];
             
             [playButton removeFromSuperview];
@@ -189,7 +185,7 @@
 
 -(void)spokeChanged
 {
-//    NSLog(@"SPOKE CELL SPOKE CHANGED");
+    NSLog(@"SPOKE CELL SPOKE CHANGED");
     [updateTimer invalidate];
     [spokeSlider removeFromSuperview];
     [currentTimeLabel removeFromSuperview];

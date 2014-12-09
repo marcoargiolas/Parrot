@@ -231,27 +231,27 @@
         [respokenVC.respokenArray addObject:spokeObj];
         respokenVC.respokenArray = [Utilities orderByDate:respokenVC.respokenArray];
         respokenVC.fromRecordView = YES;
-        if(respokenVC.currentSpoke.listOfRespokeID == nil)
+        if(respokenVC.headerSpoke.listOfRespokeID == nil)
         {
-            respokenVC.currentSpoke.listOfRespokeID = [[NSMutableArray alloc]init];
+            respokenVC.headerSpoke.listOfRespokeID = [[NSMutableArray alloc]init];
         }
-        [respokenVC.currentSpoke.listOfRespokeID addObject:spokeObj.spokeID];
-        [[UserProfile sharedProfile] updateRespokenList:respokenVC.currentSpoke.spokeID respokeID:spokeObj.spokeID removeRespoken:NO];
+        [respokenVC.headerSpoke.listOfRespokeID addObject:spokeObj.spokeID];
+        [[UserProfile sharedProfile] updateRespokenList:respokenVC.headerSpoke.spokeID respokeID:spokeObj.spokeID removeRespoken:NO];
  
         for (int i = 0; i < [[UserProfile sharedProfile].cacheSpokesArray count]; i++)
         {
             Spoke *tempSpoke = [[UserProfile sharedProfile].cacheSpokesArray objectAtIndex:i];
-            if ([tempSpoke.spokeID isEqualToString:respokenVC.currentSpoke.spokeID])
+            if ([tempSpoke.spokeID isEqualToString:respokenVC.headerSpoke.spokeID])
             {
-                [[UserProfile sharedProfile].cacheSpokesArray replaceObjectAtIndex:i withObject:respokenVC.currentSpoke];
+                [[UserProfile sharedProfile].cacheSpokesArray replaceObjectAtIndex:i withObject:respokenVC.headerSpoke];
             }
         }
         for (int i = 0; i < [[UserProfile sharedProfile].spokesArray count]; i++)
         {
             Spoke *tempSpoke = [[UserProfile sharedProfile].spokesArray objectAtIndex:i];
-            if ([tempSpoke.spokeID isEqualToString:respokenVC.currentSpoke.spokeID])
+            if ([tempSpoke.spokeID isEqualToString:respokenVC.headerSpoke.spokeID])
             {
-                [[UserProfile sharedProfile].spokesArray replaceObjectAtIndex:i withObject:respokenVC.currentSpoke];
+                [[UserProfile sharedProfile].spokesArray replaceObjectAtIndex:i withObject:respokenVC.headerSpoke];
             }
         }
     }

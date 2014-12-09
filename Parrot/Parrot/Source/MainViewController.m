@@ -289,7 +289,7 @@
         respokenVC.userImageLoad = [UIImage imageWithData:currentSpokeChoose.ownerImageData];
         respokenVC.userName = [NSString stringWithFormat:@"%@ %@",currentSpokeChoose.ownerName, currentSpokeChoose.ownerSurname];
         respokenVC.userId = currentSpokeChoose.ownerID;
-        respokenVC.currentSpoke = currentSpokeChoose;
+        respokenVC.headerSpoke = currentSpokeChoose;
         respokenVC.mainVC = self;
         currentSpokeChoose = nil;
     }

@@ -74,15 +74,18 @@
     NSString *userName;
     NSString *userId;
     UIImage *userImageLoad;
-    Spoke *currentSpoke;
+    Spoke *headerSpoke;
+//    Spoke *currentSpoke;
     BOOL fromRecordView;
     BOOL useSpeaker;
     NSMutableDictionary *cellsDict;
 }
 
 @property (nonatomic, assign) BOOL fromRecordView;
+@property (strong, nonatomic) RespokenHeaderView *respokenHeader;
 @property (strong, nonatomic) NSMutableArray *respokenArray;
-@property (strong, nonatomic) Spoke *currentSpoke;
+//@property (strong, nonatomic) Spoke *currentSpoke;
+@property (strong, nonatomic) Spoke *headerSpoke;
 @property (strong, nonatomic) IBOutlet UITableView *respokenTableView;
 @property (strong, nonatomic) IBOutlet UIButton *recordButton;
 @property (strong, nonatomic) IBOutlet UIView *buttonContainerView;

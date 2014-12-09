@@ -54,42 +54,42 @@
 
 - (IBAction)likeButtonPressed:(id)sender
 {
-    if(respokenVC.currentSpoke.listOfThankersID == nil)
+    if(respokenVC.headerSpoke.listOfThankersID == nil)
     {
-        respokenVC.currentSpoke.listOfThankersID = [[NSMutableArray alloc]init];
+        respokenVC.headerSpoke.listOfThankersID = [[NSMutableArray alloc]init];
     }
     
     if (respokenVC != nil)
     {
         if(!likeButton.selected)
         {
-            if(![respokenVC.currentSpoke.listOfThankersID containsObject:[respokenVC.userProf getUserID]])
-                [respokenVC.currentSpoke.listOfThankersID addObject:[respokenVC.userProf getUserID]];
+            if(![respokenVC.headerSpoke.listOfThankersID containsObject:[[UserProfile sharedProfile] getUserID]])
+                [respokenVC.headerSpoke.listOfThankersID addObject:[[UserProfile sharedProfile] getUserID]];
         }
         else
         {
-            if([respokenVC.currentSpoke.listOfThankersID containsObject:[respokenVC.userProf getUserID]])
-                [respokenVC.currentSpoke.listOfThankersID removeObject:[respokenVC.userProf getUserID]];
+            if([respokenVC.headerSpoke.listOfThankersID containsObject:[[UserProfile sharedProfile] getUserID]])
+                [respokenVC.headerSpoke.listOfThankersID removeObject:[[UserProfile sharedProfile] getUserID]];
         }
         
-        for (int i = 0; i < [respokenVC.userProf.cacheSpokesArray count]; i++)
+        for (int i = 0; i < [[UserProfile sharedProfile].cacheSpokesArray count]; i++)
         {
-            Spoke *tempSpoke = [respokenVC.userProf.cacheSpokesArray objectAtIndex:i];
-            if ([tempSpoke.spokeID isEqualToString:respokenVC.currentSpoke.spokeID])
+            Spoke *tempSpoke = [[UserProfile sharedProfile].cacheSpokesArray objectAtIndex:i];
+            if ([tempSpoke.spokeID isEqualToString:respokenVC.headerSpoke.spokeID])
             {
-                [respokenVC.userProf.cacheSpokesArray replaceObjectAtIndex:i withObject:respokenVC.currentSpoke];
+                [[UserProfile sharedProfile].cacheSpokesArray replaceObjectAtIndex:i withObject:respokenVC.headerSpoke];
             }
         }
 
-        respokenVC.currentSpoke.totalLikes = (int)[respokenVC.currentSpoke.listOfThankersID count];
-        [respokenVC.userProf updateTotalSpokeLike:respokenVC.currentSpoke.spokeID thanksID:[respokenVC.userProf getUserID]addLike:!likeButton.selected totalLikes:(int)[respokenVC.currentSpoke.listOfThankersID count]];
+        respokenVC.headerSpoke.totalLikes = (int)[respokenVC.headerSpoke.listOfThankersID count];
+        [[UserProfile sharedProfile] updateTotalSpokeLike:respokenVC.headerSpoke.spokeID thanksID:[[UserProfile sharedProfile] getUserID]addLike:!likeButton.selected totalLikes:(int)[respokenVC.headerSpoke.listOfThankersID count]];
     }
     likeButton.selected = !likeButton.selected;
     
-    if([respokenVC.currentSpoke.listOfThankersID count] <= 1)
-        likesLabel.text = [NSString stringWithFormat:@"%d like", (int)[respokenVC.currentSpoke.listOfThankersID count]];
+    if([respokenVC.headerSpoke.listOfThankersID count] <= 1)
+        likesLabel.text = [NSString stringWithFormat:@"%d like", (int)[respokenVC.headerSpoke.listOfThankersID count]];
     else
-        likesLabel.text = [NSString stringWithFormat:@"%d likes", (int)[respokenVC.currentSpoke.listOfThankersID count]];
+        likesLabel.text = [NSString stringWithFormat:@"%d likes", (int)[respokenVC.headerSpoke.listOfThankersID count]];
     //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(updateLikes:) name:@"updateLikes" object:nil];
 }
 
@@ -104,7 +104,7 @@
     if(![respokenVC.player isPlaying] || respokenVC.currentPlayingTag == -1)
     {
         NSError *dataError;
-        NSData *soundData = [[NSData alloc] initWithData:respokenVC.currentSpoke.audioData];
+        NSData *soundData = [[NSData alloc] initWithData:respokenVC.headerSpoke.audioData];
         if(dataError != nil)
         {
             NSLog(@"DATA ERROR %@", dataError);
@@ -133,7 +133,11 @@
 
 - (void)updateSlider
 {
-    [respokenSlider setFrame:CGRectMake(49, 10, 226, 31)];
+    if (!respokenSlider.window)
+    {
+        [playContainerView addSubview:respokenSlider];
+    }
+    
     float progress = respokenVC.player.currentTime;
     currentTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)respokenVC.player.currentTime / 60, (int)respokenVC.player.currentTime % 60, nil];
     [respokenSlider setValue:progress];
@@ -141,7 +145,6 @@
 
 -(void)changePlayButtonImage
 {
-    NSLog(@"CHANGE PLAY BUTTON IMAGE");
     [updateTimer invalidate];
     [respokenSlider removeFromSuperview];
     [currentTimeLabel removeFromSuperview];
@@ -150,22 +153,22 @@
     [playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
     [playContainerView addSubview:playButton];
 
-    if(![respokenVC.currentSpoke.listOfHeardsID containsObject:[respokenVC.userProf getUserID]])
+    if(![respokenVC.headerSpoke.listOfHeardsID containsObject:[[UserProfile sharedProfile] getUserID]])
     {
-        [respokenVC.currentSpoke.listOfHeardsID addObject:[respokenVC.userProf getUserID]];
-        for (int i = 0; i < [respokenVC.userProf.cacheSpokesArray count]; i++)
+        [respokenVC.headerSpoke.listOfHeardsID addObject:[[UserProfile sharedProfile] getUserID]];
+        for (int i = 0; i < [[UserProfile sharedProfile].cacheSpokesArray count]; i++)
         {
-            Spoke *tempSpoke = [respokenVC.userProf.cacheSpokesArray objectAtIndex:i];
-            if ([tempSpoke.spokeID isEqualToString:respokenVC.currentSpoke.spokeID])
+            Spoke *tempSpoke = [[UserProfile sharedProfile].cacheSpokesArray objectAtIndex:i];
+            if ([tempSpoke.spokeID isEqualToString:respokenVC.headerSpoke.spokeID])
             {
-                [respokenVC.userProf.cacheSpokesArray replaceObjectAtIndex:i withObject:respokenVC.currentSpoke];
+                [[UserProfile sharedProfile].cacheSpokesArray replaceObjectAtIndex:i withObject:respokenVC.headerSpoke];
             }
         }
     }
     
-    [respokenVC.userProf updateTotalSpokeHeard:respokenVC.currentSpoke.spokeID heardID:[respokenVC.userProf getUserID]];
-    int totalHeard = (int)[respokenVC.currentSpoke.listOfHeardsID count];
-    respokenVC.currentSpoke.totalHeards = totalHeard;
+    [[UserProfile sharedProfile] updateTotalSpokeHeard:respokenVC.headerSpoke.spokeID heardID:[[UserProfile sharedProfile] getUserID]];
+    int totalHeard = (int)[respokenVC.headerSpoke.listOfHeardsID count];
+    respokenVC.headerSpoke.totalHeards = totalHeard;
     heardLabel.text = [NSString stringWithFormat:@"%d heard", totalHeard];
 }
 
@@ -223,9 +226,11 @@
 @synthesize userId;
 @synthesize userImageLoad;
 @synthesize userName;
-@synthesize currentSpoke;
+//@synthesize currentSpoke;
 @synthesize respokenArray;
 @synthesize fromRecordView;
+@synthesize headerSpoke;
+@synthesize respokenHeader;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -304,7 +309,7 @@
 -(void)requestRespokenArray
 {
     [refreshControl beginRefreshing];
-    [userProf respokenForSpokeID:currentSpoke.spokeID];
+    [userProf respokenForSpokeID:headerSpoke.spokeID];
 }
 
 -(void)reloadRespokenArray:(NSNotification*)notification
@@ -340,57 +345,60 @@
 
 - (UIView*)tableView:(UITableView*)tableView viewForHeaderInSection:(NSInteger)section
 {
-    respokenHeader.respokenVC = self;
-    [respokenHeader.layer setShadowColor:[UIColor blackColor].CGColor];
-    [respokenHeader.layer setShadowOpacity:0.3];
-    [respokenHeader.layer setShadowRadius:0];
-    [respokenHeader.layer setShadowOffset:CGSizeMake(0, 1.0)];
-    [respokenHeader.layer setBorderColor:[UIColor colorWithRed:150.000/255.000 green:150.000/255.000 blue:150.000/255.000 alpha:1.0].CGColor];
-    
-    [respokenHeader.respokenUserNameButton setTitle:userName forState:UIControlStateNormal];
-    
-    if(userImageLoad != nil)
+    if (respokenHeader.respokenVC == nil)
     {
-        CGFloat scale = [UIScreen mainScreen].scale;
-        UIImage *userImage = [userImageLoad roundedImageWithSize:CGSizeMake(respokenHeader.respokenUserButton.frame.size.width*scale, respokenHeader.respokenUserButton.frame.size.height*scale) andMaskImage:maskImage];
-        [respokenHeader.respokenUserButton setBackgroundImage:userImage forState:UIControlStateNormal];
+        respokenHeader.respokenVC = self;
+        [respokenHeader.layer setShadowColor:[UIColor blackColor].CGColor];
+        [respokenHeader.layer setShadowOpacity:0.3];
+        [respokenHeader.layer setShadowRadius:0];
+        [respokenHeader.layer setShadowOffset:CGSizeMake(0, 1.0)];
+        [respokenHeader.layer setBorderColor:[UIColor colorWithRed:150.000/255.000 green:150.000/255.000 blue:150.000/255.000 alpha:1.0].CGColor];
+        
+        [respokenHeader.respokenUserNameButton setTitle:userName forState:UIControlStateNormal];
+        
+        if(userImageLoad != nil)
+        {
+            CGFloat scale = [UIScreen mainScreen].scale;
+            UIImage *userImage = [userImageLoad roundedImageWithSize:CGSizeMake(respokenHeader.respokenUserButton.frame.size.width*scale, respokenHeader.respokenUserButton.frame.size.height*scale) andMaskImage:maskImage];
+            [respokenHeader.respokenUserButton setBackgroundImage:userImage forState:UIControlStateNormal];
+        }
+        
+        respokenHeader.playButton.tag = -1;
+        
+        NSError *dataError;
+        NSData *soundData = [[NSData alloc] initWithData:headerSpoke.audioData];
+        if(dataError != nil)
+        {
+            NSLog(@"DATA ERROR %@", dataError);
+        }
+        
+        NSError *error;
+        AVAudioPlayer *headerPlayer =[[AVAudioPlayer alloc] initWithData: soundData error: &error];
+        headerPlayer.delegate = self;
+        player = headerPlayer;
+        
+        respokenHeader.totalTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)headerPlayer.duration / 60, (int)headerPlayer.duration % 60, nil];
+        
+        [respokenHeader.respokenSlider setThumbImage:[UIImage imageNamed:@"handle_slider.png"] forState:UIControlStateNormal];
+        
+        NSDateFormatter *format = [[NSDateFormatter alloc] init];
+        [format setDateFormat:@"dd MMM yyyy"];
+        NSString *dateString = [Utilities getDateString:headerSpoke.creationDate WithFormat:format];
+        [respokenHeader.respokenDateLabel setText:dateString];
+        
+        NSString *likeString = @"like";
+        //    NSLog(@"total likes %d for USER %@", (int)[headerSpoke.listOfThankersID count], headerSpoke.ownerName);
+        if ([headerSpoke.listOfThankersID containsObject:[userProf getUserID]])
+            respokenHeader.likeButton.selected = YES;
+        if (headerSpoke.totalLikes > 1)
+        {
+            likeString = @"likes";
+        }
+        [respokenHeader.likesLabel setText:[NSString stringWithFormat:@"%d %@", headerSpoke.totalLikes, likeString]];
+        [respokenHeader.heardLabel setText:[NSString stringWithFormat:@"%d heard",headerSpoke.totalHeards]];
+        
+        respokenHeader.respokenSlider.tag = 1;
     }
-
-    respokenHeader.playButton.tag = -1;
-
-    NSError *dataError;
-    NSData *soundData = [[NSData alloc] initWithData:currentSpoke.audioData];
-    if(dataError != nil)
-    {
-        NSLog(@"DATA ERROR %@", dataError);
-    }
-    
-    NSError *error;
-    AVAudioPlayer *headerPlayer =[[AVAudioPlayer alloc] initWithData: soundData error: &error];
-    headerPlayer.delegate = self;
-    player = headerPlayer;
-    
-    respokenHeader.totalTimeLabel.text = [NSString stringWithFormat:@"%d:%02d", (int)headerPlayer.duration / 60, (int)headerPlayer.duration % 60, nil];
-    
-    [respokenHeader.respokenSlider setThumbImage:[UIImage imageNamed:@"handle_slider.png"] forState:UIControlStateNormal];
-    
-    NSDateFormatter *format = [[NSDateFormatter alloc] init];
-    [format setDateFormat:@"dd MMM yyyy"];
-    NSString *dateString = [Utilities getDateString:currentSpoke.creationDate WithFormat:format];
-    [respokenHeader.respokenDateLabel setText:dateString];
-    
-    NSString *likeString = @"like";
-    NSLog(@"total likes %d for USER %@", (int)[currentSpoke.listOfThankersID count], currentSpoke.ownerName);
-    if ([currentSpoke.listOfThankersID containsObject:[userProf getUserID]])
-        respokenHeader.likeButton.selected = YES;
-    if (currentSpoke.totalLikes > 1)
-    {
-        likeString = @"likes";
-    }
-    [respokenHeader.likesLabel setText:[NSString stringWithFormat:@"%d %@", currentSpoke.totalLikes, likeString]];
-    [respokenHeader.heardLabel setText:[NSString stringWithFormat:@"%d heard",currentSpoke.totalHeards]];
-    
-    respokenHeader.respokenSlider.tag = 1;
     
     if(([player isPlaying] || playerInPause) && [[player data]isEqualToData:[respokenHeader.spokePlayer data]])
     {
@@ -408,8 +416,8 @@
         [respokenHeader.respokenSlider removeFromSuperview];
         [respokenHeader.currentTimeLabel removeFromSuperview];
         [respokenHeader.pausePlayButton removeFromSuperview];
-        
-        if([userProf spokeAlreadyListened:currentSpoke])
+
+        if([userProf spokeAlreadyListened:headerSpoke])
             [respokenHeader.playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
         else
             [respokenHeader.playButton setImage:[UIImage imageNamed:@"button_big_play_enabled.png"] forState:UIControlStateNormal];
@@ -532,7 +540,6 @@
     [cell.heardLabel setText:[NSString stringWithFormat:@"%d heard",spokeObj.totalHeards]];
     
     cell.spokeSlider.tag = indexPath.row;
-    
     if(([player isPlaying] || playerInPause) && [[player data]isEqualToData:[cell.spokePlayer data]])
     {
         [cell.playContainerView addSubview:cell.spokeSlider];
@@ -666,7 +673,7 @@
     
     if (useSpeaker)
     {
-        NSLog(@"WALL VIEW CONTROLLER SPOKE ENDED");
+        NSLog(@"RESPOKE VIEW CONTROLLER SPOKE ENDED");
         success = [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
         useSpeaker = NO;
         [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
@@ -688,7 +695,7 @@
     if ([segue.identifier isEqualToString:@"recordAction"])
     {
         RecordViewController *recordVC = [segue destinationViewController];
-        recordVC.respokenSpoke = currentSpoke;
+        recordVC.respokenSpoke = headerSpoke;
         recordVC.respokenVC = self;
         recordVC.startRecord = startRecord;
         startRecord = NO;
