@@ -38,8 +38,51 @@
         }
         else if(respokenVC != nil)
         {
-//            Spoke *nextSpoke = [respokenVC.respokenArray objectAtIndex:currentIndex - 1];
-//            currentPlayingSpokeCell = [respokenVC changeCell:nextSpoke andIndex:currentIndex - 1];
+            Spoke *nextSpoke = [respokenVC.respokenArray objectAtIndex:currentIndex - 1];
+            currentPlayingSpokeCell = [respokenVC changeCell:nextSpoke andIndex:currentIndex - 1];
+        }
+    }
+}
+
+- (IBAction)rightButtonPressed:(id)sender
+{
+    int currentIndex;
+    if (currentPlayingSpokeCell == nil)
+    {
+        currentIndex = -1;
+    }
+    else
+    {
+        currentIndex = (int)currentPlayingSpokeCell.playButton.tag;
+    }
+    
+    if(profileVC != nil)
+    {
+        if (currentIndex < [[UserProfile sharedProfile].spokesArray count])
+        {
+            Spoke *nextSpoke = [[UserProfile sharedProfile].spokesArray objectAtIndex:currentIndex+1];
+            currentPlayingSpokeCell = [profileVC changeCell:nextSpoke andIndex:currentIndex+1];
+        }
+    }
+    else if(wallVC != nil)
+    {
+        if (currentIndex < [[UserProfile sharedProfile].cacheSpokesArray count])
+        {
+            Spoke *nextSpoke = [[UserProfile sharedProfile].cacheSpokesArray objectAtIndex:currentIndex+1];
+            currentPlayingSpokeCell = [wallVC changeCell:nextSpoke andIndex:currentIndex+1];
+        }
+    }
+    else if(respokenVC != nil)
+    {
+        if (currentIndex < [respokenVC.respokenArray count] || currentIndex == -1)
+        {
+//            if (currentIndex == -1)
+//            {
+//                [[NSNotificationCenter defaultCenter] postNotificationName:CELL_PLAY_STARTED object:nil];
+//            }
+            int nextIndex = currentIndex + 1;
+            Spoke *nextSpoke = [respokenVC.respokenArray objectAtIndex:nextIndex];
+            currentPlayingSpokeCell = [respokenVC changeCell:nextSpoke andIndex:nextIndex];
         }
     }
 }
@@ -101,49 +144,6 @@
 {
     Spoke *currentSpoke = currentPlayingSpokeCell.currentSpoke;
     [mainVC openRespokenView:currentSpoke];
-}
-
-- (IBAction)rightButtonPressed:(id)sender
-{
-    int currentIndex;
-    if (currentPlayingSpokeCell == nil)
-    {
-        currentIndex = -1;
-    }
-    else
-    {
-        currentIndex = (int)currentPlayingSpokeCell.playButton.tag;
-    }
-    
-    if(profileVC != nil)
-    {
-        if (currentIndex < [[UserProfile sharedProfile].spokesArray count])
-        {
-            Spoke *nextSpoke = [[UserProfile sharedProfile].spokesArray objectAtIndex:currentIndex+1];
-            currentPlayingSpokeCell = [profileVC changeCell:nextSpoke andIndex:currentIndex+1];
-        }
-    }
-    else if(wallVC != nil)
-    {
-        if (currentIndex < [[UserProfile sharedProfile].cacheSpokesArray count])
-        {
-            Spoke *nextSpoke = [[UserProfile sharedProfile].cacheSpokesArray objectAtIndex:currentIndex+1];
-            currentPlayingSpokeCell = [wallVC changeCell:nextSpoke andIndex:currentIndex+1];
-        }
-    }
-    else if(respokenVC != nil)
-    {
-//        if (currentIndex < [respokenVC.respokenArray count] || currentIndex == -1)
-//        {
-//            if (currentIndex == -1)
-//            {
-//                [[NSNotificationCenter defaultCenter] postNotificationName:CELL_PLAY_STARTED object:nil];
-//            }
-//            int nextIndex = currentIndex + 1;
-//            Spoke *nextSpoke = [respokenVC.respokenArray objectAtIndex:nextIndex];
-//            currentPlayingSpokeCell = [respokenVC changeCell:nextSpoke andIndex:nextIndex];
-//        }
-    }
 }
 
 - (void)updateSlider

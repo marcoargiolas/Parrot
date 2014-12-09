@@ -276,6 +276,13 @@
     self.navigationController.navigationBar.titleTextAttributes = @{NSForegroundColorAttributeName : [UIColor whiteColor]};
     [self.navigationController.navigationBar setBackgroundImage:nil forBarMetrics:UIBarMetricsDefault];
     [self.navigationController.navigationBar setBackgroundColor:[UIColor blackColor]];
+    
+    playBar = [[[NSBundle mainBundle]loadNibNamed:@"PlayBarView" owner:self options:nil] objectAtIndex:0];
+    [playBar setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.frame.size.height - 20, playBar.frame.size.width, playBar.frame.size.height)];
+    [playBar.playSlider setThumbImage:[UIImage imageNamed:@"handle_slider.png"] forState:UIControlStateNormal];
+    playBar.mainVC = self;
+    
+    [self.view addSubview:playBar];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -702,10 +709,14 @@
     }
 }
 
--(void)changeCell:(Spoke*)spokeToPlay andIndex:(int)cellIndex
+-(SpokeCell*)changeCell:(Spoke*)spokeToPlay andIndex:(int)cellIndex
 {
     SpokeCell *cell = [cellsDict objectForKey:spokeToPlay.spokeID];
-    
+    if (cell == nil)
+    {
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:cellIndex inSection:0];
+        cell = (SpokeCell*)[self tableView:respokenTableView cellForRowAtIndexPath:indexPath];
+    }
     cell.currentSpoke = spokeToPlay;
     cell.playButton.tag = cellIndex;
     cell.respokenVC = self;
@@ -714,6 +725,39 @@
     
     [respokenTableView reloadData];
     [cell playButtonPressed:cell.playButton];
+    return cell;
+}
+
+-(void)addPlayBarView:(SpokeCell*)cell
+{
+    playBar.playSlider.minimumValue = 0;
+    playBar.playSlider.maximumValue = self.player.duration;
+    
+    [UIView animateWithDuration:0.25 animations:^{
+        [playBar setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height - playBar.frame.size.height - self.navigationController.navigationBar.frame.size.height - 20, playBar.frame.size.width, playBar.frame.size.height)];
+    }completion:^(BOOL finished){
+    }];
+    Spoke *currentSpoke = cell.currentSpoke;
+    [playBar.nameLabel setText:currentSpoke.ownerName];
+    playBar.updateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
+    playBar.currentPlayingSpokeCell = cell;
+    [playBar.playButton setSelected:NO];
+    playBar.respokenVC = self;
+    playBar.mainVC = nil;
+    playBar.profileVC = nil;
+}
+
+-(void)hidePlayBarView:(SpokeCell*)cell
+{
+    [UIView animateWithDuration:0.25 animations:^{
+        [playBar setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.frame.size.height - 20, playBar.frame.size.width, playBar.frame.size.height)];
+    }completion:^(BOOL finished){
+    }];
+}
+
+-(void)updateSlider
+{
+    [playBar updateSlider];
 }
 
 @end

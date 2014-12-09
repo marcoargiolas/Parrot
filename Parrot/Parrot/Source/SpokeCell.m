@@ -144,7 +144,6 @@
         }
 
         [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(stopRespokenPlayer) name:RESPOKEN_HEADER_PLAY object:nil];
-        [NSObject cancelPreviousPerformRequestsWithTarget:respokenVC selector:@selector(hidePlayBarView) object:nil];
 //        [[NSNotificationCenter defaultCenter] postNotificationName:CELL_PLAY_STARTED object:nil];
         
         if(![respokenVC.player isPlaying] || respokenVC.currentPlayingTag != -1)
@@ -173,7 +172,7 @@
             [playContainerView addSubview:currentTimeLabel];
             [playContainerView addSubview:pausePlayButton];
             
-//            [respokenVC addPlayBarView:self];
+            [respokenVC addPlayBarView:self];
         }
     }
 }
@@ -364,7 +363,7 @@
     }
     else if (respokenVC != nil)
     {
-//        [respokenVC hidePlayBarView:self];
+        [respokenVC hidePlayBarView:self];
     }
 }
 -(void)updateHeardLabel
