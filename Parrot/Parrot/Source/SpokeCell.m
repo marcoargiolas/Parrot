@@ -35,9 +35,14 @@
 @synthesize spokeNameButton;
 @synthesize respokenVC;
 
+-(void)invalidateHidePlayBarViewSelector
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(playSequence) object:nil];   
+//    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hidePlayBarView) object:nil];
+}
+
 - (IBAction)playButtonPressed:(id)sender
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hidePlayBarView) object:nil];
     if (profileVC != nil)
     {
         currentSpoke = [[UserProfile sharedProfile].spokesArray objectAtIndex:(int)playButton.tag];
@@ -48,6 +53,7 @@
     }
     else if(respokenVC != nil)
     {
+        [NSObject cancelPreviousPerformRequestsWithTarget:respokenVC.headerSpoke selector:@selector(hidePlayBarView) object:nil];
         currentSpoke = [respokenVC.respokenArray objectAtIndex:(int)playButton.tag];
     }
     
@@ -58,7 +64,7 @@
     [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
-
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:PLAYBACK_STOP object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changePlayButtonImage) name:PLAYBACK_STOP object:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"spokeChanged" object:nil];
     if(profileVC != nil)
@@ -226,7 +232,9 @@
     [playContainerView addSubview:playButton];
     [playButton setImage:[UIImage imageNamed:@"button_big_replay_enabled.png"] forState:UIControlStateNormal];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"spokeChanged" object:nil];
-    [self playSequence];
+    
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(playSequence) object:nil];
+    [self performSelector:@selector(playSequence) withObject:nil afterDelay:2.0];
 }
 
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
@@ -347,7 +355,7 @@
     }
     if (i == 0)
     {
-        [self performSelector:@selector(hidePlayBarView) withObject:nil afterDelay:2.0];
+        [self hidePlayBarView];
     }
 }
 

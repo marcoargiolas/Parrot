@@ -53,6 +53,7 @@
 
 - (IBAction)respokenUserButtonPressed:(id)sender;
 - (IBAction)pausePlayButtonPressed:(id)sender;
+-(void)removeHidePlayBarSelector;
 
 @end
 

@@ -128,6 +128,8 @@
         [playContainerView addSubview:respokenSlider];
         [playContainerView addSubview:currentTimeLabel];
         [playContainerView addSubview:pausePlayButton];
+        
+        [respokenVC addPlayBarView:nil];
     }
 }
 
@@ -202,9 +204,20 @@
 
 -(void)audioPlayerDidFinishPlaying:(AVAudioPlayer *)player successfully:(BOOL)flag
 {
+//    [self performSelector:@selector(hidePlayBarView) withObject:nil afterDelay:2.0];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
     [[NSNotificationCenter defaultCenter]postNotificationName:PLAYBACK_STOP object:nil];
     [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
+}
+
+-(void)removeHidePlayBarSelector
+{
+    [NSObject cancelPreviousPerformRequestsWithTarget:self selector:@selector(hidePlayBarView) object:nil];
+}
+
+-(void)hidePlayBarView
+{
+    [respokenVC hidePlayBarView:nil];
 }
 
 @end
@@ -620,9 +633,15 @@
 
 -(void)openUserProfile:(Spoke*)sender
 {
-    [self performSegueWithIdentifier:@"profileAction" sender:nil];
-    
-//    [mainVC openUserProfile:sender];
+    if([headerSpoke.ownerID isEqualToString:[[UserProfile sharedProfile] getUserID]])
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+        [mainVC openUserProfile:sender];
+    }
+    else
+    {
+        [self performSegueWithIdentifier:@"profileAction" sender:nil];
+    }
 }
 
 - (IBAction)recordButtonPressed:(id)sender
@@ -714,8 +733,17 @@
     SpokeCell *cell = [cellsDict objectForKey:spokeToPlay.spokeID];
     if (cell == nil)
     {
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:cellIndex inSection:0];
-        cell = (SpokeCell*)[self tableView:respokenTableView cellForRowAtIndexPath:indexPath];
+        if(cellIndex == -1)
+        {
+            //HEADER SPOKE
+            [respokenHeader playButtonPressed:nil];
+            return nil;
+        }
+        else
+        {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:cellIndex inSection:0];
+            cell = (SpokeCell*)[self tableView:respokenTableView cellForRowAtIndexPath:indexPath];
+        }
     }
     cell.currentSpoke = spokeToPlay;
     cell.playButton.tag = cellIndex;
@@ -738,6 +766,10 @@
     }completion:^(BOOL finished){
     }];
     Spoke *currentSpoke = cell.currentSpoke;
+    if (currentSpoke == nil)
+    {
+        currentSpoke = headerSpoke;
+    }
     [playBar.nameLabel setText:currentSpoke.ownerName];
     playBar.updateTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(updateSlider) userInfo:nil repeats:YES];
     playBar.currentPlayingSpokeCell = cell;
@@ -749,10 +781,10 @@
 
 -(void)hidePlayBarView:(SpokeCell*)cell
 {
-    [UIView animateWithDuration:0.25 animations:^{
-        [playBar setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.frame.size.height - 20, playBar.frame.size.width, playBar.frame.size.height)];
-    }completion:^(BOOL finished){
-    }];
+//    [UIView animateWithDuration:0.25 animations:^{
+//        [playBar setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height - self.navigationController.navigationBar.frame.size.height - 20, playBar.frame.size.width, playBar.frame.size.height)];
+//    }completion:^(BOOL finished){
+//    }];
 }
 
 -(void)updateSlider

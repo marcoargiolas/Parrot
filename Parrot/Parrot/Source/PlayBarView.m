@@ -24,22 +24,49 @@
 - (IBAction)leftButtonPressed:(id)sender
 {
     int currentIndex = (int)currentPlayingSpokeCell.playButton.tag;
-    if (currentIndex > 0)
+    if (currentPlayingSpokeCell == nil)
     {
-        if(profileVC != nil)
+        currentIndex = -1;
+    }
+    if(profileVC != nil)
+    {
+        if (currentIndex > 0)
         {
             Spoke *nextSpoke = [[UserProfile sharedProfile].spokesArray objectAtIndex:currentIndex - 1];
             currentPlayingSpokeCell = [profileVC changeCell:nextSpoke andIndex:currentIndex - 1];
         }
-        else if(wallVC != nil)
+    }
+    else if(wallVC != nil)
+    {
+        if (currentIndex > 0)
         {
             Spoke *nextSpoke = [[UserProfile sharedProfile].cacheSpokesArray objectAtIndex:currentIndex - 1];
             currentPlayingSpokeCell = [wallVC changeCell:nextSpoke andIndex:currentIndex - 1];
         }
-        else if(respokenVC != nil)
+    }
+    else if(respokenVC != nil)
+    {
+        if (currentIndex > 0)
         {
             Spoke *nextSpoke = [respokenVC.respokenArray objectAtIndex:currentIndex - 1];
             currentPlayingSpokeCell = [respokenVC changeCell:nextSpoke andIndex:currentIndex - 1];
+        }
+        else if(currentIndex == 0)
+        {
+//            int rowNumber = (int)[respokenVC.respokenTableView numberOfRowsInSection:0];
+//            NSLog(@"RIGHE %d", rowNumber);
+//            for (int i = 0; i < rowNumber; i++)
+//            {
+//                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:i inSection:0];
+//                SpokeCell *cell = (SpokeCell*)[respokenVC tableView:respokenVC.respokenTableView cellForRowAtIndexPath:indexPath];
+//                [cell invalidateHidePlayBarViewSelector];
+//            }
+//            
+            currentPlayingSpokeCell = [respokenVC changeCell:nil andIndex:-1];
+        }
+        else if(currentIndex == -1)
+        {
+//            [respokenVC.respokenHeader removeHidePlayBarSelector];
         }
     }
 }
@@ -74,16 +101,24 @@
     }
     else if(respokenVC != nil)
     {
-        if (currentIndex < [respokenVC.respokenArray count] || currentIndex == -1)
+        int nextIndex;
+        Spoke *nextSpoke;
+        if (currentIndex < [respokenVC.respokenArray count])
         {
-//            if (currentIndex == -1)
-//            {
-//                [[NSNotificationCenter defaultCenter] postNotificationName:CELL_PLAY_STARTED object:nil];
-//            }
-            int nextIndex = currentIndex + 1;
-            Spoke *nextSpoke = [respokenVC.respokenArray objectAtIndex:nextIndex];
-            currentPlayingSpokeCell = [respokenVC changeCell:nextSpoke andIndex:nextIndex];
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:currentIndex inSection:0];
+            SpokeCell *cell = (SpokeCell*)[respokenVC tableView:respokenVC.respokenTableView cellForRowAtIndexPath:indexPath];
+            [NSObject cancelPreviousPerformRequestsWithTarget:cell selector:@selector(playSequence) object:nil];
+//            [cell invalidateHidePlayBarViewSelector];
+            
+            nextIndex = currentIndex + 1;
+            nextSpoke = [respokenVC.respokenArray objectAtIndex:nextIndex];
         }
+        else if(currentIndex == -1)
+        {
+            nextIndex = 0;
+            nextSpoke = [respokenVC.respokenArray objectAtIndex:0];
+        }
+        currentPlayingSpokeCell = [respokenVC changeCell:nextSpoke andIndex:nextIndex];
     }
 }
 

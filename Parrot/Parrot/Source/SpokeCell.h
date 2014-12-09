@@ -43,6 +43,7 @@
     RespokenViewController *respokenVC;
     BOOL useSpeaker;
     BOOL newStart;
+    BOOL invalidateHidePlayBarView;
 }
 
 @property (strong, nonatomic) RespokenViewController *respokenVC;
@@ -78,5 +79,6 @@
 - (IBAction)spokeImageButtonPressed:(id)sender;
 -(void)changePlayButtonImage;
 -(void)playSequence;
+-(void)invalidateHidePlayBarViewSelector;
 
 @end

@@ -39,3 +39,4 @@
 #define NEW_SPOKE_ADDED                 @"newSpokeAdded"
 #define UPDATE_LIKES                    @"updateLikes"
 #define UPDATE_HEARDS                   @"updateHeards"
+#define INVALIDATE_HIDE_PLAYBAR         @"invalidateHidePlayBar"
