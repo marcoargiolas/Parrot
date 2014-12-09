@@ -134,7 +134,10 @@
         NSLog(@"---------------------------");
         [respokenVC.respokenHeader.updateTimer invalidate];
         [respokenVC.respokenHeader.playContainerView addSubview:respokenVC.respokenHeader.playButton];
-        
+        [respokenVC.respokenHeader.respokenSlider removeFromSuperview];
+        [respokenVC.respokenHeader.currentTimeLabel removeFromSuperview];
+        [respokenVC.respokenHeader.pausePlayButton removeFromSuperview];
+
         if(respokenVC.currentPlayingTag != playButton.tag)
         {
             respokenVC.currentPlayingTag = (int)playButton.tag;
