@@ -10,7 +10,6 @@
 #import "Utilities.h"
 #import "Spoke.h"
 #import "GlobalDefines.h"
-#import "LocationController.h"
 
 @interface RecordViewController ()
 
@@ -233,9 +232,13 @@
     spokeObj.audioData = [[NSData alloc] initWithContentsOfURL:soundUrl options:NSDataReadingMappedIfSafe error:nil];
     spokeObj.ownerName = [[prof.currentUser objectForKey:@"profile"] objectForKey:@"fullName"];
     spokeObj.ownerImageData = [[prof.currentUser objectForKey:@"profile"] objectForKey:USER_IMAGE_DATA];
-    if (imageData != nil)
+    if ([imageData length] > 0)
     {
         spokeObj.spokeImageData = imageData;
+    }
+    if (location != nil)
+    {
+        spokeObj.spokeLocation = location.locManager.location;
     }
     
     if(respokenSpoke != nil)
@@ -428,7 +431,7 @@ withNumberOfChannels:(UInt32)numberOfChannels {
 
 - (IBAction)positionButtonPressed:(id)sender
 {
-    LocationController* location = [LocationController sharedObject];
+    location = [LocationController sharedObject];
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
     {
         if (!location)
@@ -447,6 +450,7 @@ withNumberOfChannels:(UInt32)numberOfChannels {
         }
         [location.locManager startMonitoringSignificantLocationChanges];
     }
+    NSLog(@"LOCATION %f", location.locManager.location.coordinate.latitude);
 }
 
 @end

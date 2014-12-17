@@ -671,16 +671,6 @@
                                     <outlet property="delegate" destination="xDD-zM-2Cp" id="k3w-Ms-iMd"/>
                                 </connections>
                             </textView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="nmF-uy-SIc">
-                                <rect key="frame" x="224" y="67" width="56" height="30"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Position">
-                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                </state>
-                                <connections>
-                                    <action selector="positionButtonPressed:" destination="xDD-zM-2Cp" eventType="touchUpInside" id="EY7-vb-iV5"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="3hd-YH-bKr">
                                 <rect key="frame" x="40" y="77" width="100" height="100"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
@@ -693,6 +683,18 @@
                                     <action selector="photoButtonPressed:" destination="xDD-zM-2Cp" eventType="touchUpInside" id="IwG-tf-SHf"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="Vrc-Zu-CkV">
+                                <rect key="frame" x="180" y="77" width="100" height="100"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxY="YES"/>
+                                <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <state key="normal" title="Add Position">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="positionButtonPressed:" destination="xDD-zM-2Cp" eventType="touchUpInside" id="bnS-HU-ou0"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -703,7 +705,7 @@
                         <outlet property="hintContainerView" destination="p6V-6X-7ZC" id="c55-yC-gG3"/>
                         <outlet property="messageTextView" destination="jLw-fp-wdU" id="NWC-18-nuX"/>
                         <outlet property="photoButton" destination="3hd-YH-bKr" id="8hX-1l-qZQ"/>
-                        <outlet property="positionButton" destination="nmF-uy-SIc" id="Xhf-vQ-nZw"/>
+                        <outlet property="positionButton" destination="Vrc-Zu-CkV" id="v4l-0f-p9z"/>
                         <outlet property="recordButton" destination="Rhd-MM-XhJ" id="f0m-mW-biQ"/>
                         <outlet property="saveButton" destination="XKL-Px-hGm" id="wbc-bT-q9t"/>
                     </connections>

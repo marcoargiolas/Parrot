@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "LocationController.h"
 
 @implementation AppDelegate
 
@@ -43,6 +44,26 @@
         self.window.rootViewController = controller;
     }
    
+    LocationController* location = [LocationController sharedObject];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+    {
+        if (!location)
+        {
+            location = [LocationController sharedObject];
+        }
+        
+        [location.locManager requestAlwaysAuthorization];
+        [location.locManager startMonitoringSignificantLocationChanges];
+    }
+    else
+    {
+        if (!location)
+        {
+            location = [LocationController sharedObject];
+        }
+        [location.locManager startMonitoringSignificantLocationChanges];
+    }
+
     return YES;
 }
 

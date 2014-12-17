@@ -25,6 +25,7 @@
 @synthesize ownerSurname;
 @synthesize listOfThankersID;
 @synthesize listOfRespokeID;
+@synthesize spokeLocation;
 
 - (id)init
 {
@@ -45,6 +46,7 @@
         ownerID = @"";
         ownerImageData = [[NSData alloc]init];
         spokeImageData = [[NSData alloc]init];
+        spokeLocation = [[CLLocation alloc]init];
 	}
 	return self;
 }
@@ -66,6 +68,7 @@
     [aCoder encodeObject:ownerID forKey:@"ownerID"];
     [aCoder encodeObject:ownerName forKey:@"ownerName"];
     [aCoder encodeObject:ownerSurname forKey:@"ownerSurname"];
+    [aCoder encodeObject:spokeLocation forKey:@"spokeLocation"];
 }
 
 -(id)initWithCoder:(NSCoder *)aDecoder
@@ -87,6 +90,7 @@
         ownerID = [aDecoder decodeObjectForKey:@"ownerID"];
         ownerName = [aDecoder decodeObjectForKey:@"ownerName"];
         ownerSurname = [aDecoder decodeObjectForKey:@"ownerSurname"];
+        spokeLocation = [aDecoder decodeObjectForKey:@"spokeLocation"];
     }
     
     return self;

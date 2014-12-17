@@ -324,8 +324,17 @@ static UserProfile *shared = nil;
     [obj setObject:spokeToSave.listOfRespokeID forKey:@"listOfRespokeID"];
     PFFile *ownerImage = [PFFile fileWithData:spokeToSave.ownerImageData];
     [obj setObject:ownerImage forKey:@"ownerImageData"];
-    PFFile *spokeImage = [PFFile fileWithData:spokeToSave.spokeImageData];
-    [obj setObject:spokeImage forKey:@"spokeImageData"];
+    if (spokeToSave.spokeImageData != nil)
+    {
+        PFFile *spokeImage = [PFFile fileWithData:spokeToSave.spokeImageData];
+        [obj setObject:spokeImage forKey:@"spokeImageData"];
+    }
+    if (spokeToSave.spokeLocation != nil)
+    {
+        PFGeoPoint *spokeGeoPoint = [PFGeoPoint geoPointWithLocation:spokeToSave.spokeLocation];
+        [obj setObject:spokeGeoPoint forKey:@"spokePosition"];
+    }
+    
     [obj setObject:spokeToSave.ownerName forKey:@"ownerName"];
     
     [obj saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error)

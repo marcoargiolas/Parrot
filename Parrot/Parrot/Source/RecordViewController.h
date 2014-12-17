@@ -11,6 +11,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import "UserProfile.h"
 #import "RespokenViewController.h"
+#import "LocationController.h"
 
 #define kAudioFilePath @"EZAudioTest.m4a"
 
@@ -30,6 +31,7 @@
     IBOutlet UIButton *photoButton;
     IBOutlet UIButton *positionButton;
     NSData *imageData;
+    LocationController* location;
 }
 
 @property (strong, nonatomic) IBOutlet UITextView *messageTextView;

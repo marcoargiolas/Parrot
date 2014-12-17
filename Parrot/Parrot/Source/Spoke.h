@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
 
 @interface Spoke : NSObject
 {
@@ -25,8 +26,10 @@
     NSMutableArray *listOfHeardsID;
     NSMutableArray *listOfThankersID;
     NSMutableArray *listOfRespokeID;
+    CLLocation *spokeLocation;
 }
 
+@property (nonatomic, strong) CLLocation *spokeLocation;
 @property (nonatomic, strong) NSString *ownerName;
 @property (nonatomic, strong) NSString *ownerSurname;
 @property (nonatomic, strong) NSData *ownerImageData;
