@@ -47,6 +47,7 @@
 		DE6389331968A5CE008D5B9D /* iphone_retina_splashscreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE6389311968A5CE008D5B9D /* iphone_retina_splashscreen@2x.png */; };
 		DE6389341968A5CE008D5B9D /* iphone_splashscreen@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE6389321968A5CE008D5B9D /* iphone_splashscreen@2x.png */; };
 		DE6389361969A210008D5B9D /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE6389351969A210008D5B9D /* Default-568h@2x.png */; };
+		DE6893D11A41D85400EDE687 /* LocationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE6893D01A41D85400EDE687 /* LocationController.m */; };
 		DE9DFC5C1965F0EC00908ED7 /* UserProfile.m in Sources */ = {isa = PBXBuildFile; fileRef = DE9DFC5B1965F0EC00908ED7 /* UserProfile.m */; };
 		DE9DFC621965FC3200908ED7 /* UIImage+Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = DE9DFC611965FC3200908ED7 /* UIImage+Additions.m */; };
 		DE9DFC661966062300908ED7 /* Spoke.m in Sources */ = {isa = PBXBuildFile; fileRef = DE9DFC651966062300908ED7 /* Spoke.m */; };
@@ -166,6 +167,8 @@
 		DE6389311968A5CE008D5B9D /* iphone_retina_splashscreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iphone_retina_splashscreen@2x.png"; sourceTree = "<group>"; };
 		DE6389321968A5CE008D5B9D /* iphone_splashscreen@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "iphone_splashscreen@2x.png"; sourceTree = "<group>"; };
 		DE6389351969A210008D5B9D /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		DE6893CF1A41D85400EDE687 /* LocationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocationController.h; path = Source/LocationController.h; sourceTree = "<group>"; };
+		DE6893D01A41D85400EDE687 /* LocationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocationController.m; path = Source/LocationController.m; sourceTree = "<group>"; };
 		DE9DFC5A1965F0EC00908ED7 /* UserProfile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = UserProfile.h; path = Source/UserProfile.h; sourceTree = "<group>"; };
 		DE9DFC5B1965F0EC00908ED7 /* UserProfile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = UserProfile.m; path = Source/UserProfile.m; sourceTree = "<group>"; };
 		DE9DFC5E1965F80600908ED7 /* GlobalDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = GlobalDefines.h; path = Source/GlobalDefines.h; sourceTree = "<group>"; };
@@ -323,6 +326,8 @@
 		DE9DFC5F1965FC0E00908ED7 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				DE6893CF1A41D85400EDE687 /* LocationController.h */,
+				DE6893D01A41D85400EDE687 /* LocationController.m */,
 				DE9DFC601965FC3200908ED7 /* UIImage+Additions.h */,
 				DE9DFC611965FC3200908ED7 /* UIImage+Additions.m */,
 				DE9DFC5E1965F80600908ED7 /* GlobalDefines.h */,
@@ -742,6 +747,7 @@
 				DE568C781A3612D600760D55 /* PlayBarView.m in Sources */,
 				DECADC0C1961EC160024D067 /* AppDelegate.m in Sources */,
 				DEAA9041196356170036B6BF /* EZAudio.m in Sources */,
+				DE6893D11A41D85400EDE687 /* LocationController.m in Sources */,
 				DEB5129019E15AE7007FB802 /* PrivacyViewController.m in Sources */,
 				DE9DFC5C1965F0EC00908ED7 /* UserProfile.m in Sources */,
 				DEAA9047196356170036B6BF /* EZMicrophone.m in Sources */,

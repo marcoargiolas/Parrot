@@ -10,6 +10,7 @@
 #import "Utilities.h"
 #import "Spoke.h"
 #import "GlobalDefines.h"
+#import "LocationController.h"
 
 @interface RecordViewController ()
 
@@ -25,6 +26,9 @@
 @synthesize startRecord;
 @synthesize respokenSpoke;
 @synthesize respokenVC;
+@synthesize photoButton;
+@synthesize messageTextView;
+@synthesize positionButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -60,11 +64,16 @@
     [saveButton setEnabled:NO];
     [saveButton setAlpha:0.2];
     [hintContainerView setFrame:CGRectMake(hintContainerView.frame.origin.x, buttonsContainerView.frame.origin.y - hintContainerView.frame.size.height, hintContainerView.frame.size.width, hintContainerView.frame.size.height)];
-    
+    [audioPlot setFrame:CGRectMake(audioPlot.frame.origin.x, buttonsContainerView.frame.origin.y - audioPlot.frame.size.height, audioPlot.frame.size.width, audioPlot.frame.size.height)];
     if(startRecord)
     {
         [self prepareToRecord];
     }
+    [photoButton.layer setCornerRadius:photoButton.frame.size.width/2];
+    [photoButton.layer setMasksToBounds:YES];
+    [photoButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    [photoButton.layer setShadowRadius:2.0];
+    [photoButton.layer setBorderWidth:1.0];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -224,6 +233,10 @@
     spokeObj.audioData = [[NSData alloc] initWithContentsOfURL:soundUrl options:NSDataReadingMappedIfSafe error:nil];
     spokeObj.ownerName = [[prof.currentUser objectForKey:@"profile"] objectForKey:@"fullName"];
     spokeObj.ownerImageData = [[prof.currentUser objectForKey:@"profile"] objectForKey:USER_IMAGE_DATA];
+    if (imageData != nil)
+    {
+        spokeObj.spokeImageData = imageData;
+    }
     
     if(respokenSpoke != nil)
     {
@@ -334,4 +347,106 @@ withNumberOfChannels:(UInt32)numberOfChannels {
         [self prepareToRecord];
     }
 }
+
+#pragma mark image management
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingImage:(UIImage *)image editingInfo:(NSDictionary *)editingInfo
+{
+    CGSize sz = CGSizeMake(100, 100);
+    UIGraphicsBeginImageContext(sz);
+    [image drawInRect:CGRectMake(0,0,100,100)];
+    UIImage *im2 = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    [photoButton setBackgroundImage:im2 forState:UIControlStateNormal];
+    [photoButton setTitle:@"" forState:UIControlStateNormal];
+    
+    if(image != nil)
+    {
+        imageData = UIImagePNGRepresentation(im2);
+    }
+    
+    [picker dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (IBAction)photoButtonPressed:(id)sender
+{
+    UIActionSheet *profileImageActionSheet = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:NSLocalizedString(@"Cancel", @"Cancel") destructiveButtonTitle:nil otherButtonTitles:NSLocalizedString(@"From Memory", @""), NSLocalizedString(@"From Camera", @""), nil];
+    
+    [profileImageActionSheet showInView:self.view];
+}
+
+#pragma mark ActionSheet and AlertView Delegate Methods
+
+- (void) actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if(buttonIndex==2)
+        return;
+    
+    if(buttonIndex==1 && ![UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera])
+    {
+        //not available
+        UIAlertView *alertView2 = [[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", @"") message:NSLocalizedString(@"Camera is not available", @"") delegate:self cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        
+        [alertView2 show];
+        return;
+    }
+    
+    UIImagePickerController *imagePickerController = [[UIImagePickerController alloc] init];
+    imagePickerController.delegate = self;
+    imagePickerController.allowsEditing = YES;
+    
+    if(buttonIndex==0)
+    {
+        imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+    }
+    if(buttonIndex==1)
+    {
+        imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+    }
+    [self presentViewController:imagePickerController animated:YES completion:nil];
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    NSLog(@"BUTTON INDEX %d", (int)buttonIndex);
+    switch (buttonIndex)
+    {
+            //Change
+        case 0:
+            break;
+        case 1:
+            break;
+        default:
+            break;
+    }
+}
+
+- (IBAction)positionButtonPressed:(id)sender
+{
+    LocationController* location = [LocationController sharedObject];
+    if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+    {
+        if (!location)
+        {
+            location = [LocationController sharedObject];
+        }
+        
+        [location.locManager requestAlwaysAuthorization];
+        [location.locManager startMonitoringSignificantLocationChanges];
+    }
+    else
+    {
+        if (!location)
+        {
+            location = [LocationController sharedObject];
+        }
+        [location.locManager startMonitoringSignificantLocationChanges];
+    }
+}
+
 @end

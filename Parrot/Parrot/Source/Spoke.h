@@ -21,6 +21,7 @@
     NSString *ownerName;
     NSString *ownerSurname;
     NSData *ownerImageData;
+    NSData *spokeImageData;
     NSMutableArray *listOfHeardsID;
     NSMutableArray *listOfThankersID;
     NSMutableArray *listOfRespokeID;
@@ -29,6 +30,7 @@
 @property (nonatomic, strong) NSString *ownerName;
 @property (nonatomic, strong) NSString *ownerSurname;
 @property (nonatomic, strong) NSData *ownerImageData;
+@property (nonatomic, strong) NSData *spokeImageData;
 @property (nonatomic, strong) NSMutableArray *listOfHeardsID;
 @property (nonatomic, strong) NSMutableArray *listOfThankersID;
 @property (nonatomic, strong) NSMutableArray *listOfRespokeID;
