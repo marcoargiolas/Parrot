@@ -12,10 +12,11 @@
 #import "UserProfile.h"
 #import "RespokenViewController.h"
 #import "LocationController.h"
+#import <SpeechKit/SpeechKit.h>
 
 #define kAudioFilePath @"EZAudioTest.m4a"
 
-@interface RecordViewController : UIViewController <AVAudioPlayerDelegate,EZMicrophoneDelegate, UIGestureRecognizerDelegate, AVAudioSessionDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate>
+@interface RecordViewController : UIViewController <AVAudioPlayerDelegate,EZMicrophoneDelegate, UIGestureRecognizerDelegate, AVAudioSessionDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, SpeechKitDelegate, SKRecognizerDelegate, UITextViewDelegate>
 {
     NSString *spokeFileName;
     IBOutlet UIView *buttonsContainerView;
@@ -23,7 +24,7 @@
     IBOutlet UIView *hintContainerView;
     IBOutlet UIButton *saveButton;
     BOOL startRecord;
-    AVAudioPlayer *player;
+//    AVAudioPlayer *player;
     Spoke *respokenSpoke;
     RespokenViewController *respokenVC;
     
@@ -32,8 +33,18 @@
     IBOutlet UIButton *positionButton;
     NSData *imageData;
     LocationController* location;
+    SKRecognizer* voiceSearch;
+    enum {
+        TS_IDLE,
+        TS_INITIAL,
+        TS_RECORDING,
+        TS_PROCESSING,
+    } transactionState;
+
+    NSMutableArray *hashTagArray;
 }
 
+@property(readonly)         SKRecognizer* voiceSearch;
 @property (strong, nonatomic) IBOutlet UITextView *messageTextView;
 @property (strong, nonatomic) IBOutlet UIButton *photoButton;
 @property (nonatomic, strong) RespokenViewController *respokenVC;
@@ -81,7 +92,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *cancelButton;
 @property (strong, nonatomic) IBOutlet UIButton *recordButton;
 @property (strong, nonatomic) IBOutlet UIButton *saveButton;
-@property (nonatomic,strong) AVAudioPlayer *audioPlayer;
+//@property (nonatomic,strong) AVAudioPlayer *player;
 @property (strong, nonatomic) Spoke *respokenSpoke;
 
 - (IBAction)recordButtonPressed:(id)sender;

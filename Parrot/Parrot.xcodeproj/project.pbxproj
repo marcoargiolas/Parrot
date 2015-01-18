@@ -102,6 +102,7 @@
 		DECADC291961EE3D0024D067 /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DECADC281961EE3D0024D067 /* LoginViewController.m */; };
 		DECADC2C1961EEF50024D067 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DECADC2B1961EEF50024D067 /* MainViewController.m */; };
 		DECBFD2F1A30F3F600355336 /* button_bar_play_enabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DECBFD2E1A30F3F600355336 /* button_bar_play_enabled@2x.png */; };
+		DED13A5F1A42E3230068A522 /* SpeechKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DED13A5E1A42E3230068A522 /* SpeechKit.framework */; };
 		DED22EC31A2F6AAE00A1E2EA /* button_bar_respoken_enabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DED22EC21A2F6AAE00A1E2EA /* button_bar_respoken_enabled@2x.png */; };
 		DED22EC51A2F6DBB00A1E2EA /* PlayBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DED22EC41A2F6DBB00A1E2EA /* PlayBarView.xib */; };
 		DEF176F619717B9F003F15A0 /* handle_slider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF176F519717B9F003F15A0 /* handle_slider@2x.png */; };
@@ -252,6 +253,7 @@
 		DECADC2A1961EEF50024D067 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MainViewController.h; path = Source/MainViewController.h; sourceTree = "<group>"; };
 		DECADC2B1961EEF50024D067 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MainViewController.m; path = Source/MainViewController.m; sourceTree = "<group>"; };
 		DECBFD2E1A30F3F600355336 /* button_bar_play_enabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_bar_play_enabled@2x.png"; sourceTree = "<group>"; };
+		DED13A5E1A42E3230068A522 /* SpeechKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpeechKit.framework; path = Libs/SpeechKit.framework; sourceTree = "<group>"; };
 		DED22EC21A2F6AAE00A1E2EA /* button_bar_respoken_enabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_bar_respoken_enabled@2x.png"; sourceTree = "<group>"; };
 		DED22EC41A2F6DBB00A1E2EA /* PlayBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PlayBarView.xib; path = Parrot/Resources/Xib/PlayBarView.xib; sourceTree = "<group>"; };
 		DEF176F519717B9F003F15A0 /* handle_slider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "handle_slider@2x.png"; sourceTree = "<group>"; };
@@ -272,6 +274,7 @@
 				DE5B754E19F69E2D00726E8D /* ImageIO.framework in Frameworks */,
 				DEAA9022196355CF0036B6BF /* GLKit.framework in Frameworks */,
 				DECADBD11961EA300024D067 /* UIKit.framework in Frameworks */,
+				DED13A5F1A42E3230068A522 /* SpeechKit.framework in Frameworks */,
 				DECADC251961ED010024D067 /* SystemConfiguration.framework in Frameworks */,
 				DECADC231961ECF90024D067 /* StoreKit.framework in Frameworks */,
 				DECADC211961ECF30024D067 /* Security.framework in Frameworks */,
@@ -446,6 +449,7 @@
 		DECADBCB1961EA300024D067 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DED13A5E1A42E3230068A522 /* SpeechKit.framework */,
 				DE5B754D19F69E2D00726E8D /* ImageIO.framework */,
 				DEAA9021196355CF0036B6BF /* GLKit.framework */,
 				DECADC241961ED010024D067 /* SystemConfiguration.framework */,
@@ -891,11 +895,18 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libs",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(PROJECT_DIR)/Libs/GIRI-master/ThirdParty",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Parrot/Parrot-Prefix.pch";
 				INFOPLIST_FILE = "Parrot/Parrot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Libs",
+					"$(PROJECT_DIR)/Libs/iSpeechSDK-Free-1.0.6",
+				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;
@@ -911,11 +922,18 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Libs",
 					"$(DEVELOPER_FRAMEWORKS_DIR)",
+					"$(PROJECT_DIR)/Libs/GIRI-master/ThirdParty",
 				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Parrot/Parrot-Prefix.pch";
 				INFOPLIST_FILE = "Parrot/Parrot-Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Libs",
+					"$(PROJECT_DIR)/Libs/iSpeechSDK-Free-1.0.6",
+				);
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
 				WRAPPER_EXTENSION = app;

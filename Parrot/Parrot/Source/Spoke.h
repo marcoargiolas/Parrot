@@ -27,8 +27,9 @@
     NSMutableArray *listOfThankersID;
     NSMutableArray *listOfRespokeID;
     CLLocation *spokeLocation;
+    NSString *spokeText;
 }
-
+@property (nonatomic, strong) NSString *spokeText;
 @property (nonatomic, strong) CLLocation *spokeLocation;
 @property (nonatomic, strong) NSString *ownerName;
 @property (nonatomic, strong) NSString *ownerSurname;

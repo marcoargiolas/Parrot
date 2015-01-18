@@ -324,7 +324,7 @@ static UserProfile *shared = nil;
     [obj setObject:spokeToSave.listOfRespokeID forKey:@"listOfRespokeID"];
     PFFile *ownerImage = [PFFile fileWithData:spokeToSave.ownerImageData];
     [obj setObject:ownerImage forKey:@"ownerImageData"];
-    if (spokeToSave.spokeImageData != nil)
+    if ([spokeToSave.spokeImageData length] > 0)
     {
         PFFile *spokeImage = [PFFile fileWithData:spokeToSave.spokeImageData];
         [obj setObject:spokeImage forKey:@"spokeImageData"];
@@ -334,7 +334,10 @@ static UserProfile *shared = nil;
         PFGeoPoint *spokeGeoPoint = [PFGeoPoint geoPointWithLocation:spokeToSave.spokeLocation];
         [obj setObject:spokeGeoPoint forKey:@"spokePosition"];
     }
-    
+    if ([spokeToSave.spokeText length] > 0)
+    {
+        [obj setObject:spokeToSave.spokeText forKey:@"spokeText"];
+    }
     [obj setObject:spokeToSave.ownerName forKey:@"ownerName"];
     
     [obj saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error)
@@ -342,6 +345,30 @@ static UserProfile *shared = nil;
 //        [[NSNotificationCenter defaultCenter]postNotificationName:@"loadWallSpokes" object:nil];
 //        [[NSNotificationCenter defaultCenter]postNotificationName:@"loadUserWall" object:nil];
     }];
+}
+
+-(void)saveHashTagToRemote:(NSMutableArray*)hashTagArray
+{
+    for (int i = 0; i < [hashTagArray count]; i++)
+    {
+        NSString *currentHashtag = [hashTagArray objectAtIndex:i];
+        PFQuery *query = [PFQuery queryWithClassName:@"Hashtag"];
+        [query whereKey:@"hashtagText" equalTo:currentHashtag];
+        [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+            if (!error)
+            {
+                if ([objects count] == 0)
+                {
+                    PFObject *obj = [PFObject objectWithClassName:@"Hashtag"];
+                    [obj setObject:currentHashtag forKey:@"hashtagText"];
+                    [obj saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error)
+                     {
+                         
+                     }];
+                }
+            }
+        }];
+    }
 }
 
 -(void)updateTotalSpokeLike:(NSString*)spokeID thanksID:(NSString*)userThanksID addLike:(BOOL)like totalLikes:(int)totalLikes

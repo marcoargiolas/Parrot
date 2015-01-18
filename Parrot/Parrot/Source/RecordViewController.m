@@ -15,10 +15,11 @@
 
 @end
 
+const unsigned char SpeechKitApplicationKey[] = {0x89, 0xe2, 0x81, 0x7f, 0x25, 0x20, 0x30, 0xfa, 0x7a, 0xea, 0x80, 0x00, 0x4c, 0xdc, 0x26, 0xd2, 0xb3, 0x72, 0xc4, 0x99, 0x36, 0x1e, 0xb4, 0x2a, 0x0f, 0xf2, 0x46, 0x00, 0x32, 0x93, 0x57, 0xbb, 0x75, 0xd9, 0x3a, 0x9b, 0xf9, 0x6a, 0x95, 0x73, 0x55, 0x16, 0x74, 0xa1, 0xf2, 0x9a, 0x73, 0xa5, 0x0d, 0x37, 0x3f, 0x43, 0x55, 0xf3, 0x6d, 0x64, 0xe6, 0xb3, 0x65, 0x18, 0x47, 0xbc, 0xd4, 0xbc};
+
 @implementation RecordViewController
 
 @synthesize recordButton;
-@synthesize audioPlayer;
 @synthesize recorder;
 @synthesize audioPlot;
 @synthesize saveButton;
@@ -28,6 +29,8 @@
 @synthesize photoButton;
 @synthesize messageTextView;
 @synthesize positionButton;
+@synthesize voiceSearch;
+
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -73,6 +76,22 @@
     [photoButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
     [photoButton.layer setShadowRadius:2.0];
     [photoButton.layer setBorderWidth:1.0];
+    
+    [positionButton.layer setCornerRadius:photoButton.frame.size.width/2];
+    [positionButton.layer setMasksToBounds:YES];
+    [positionButton.layer setBorderColor:[[UIColor blackColor] CGColor]];
+    [positionButton.layer setShadowRadius:2.0];
+    [positionButton.layer setBorderWidth:1.0];
+    
+    hashTagArray = [[NSMutableArray alloc]init];
+
+    [SpeechKit setupWithID:@"NMDPTRIAL_marco_argiolas20141218095517"
+                      host:@"sandbox.nmdp.nuancemobility.net"
+                      port:443
+                    useSSL:NO
+                  delegate:nil];
+    [SpeechKit setEarcon:[SKEarcon earconWithName:@"startRecord.wav"] forType:SKStartRecordingEarconType];
+    [SpeechKit setEarcon:[SKEarcon earconWithName:@"startRecord.wav"] forType:SKStopRecordingEarconType];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -84,9 +103,17 @@
 -(void)viewWillDisappear:(BOOL)animated
 {
     [self.microphone stopFetchingAudio];
+    [voiceSearch stopRecording];
+    [voiceSearch cancel];
+
     self.isRecording = NO;
     respokenVC = nil;
     startRecord = NO;
+
+    AVAudioSession* session = [AVAudioSession sharedInstance];
+    NSError* error;
+    [session overrideOutputAudioPort:AVAudioSessionPortOverrideSpeaker error:&error];
+
     [[UIDevice currentDevice] setProximityMonitoringEnabled:NO];
     [[NSNotificationCenter defaultCenter]removeObserver:self name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
 }
@@ -108,15 +135,15 @@
 }
 
 /*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
+ #pragma mark - Navigation
+ 
+ // In a storyboard-based application, you will often want to do a little preparation before navigation
+ - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+ {
+ // Get the new view controller using [segue destinationViewController].
+ // Pass the selected object to the new view controller.
+ }
+ */
 
 - (void)sensorStateChange:(NSNotificationCenter *)notification
 {
@@ -146,36 +173,38 @@
 -(void)prepareToRecord
 {
     [recordButton setSelected:YES];
-    NSURL *soundUrl = [NSURL fileURLWithPath:[NSString stringWithFormat:@"%@/startRecord.wav", [[NSBundle mainBundle] resourcePath]]];
-    
-    NSError *dataError;
-    NSData *soundData = [[NSData alloc] initWithContentsOfURL:soundUrl options:NSDataReadingMappedIfSafe error:&dataError];
-    if(dataError != nil)
-    {
-        NSLog(@"DATA ERROR %@", dataError);
-    }
-    
-    NSError *error;
-    player =[[AVAudioPlayer alloc] initWithData: soundData error: &error];
-    player.delegate = self;
-
-    [player prepareToPlay];
-    [player play];
+    [self startRecording];
 }
 
 - (void)startRecording
 {
     NSLog(@"START RECORDING");
+    //    [messageTextView becomeFirstResponder];
+    
+    if (transactionState == TS_RECORDING)
+    {
+        [voiceSearch stopRecording];
+    }
+    else if (transactionState == TS_IDLE)
+    {
+        NSString* recoType = SKSearchRecognizerType;
+        NSString* langType = @"en_US";
+        
+        transactionState = TS_INITIAL;
+        
+        messageTextView.text = @"";
+        
+        if (voiceSearch == nil)
+        {
+            voiceSearch = [[SKRecognizer alloc] initWithType:recoType detection:SKLongEndOfSpeechDetection language:langType delegate:self];
+        }
+    }
+}
+
+-(void)beginAudioRecording
+{
     [self.microphone startFetchingAudio];
     [hintContainerView removeFromSuperview];
-    if( self.audioPlayer )
-    {
-        if( self.audioPlayer.playing )
-        {
-            [self.audioPlayer stop];
-        }
-        self.audioPlayer = nil;
-    }
     self.isRecording = YES;
     
     /*
@@ -184,17 +213,78 @@
     self.recorder = [EZRecorder recorderWithDestinationURL:[Utilities soundFilePathUrl]
                                               sourceFormat:self.microphone.audioStreamBasicDescription
                                        destinationFileType:EZRecorderFileTypeM4A];
-//    [NSTimer scheduledTimerWithTimeInterval:10.0
-//                                     target:self
-//                                   selector:@selector(stopRecording)
-//                                   userInfo:nil
-//                                    repeats:NO];
+}
+
+-(void)recognizerDidBeginRecording:(SKRecognizer *)recognizer
+{
+    [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(beginAudioRecording) userInfo:nil repeats:NO];
+}
+
+-(void)recognizerDidFinishRecording:(SKRecognizer *)recognizer
+{
+    [self stopRecording];
+}
+
+- (void)recognizer:(SKRecognizer *)recognizer didFinishWithResults:(SKRecognition *)results
+{
+    NSLog(@"Got results.");
+    NSLog(@"Session id [%@].", [SpeechKit sessionID]); // for debugging purpose: printing out the speechkit session id
+    
+    long numOfResults = [results.results count];
+    
+    transactionState = TS_IDLE;
+    
+    if (numOfResults > 0)
+        messageTextView.text = [results firstResult];
+    
+    //    if (numOfResults > 1)
+    //        alternativesDisplay.text = [[results.results subarrayWithRange:NSMakeRange(1, numOfResults-1)] componentsJoinedByString:@"\n"];
+    //
+    if (results.suggestion) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Suggestion"
+                                                        message:results.suggestion
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        
+    }
+    
+    voiceSearch = nil;
+}
+
+- (void)recognizer:(SKRecognizer *)recognizer didFinishWithError:(NSError *)error suggestion:(NSString *)suggestion
+{
+    NSLog(@"Got error.");
+    NSLog(@"Session id [%@].", [SpeechKit sessionID]); // for debugging purpose: printing out the speechkit session id
+    
+    transactionState = TS_IDLE;
+    [recordButton setTitle:@"Record" forState:UIControlStateNormal];
+    
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Error"
+                                                    message:[error localizedDescription]
+                                                   delegate:nil
+                                          cancelButtonTitle:@"OK"
+                                          otherButtonTitles:nil];
+    [alert show];
+    
+    if (suggestion) {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Suggestion"
+                                                        message:suggestion
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles:nil];
+        [alert show];
+        
+    }
+    
+    voiceSearch = nil;
 }
 
 - (void) stopRecording
 {
     NSLog(@"STOP RECORDING");
-    [self prepareToRecord];
+    [voiceSearch stopRecording];
     [recordButton setSelected:NO];
     [self.microphone stopFetchingAudio];
     self.isRecording = NO;
@@ -206,25 +296,27 @@
 {
     startRecord = NO;
     [self.microphone stopFetchingAudio];
+    
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (IBAction)saveButtonPressed:(id)sender
 {
     startRecord = NO;
+    transactionState = TS_IDLE;
     [self.recorder closeAudioFile];
     if([UserProfile sharedProfile].spokesArray == nil)
     {
         [UserProfile sharedProfile].spokesArray = [[NSMutableArray alloc]init];
     }
-
+    
     UserProfile *prof = [UserProfile sharedProfile];
     Spoke *spokeObj = [[Spoke alloc]init];
     spokeObj.ownerID = [[UserProfile sharedProfile] getUserID];
     spokeObj.spokeID = [Utilities soundFilePathString];
     spokeObj.creationDate = [NSDate date];
-//    spokeObj.updateDate = [NSDate date];
-
+    //    spokeObj.updateDate = [NSDate date];
+    
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *basePath = ([paths count] > 0) ? [paths objectAtIndex:0] : nil;
     
@@ -241,6 +333,25 @@
         spokeObj.spokeLocation = location.locManager.location;
     }
     
+    if ([messageTextView.text length] > 0)
+    {
+        spokeObj.spokeText = messageTextView.text;
+        NSArray *words=[messageTextView.text componentsSeparatedByString:@" "];
+        
+        for (NSString *word in words)
+        {
+            NSLog(@"WORD %@", word);
+            
+            if ([word hasPrefix:@"#"])
+            {
+                NSString *tempString = [word substringFromIndex:1];
+                [hashTagArray addObject:tempString];
+            }
+        }
+    }
+    [[UserProfile sharedProfile] saveHashTagToRemote:hashTagArray];
+    [hashTagArray removeAllObjects];
+    
     if(respokenSpoke != nil)
     {
         spokeObj.respokeToSpokeID = respokenSpoke.spokeID;
@@ -253,7 +364,7 @@
         }
         [respokenVC.headerSpoke.listOfRespokeID addObject:spokeObj.spokeID];
         [[UserProfile sharedProfile] updateRespokenList:respokenVC.headerSpoke.spokeID respokeID:spokeObj.spokeID removeRespoken:NO];
- 
+        
         for (int i = 0; i < [[UserProfile sharedProfile].cacheSpokesArray count]; i++)
         {
             Spoke *tempSpoke = [[UserProfile sharedProfile].cacheSpokesArray objectAtIndex:i];
@@ -271,7 +382,7 @@
             }
         }
     }
-   
+    
     [[UserProfile sharedProfile].spokesArray addObject:spokeObj];
     [[UserProfile sharedProfile].cacheSpokesArray addObject:spokeObj];
     [[UserProfile sharedProfile] saveProfileLocal];
@@ -323,20 +434,24 @@ withNumberOfChannels:(UInt32)numberOfChannels {
     if(recordButton.selected)
     {
         NSLog(@"SELECTED");
-        [self startRecording];
+        [NSTimer scheduledTimerWithTimeInterval:0.1 target:self
+                                       selector:@selector(startRecording)
+                                       userInfo:nil
+                                        repeats:NO];
+        //        [self startRecording];
     }
     else
     {
         NSLog(@"NON SELECTED");
         
     }
-        
-//    audioPlayer = nil;
-//    self.playingTextField.text = @"Finished Playing";
     
-//    [self.microphone startFetchingAudio];
-//    self.microphoneSwitch.on = YES;
-//    self.microphoneTextField.text = @"Microphone On";
+    //    audioPlayer = nil;
+    //    self.playingTextField.text = @"Finished Playing";
+    
+    //    [self.microphone startFetchingAudio];
+    //    self.microphoneSwitch.on = YES;
+    //    self.microphoneTextField.text = @"Microphone On";
 }
 
 - (IBAction)recordButtonPressed:(id)sender
@@ -450,7 +565,117 @@ withNumberOfChannels:(UInt32)numberOfChannels {
         }
         [location.locManager startMonitoringSignificantLocationChanges];
     }
-    NSLog(@"LOCATION %f", location.locManager.location.coordinate.latitude);
 }
+
+#pragma mark UITextViewDelegate
+- (void) textViewDidBeginEditing:(UITextView *)textView
+{
+    NSLog(@"DID BEGIN EDITING");
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    NSLog(@"DID END EDITING");
+}
+
+-(BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    NSLog(@"--------------------------------------%@------------------------------------", text);
+    if([text isEqualToString:@"\n"])
+    {
+        [textView resignFirstResponder];
+        return NO;
+    }
+    
+    NSMutableAttributedString * mutableString = [[NSMutableAttributedString alloc]initWithString:messageTextView.text];
+    
+    //    NSArray *words=[messageTextView.text componentsSeparatedByString:@" "];
+    //
+    //    for (NSString *word in words)
+    //    {
+    //        NSLog(@"WORD %@", word);
+    //        NSRange wordRange=[messageTextView.text rangeOfString:word];
+    //        if ([word hasPrefix:@"#"])
+    //        {
+    //            [mutableString addAttribute:NSForegroundColorAttributeName value:[UIColor blueColor] range:wordRange];
+    //        }
+    //        else
+    //        {
+    //            [mutableString addAttribute:NSForegroundColorAttributeName value:[UIColor blackColor] range:wordRange];
+    //        }
+    //    }
+    [messageTextView setAttributedText:mutableString];
+    
+    return YES;
+}
+//{
+//    NSLog(@"SHOULD CHANGE");
+//    CGRect line = [textView caretRectForPosition:textView.selectedTextRange.start];
+//    CGFloat overflow = line.origin.y + line.size.height - ( textView.contentOffset.y + textView.bounds.size.height - textView.contentInset.bottom - textView.contentInset.top );
+//    if ( overflow > 0)
+//    {
+//        CGPoint offset = textView.contentOffset;
+//        offset.y += overflow + 7;
+//        [UIView animateWithDuration:.2 animations:^{
+//            [textView setContentOffset:offset];
+//        }];
+//    }
+//
+//    CGFloat fixedWidth = messageTextView.frame.size.width;
+//    CGSize newSize = [messageTextView sizeThatFits:CGSizeMake(fixedWidth, MAXFLOAT)];
+//    CGRect newFrame = messageTextView.frame;
+//    newFrame.size = CGSizeMake(fmaxf(newSize.width, fixedWidth), newSize.height);
+//    if(newFrame.size.height > messageTextView.frame.size.height)
+//    {
+//        messageTextView.frame = newFrame;
+//        [letImageContainerView setFrame:CGRectMake(letImageContainerView.frame.origin.x, messageTextView.frame.origin.y + messageTextView.frame.size.height, letImageContainerView.frame.size.width, letImageContainerView.frame.size.height)];
+//        [messageContainerView setContentSize:CGSizeMake(messageContainerView.frame.size.width, messageContainerView.contentSize.height + 34)];
+//    }
+//
+//    int charLeft = [charLeftLabel.text intValue];
+//    if (![text isEqualToString:@""])
+//        charLeft--;
+//    else
+//        charLeft++;
+//
+//    if(charLeft > 300)
+//        charLeft = 300;
+//    if (charLeft < 0 )
+//        charLeft = 0;
+//
+//    [charLeftLabel setText:[NSString stringWithFormat:@"%d", charLeft]];
+//
+//    if([textView.text length] > MAX_STATUS_LENGTH && ![text isEqualToString:@""])
+//        return NO;
+//    return YES;
+//}
+
+//- (void) textViewDidChange:(UITextView *)textView
+//{
+//    //    NSLog(@"TEXT DID CHANGE %@", textView.text);
+//    //    int charLeft = [charLeftLabel.text intValue];
+//    //    if (![textView.text isEqualToString:@""])
+//    //        charLeft--;
+//    //    else
+//    //        charLeft++;
+//    //
+//    //    if(charLeft > 300)
+//    //        charLeft = 300;
+//    //    if (charLeft < 0 )
+//    //        charLeft = 0;
+//    //
+//    //    [charLeftLabel setText:[NSString stringWithFormat:@"%d", charLeft]];
+//    //
+//    if ([textView.text length] != 0)
+//    {
+//        letButton.enabled = YES;
+//        letItFlyTextViewPlaceholder.hidden = YES;
+//    }
+//    else
+//    {
+//        letButton.enabled = NO;
+//        letItFlyTextViewPlaceholder.hidden = NO;
+//    }
+//}
 
 @end
