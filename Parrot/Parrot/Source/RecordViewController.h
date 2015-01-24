@@ -18,6 +18,13 @@
 
 #define kAudioFilePath @"EZAudioTest.m4a"
 
+@interface EditCell : UITableViewCell
+
+@property (strong, nonatomic) IBOutlet UILabel *countLabel;
+@property (strong, nonatomic) IBOutlet UILabel *hashtagTextLabel;
+
+
+@end
 @interface RecordViewController : UIViewController <AVAudioPlayerDelegate,EZMicrophoneDelegate, UIGestureRecognizerDelegate, AVAudioSessionDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, SpeechKitDelegate, SKRecognizerDelegate, UITextViewDelegate>
 {
     NSString *spokeFileName;
@@ -44,23 +51,37 @@
     } transactionState;
 
     NSMutableArray *hashTagArray;
+    NSMutableArray *availableHashTagArray;
+    NSMutableArray *currentHashtagArray;
     NSData *spokePositionImageData;
     NSString *spokeAddress;
+    int lookForHashIndex;
 }
 
+@property (strong, nonatomic) IBOutlet UIView *editContainerView;
+@property (strong, nonatomic) IBOutlet UIButton *editViewDoneButton;
 @property (strong, nonatomic) IBOutlet UILabel *spokeAddressLabel;
-@property(readonly)         SKRecognizer* voiceSearch;
+@property(readonly) SKRecognizer* voiceSearch;
 @property (strong, nonatomic) IBOutlet UITextView *messageTextView;
 @property (strong, nonatomic) IBOutlet UIButton *photoButton;
 @property (nonatomic, strong) RespokenViewController *respokenVC;
 @property (strong, nonatomic) IBOutlet UIButton *positionButton;
+
 @property (strong, nonatomic) IBOutlet MKMapView *mapView;
+@property (strong, nonatomic) IBOutlet UIButton *editViewCancelButton;
 @property (nonatomic, assign) BOOL startRecord;
+@property (strong, nonatomic) IBOutlet UITableView *editTableView;
+@property (strong, nonatomic) IBOutlet UIButton *cancelButton;
+@property (strong, nonatomic) IBOutlet UIButton *recordButton;
+@property (strong, nonatomic) IBOutlet UIButton *saveButton;
+//@property (nonatomic,strong) AVAudioPlayer *player;
+@property (strong, nonatomic) Spoke *respokenSpoke;
+
 /**
  Use a OpenGL based plot to visualize the data coming in
  */
 @property (nonatomic,weak) IBOutlet EZAudioPlotGL *audioPlot;
-
+@property (strong, nonatomic) IBOutlet UIView *editHeaderView;
 /**
  A flag indicating whether we are recording or not
  */
@@ -92,18 +113,16 @@
 // */
 //-(IBAction)toggleRecording:(id)sender;
 
+
 - (IBAction)cancelButtonPressed:(id)sender;
 - (IBAction)saveButtonPressed:(id)sender;
-
-@property (strong, nonatomic) IBOutlet UIButton *cancelButton;
-@property (strong, nonatomic) IBOutlet UIButton *recordButton;
-@property (strong, nonatomic) IBOutlet UIButton *saveButton;
-//@property (nonatomic,strong) AVAudioPlayer *player;
-@property (strong, nonatomic) Spoke *respokenSpoke;
-
+- (IBAction)editViewCancelButtonPressed:(id)sender;
 - (IBAction)recordButtonPressed:(id)sender;
 - (IBAction)photoButtonPressed:(id)sender;
 - (IBAction)positionButtonPressed:(id)sender;
+- (IBAction)editViewDoneButtonPressed:(id)sender;
+
+-(void)populateHashtagArray:(NSNotification*)notification;
 
 
 @end

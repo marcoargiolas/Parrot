@@ -353,6 +353,28 @@ static UserProfile *shared = nil;
     }];
 }
 
+-(void)loadHashtagsFromRemote
+{
+    PFQuery *query = [PFQuery queryWithClassName:@"Hashtag"];
+    [query orderByDescending:@"hashtagText"];
+    [query findObjectsInBackgroundWithBlock:^(NSArray *objects, NSError *error) {
+        if (!error)
+        {
+            NSMutableArray *hashtagArray = [[NSMutableArray alloc]init];
+            for (PFObject *object in objects)
+            {
+                [hashtagArray addObject:[object objectForKey:@"hashtagText"]];
+            }
+            NSMutableDictionary *userInfo = [NSMutableDictionary dictionaryWithObject:hashtagArray forKey:HASHTAG_ARRAY];
+            [[NSNotificationCenter defaultCenter]postNotificationName:HASHTAG_ARRAY_ARRIVED object:nil userInfo:userInfo];
+        }
+        else
+        {
+            NSLog(@"Error: %@ %@", error, [error userInfo]);
+        }
+    }];
+}
+
 -(void)saveHashTagToRemote:(NSMutableArray*)hashTagArray
 {
     for (int i = 0; i < [hashTagArray count]; i++)

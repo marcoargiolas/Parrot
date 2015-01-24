@@ -11,6 +11,13 @@
 #import "Spoke.h"
 #import "GlobalDefines.h"
 
+@implementation EditCell
+
+@synthesize hashtagTextLabel;
+@synthesize countLabel;
+
+@end
+
 @interface RecordViewController ()
 
 @end
@@ -44,6 +51,9 @@ const unsigned char SpeechKitApplicationKey[] = {0x89, 0xe2, 0x81, 0x7f, 0x25, 0
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:@"UIKeyboardWillShowNotification" object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardDidHide:) name:@"UIKeyboardDidHideNotification" object:nil];
     self.microphone = [EZMicrophone microphoneWithDelegate:self];
     self.audioPlot.backgroundColor = [UIColor blackColor];
     // Waveform color
@@ -94,12 +104,18 @@ const unsigned char SpeechKitApplicationKey[] = {0x89, 0xe2, 0x81, 0x7f, 0x25, 0
     [SpeechKit setEarcon:[SKEarcon earconWithName:@"startRecord.wav"] forType:SKStopRecordingEarconType];
     
     [self.mapView removeFromSuperview];
+    [self.editContainerView setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height, self.editContainerView.frame.size.width, self.editContainerView.frame.size.height)];
+    [self.editTableView removeFromSuperview];
+    
+    lookForHashIndex = -1;
 }
 
 -(void)viewWillAppear:(BOOL)animated
 {
+    [[UserProfile sharedProfile] loadHashtagsFromRemote];
     [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(populateHashtagArray:) name:HASHTAG_ARRAY_ARRIVED object:nil];
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -127,7 +143,7 @@ const unsigned char SpeechKitApplicationKey[] = {0x89, 0xe2, 0x81, 0x7f, 0x25, 0
 
 - (void)dealloc
 {
-    
+   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning
@@ -194,7 +210,7 @@ const unsigned char SpeechKitApplicationKey[] = {0x89, 0xe2, 0x81, 0x7f, 0x25, 0
         
         transactionState = TS_INITIAL;
         
-        messageTextView.text = @"";
+//        messageTextView.text = @"";
         
         if (voiceSearch == nil)
         {
@@ -680,6 +696,17 @@ withNumberOfChannels:(UInt32)numberOfChannels {
     }];
 }
 
+- (IBAction)editViewDoneButtonPressed:(id)sender
+{
+    [messageTextView resignFirstResponder];
+}
+
+
+- (IBAction)editViewCancelButtonPressed:(id)sender
+{
+    [messageTextView resignFirstResponder];
+}
+
 #pragma mark UITextViewDelegate
 - (void) textViewDidBeginEditing:(UITextView *)textView
 {
@@ -701,7 +728,42 @@ withNumberOfChannels:(UInt32)numberOfChannels {
     }
     
     NSMutableAttributedString * mutableString = [[NSMutableAttributedString alloc]initWithString:messageTextView.text];
-    
+    NSLog(@"MESSAGE VIEW TEXT %@", messageTextView.text);
+    if ([text isEqualToString:@"#"])
+    {
+        lookForHashIndex = (int)range.location;
+    }
+
+    if (lookForHashIndex != -1)
+    {
+        if (currentHashtagArray == nil)
+        {
+            currentHashtagArray = [[NSMutableArray alloc]init];
+        }
+        NSString *textToCheck = [messageTextView.text substringWithRange:NSMakeRange(lookForHashIndex, [messageTextView.text length])];
+        NSLog(@"TEXT TO CHECK %@", textToCheck);
+        if ([textToCheck length] > 2)
+        {
+            NSLog(@"TUA MADRE PUTTANA");
+            textToCheck = [textToCheck substringFromIndex:1];
+            for (int i = 0; i < [availableHashTagArray count]; i++)
+            {
+                NSString *tempString = [availableHashTagArray objectAtIndex:i];
+                NSString *subTempString = [tempString substringToIndex:3];
+                NSLog(@"TEMP STRING DEL CAZZO FANCULO %@", subTempString);
+                if ([subTempString isEqualToString:textToCheck])
+                {
+                    NSLog(@"E CHE CAZZO");
+                    [currentHashtagArray addObject:tempString];
+                }
+            }
+            if ([currentHashtagArray count] > 0)
+            {
+                [self.editContainerView addSubview:self.editTableView];
+                [self.editTableView reloadData];
+            }
+        }
+    }
     //    NSArray *words=[messageTextView.text componentsSeparatedByString:@" "];
     //
     //    for (NSString *word in words)
@@ -790,5 +852,97 @@ withNumberOfChannels:(UInt32)numberOfChannels {
 //        letItFlyTextViewPlaceholder.hidden = NO;
 //    }
 //}
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [currentHashtagArray count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellIdentifier = @"editCellID";
+    
+    EditCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+    if (cell == nil)
+    {
+        NSArray *nib = [[NSBundle mainBundle] loadNibNamed:cellIdentifier owner:self options:nil];
+        cell = [nib objectAtIndex:0];
+    }
+    else
+    {
+        cell.textLabel.text = @"";
+        cell.countLabel.text = @"";
+    }
+    
+    cell.hashtagTextLabel.text = [NSString stringWithFormat:@"#%@",[currentHashtagArray objectAtIndex:indexPath.row]];
+    cell.countLabel.text = [NSString stringWithFormat:@"%d friends", (int)indexPath.row];
+    
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *message = messageTextView.text;
+    message = [message substringToIndex:lookForHashIndex];
+    NSLog(@"MESSAGE %@", message);
+    message = [message stringByAppendingString:[NSString stringWithFormat:@"#%@", [currentHashtagArray objectAtIndex:indexPath.row]]];
+    messageTextView.text = message;
+    lookForHashIndex = -1;
+    [currentHashtagArray removeAllObjects];
+    [self.editTableView reloadData];
+}
+
+#pragma mark keyboard management
+
+- (void) keyboardWillShow:(NSNotification *)note
+{
+    NSDictionary *userInfo = [note userInfo];
+    CGSize kbSize = [[userInfo objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    
+    NSLog(@"Keyboard Height: %f Width: %f", kbSize.height, kbSize.width);
+    [self.editTableView reloadData];
+    [UIView animateWithDuration:0.3 animations:^{
+        [self.editContainerView setFrame:CGRectMake(0, 0, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height - kbSize.height)];
+        [self.editHeaderView setFrame:CGRectMake(0, 0, 320, 65)];
+        [messageTextView setFrame:CGRectMake(messageTextView.frame.origin.x, self.editHeaderView.frame.size.height, messageTextView.frame.size.width, 60)];
+        [self.editTableView setFrame:CGRectMake(self.editTableView.frame.origin.x, messageTextView.frame.origin.y + messageTextView.frame.size.height + 8, self.editTableView.frame.size.width, [UIScreen mainScreen].bounds.size.height - self.editHeaderView.frame.size.height - 8 - messageTextView.frame.size.height - kbSize.height)];
+        [self.view addSubview:self.editContainerView];
+    }completion:^(BOOL finished)
+     {
+         [self.editContainerView addSubview:messageTextView];
+     }];
+}
+
+- (void) keyboardDidHide:(NSNotification *)note
+{
+    // move the view back to the origin
+    CGRect frame = self.view.frame;
+    frame.origin.y = 0;
+    
+    [UIView animateWithDuration:0.3 animations:^{
+        [self.editContainerView setFrame:CGRectMake(0, [UIScreen mainScreen].bounds.size.height, self.editContainerView.frame.size.width, self.editContainerView.frame.size.height)];
+        [messageTextView setFrame:CGRectMake(messageTextView.frame.origin.x, self.spokeAddressLabel.frame.origin.y + self.spokeAddressLabel.frame.size.height + 8, messageTextView.frame.size.width, 128)];
+        [self.view addSubview:messageTextView];
+    }completion:^(BOOL finished)
+     {
+         [self.editContainerView removeFromSuperview];
+     }];
+}
+
+-(void)populateHashtagArray:(NSNotification*)notification
+{
+    if (availableHashTagArray == nil)
+    {
+        availableHashTagArray = [[NSMutableArray alloc]init];
+    }
+    availableHashTagArray = (NSMutableArray*)[[notification userInfo]objectForKey:HASHTAG_ARRAY];
+}
 
 @end

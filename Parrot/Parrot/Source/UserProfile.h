@@ -57,5 +57,6 @@ typedef enum
 //CACHE MANAGEMENT
 -(void)saveLocalSpokesCache:(NSMutableArray*)arrivedSpokesArray;
 - (void)loadLocalSpokesCache;
+-(void)loadHashtagsFromRemote;
 
 @end

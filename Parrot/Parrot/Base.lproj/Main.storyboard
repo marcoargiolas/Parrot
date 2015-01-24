@@ -709,13 +709,87 @@
                                 <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <view contentMode="scaleToFill" id="gVD-8V-AVq">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="335"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" id="1cQ-n5-ekI">
+                                        <rect key="frame" x="0.0" y="0.0" width="320" height="65"/>
+                                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                        <color key="backgroundColor" red="0.2156862745" green="0.70588235290000001" blue="0.29411764709999999" alpha="1" colorSpace="calibratedRGB"/>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="xPI-1D-8Ua">
+                                        <rect key="frame" x="8" y="30" width="49" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Cancel">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="editViewCancelButtonPressed:" destination="xDD-zM-2Cp" eventType="touchUpInside" id="503-LF-lOR"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="CB5-cw-TRF">
+                                        <rect key="frame" x="266" y="30" width="46" height="30"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" title="Done">
+                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="editViewDoneButtonPressed:" destination="xDD-zM-2Cp" eventType="touchUpInside" id="AfA-d4-I3G"/>
+                                        </connections>
+                                    </button>
+                                    <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="qHK-aI-jjw">
+                                        <rect key="frame" x="0.0" y="68" width="320" height="267"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <prototypes>
+                                            <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="editCellID" id="Sqc-5j-Fsq" customClass="EditCell">
+                                                <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                                                <autoresizingMask key="autoresizingMask"/>
+                                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Sqc-5j-Fsq" id="tRQ-3O-hLK">
+                                                    <autoresizingMask key="autoresizingMask"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="b9C-0n-61k">
+                                                            <rect key="frame" x="8" y="11" width="200" height="21"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="oMx-Kr-zsw">
+                                                            <rect key="frame" x="226" y="11" width="86" height="21"/>
+                                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                </tableViewCellContentView>
+                                                <connections>
+                                                    <outlet property="countLabel" destination="oMx-Kr-zsw" id="duT-d9-wDx"/>
+                                                    <outlet property="hashtagTextLabel" destination="b9C-0n-61k" id="EZl-wE-cQg"/>
+                                                </connections>
+                                            </tableViewCell>
+                                        </prototypes>
+                                        <connections>
+                                            <outlet property="dataSource" destination="xDD-zM-2Cp" id="xoG-tm-wgG"/>
+                                            <outlet property="delegate" destination="xDD-zM-2Cp" id="KS2-cK-eht"/>
+                                        </connections>
+                                    </tableView>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
                         <outlet property="audioPlot" destination="XzT-eE-olt" id="C4K-78-HBZ"/>
                         <outlet property="buttonsContainerView" destination="Mau-QP-cfV" id="eLM-aK-yHt"/>
-                        <outlet property="cancelButton" destination="T5g-9V-fN6" id="plw-0g-IS7"/>
+                        <outlet property="editContainerView" destination="gVD-8V-AVq" id="spO-Wi-szd"/>
+                        <outlet property="editHeaderView" destination="1cQ-n5-ekI" id="5ZS-47-LTw"/>
+                        <outlet property="editTableView" destination="qHK-aI-jjw" id="uGq-8r-cYP"/>
+                        <outlet property="editViewCancelButton" destination="xPI-1D-8Ua" id="6Eu-W7-54N"/>
+                        <outlet property="editViewDoneButton" destination="CB5-cw-TRF" id="CgT-un-cCa"/>
                         <outlet property="hintContainerView" destination="p6V-6X-7ZC" id="c55-yC-gG3"/>
                         <outlet property="mapView" destination="cIx-U7-IL2" id="srD-N9-zwc"/>
                         <outlet property="messageTextView" destination="jLw-fp-wdU" id="NWC-18-nuX"/>

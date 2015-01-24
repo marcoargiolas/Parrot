@@ -23,6 +23,8 @@
 #define CURRENT_USER                    @"currentUser"
 #define PLAYBACK_STOP                   @"playbackStop"
 #define SPOKEN_ARRAY_ARRIVED            @"spokenArrayArrived"
+#define HASHTAG_ARRAY                   @"hashtagArray"
+#define HASHTAG_ARRAY_ARRIVED           @"hashtagArrayArrived"
 #define BIO_ARRIVED                     @"bioArrived"
 #define USER_WALL_SPOKEN_ARRIVED        @"userWallSpokesArrived"
 #define BIO_LOADED                      @"bioLoaded"
