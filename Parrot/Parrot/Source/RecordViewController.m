@@ -92,6 +92,8 @@ const unsigned char SpeechKitApplicationKey[] = {0x89, 0xe2, 0x81, 0x7f, 0x25, 0
                   delegate:nil];
     [SpeechKit setEarcon:[SKEarcon earconWithName:@"startRecord.wav"] forType:SKStartRecordingEarconType];
     [SpeechKit setEarcon:[SKEarcon earconWithName:@"startRecord.wav"] forType:SKStopRecordingEarconType];
+    
+    [self.mapView removeFromSuperview];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -331,6 +333,8 @@ const unsigned char SpeechKitApplicationKey[] = {0x89, 0xe2, 0x81, 0x7f, 0x25, 0
     if (location != nil)
     {
         spokeObj.spokeLocation = location.locManager.location;
+        spokeObj.spokePositionImageData = spokePositionImageData;
+        spokeObj.spokeAddress = spokeAddress;
     }
     
     if ([messageTextView.text length] > 0)
@@ -547,6 +551,7 @@ withNumberOfChannels:(UInt32)numberOfChannels {
 - (IBAction)positionButtonPressed:(id)sender
 {
     location = [LocationController sharedObject];
+    
     if ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
     {
         if (!location)
@@ -565,6 +570,114 @@ withNumberOfChannels:(UInt32)numberOfChannels {
         }
         [location.locManager startMonitoringSignificantLocationChanges];
     }
+    
+    [self.mapView setCenterCoordinate:location.locManager.location.coordinate];
+    
+    CLGeocoder *geocoder = [[CLGeocoder alloc] init];
+    
+    [geocoder reverseGeocodeLocation:location.locManager.location completionHandler:^(NSArray *placemarks, NSError *error){
+
+        if (error == nil && [placemarks count] > 0)
+        {
+            MKPlacemark *placemark = [placemarks lastObject];
+            NSString *strAdd = nil;
+            
+            if ([placemark.thoroughfare length] != 0)
+            {
+                // strAdd -> store value of current location
+                if ([strAdd length] != 0)
+                    strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark thoroughfare]];
+                else
+                {
+                    // strAdd -> store only this value,which is not null
+                    strAdd = placemark.thoroughfare;
+                }
+            }
+            
+//            if ([placemark.postalCode length] != 0)
+//            {
+//                if ([strAdd length] != 0)
+//                    strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark postalCode]];
+//                else
+//                    strAdd = placemark.postalCode;
+//            }
+            
+            if ([placemark.locality length] != 0)
+            {
+                if ([strAdd length] != 0)
+                    strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark locality]];
+                else
+                    strAdd = placemark.locality;
+            }
+            
+//            if ([placemark.administrativeArea length] != 0)
+//            {
+//                if ([strAdd length] != 0)
+//                    strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark administrativeArea]];
+//                else
+//                    strAdd = placemark.administrativeArea;
+//            }
+            
+            if ([placemark.country length] != 0)
+            {
+                if ([strAdd length] != 0)
+                    strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark country]];
+                else
+                    strAdd = placemark.country;
+            }
+            spokeAddress = strAdd;
+            [self.spokeAddressLabel setText:spokeAddress];
+        }
+    }];
+    
+    MKCoordinateRegion viewRegion = MKCoordinateRegionMakeWithDistance(location.locManager.location.coordinate, 200, 200);
+    MKCoordinateRegion adjustedRegion = [self.mapView regionThatFits:viewRegion];
+    [self.mapView setRegion:adjustedRegion animated:YES];
+    self.mapView.showsUserLocation = YES;
+    MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
+    [annotation setCoordinate:location.locManager.location.coordinate];
+    [annotation setTitle:@"Title"]; //You can set the subtitle too
+    [self.mapView addAnnotation:annotation];
+    
+    MKMapSnapshotOptions *options = [[MKMapSnapshotOptions alloc] init];
+    options.region = self.mapView.region;
+    options.scale = [UIScreen mainScreen].scale;
+    options.size = positionButton.frame.size;
+    
+    
+    MKMapSnapshotter *snapshotter = [[MKMapSnapshotter alloc] initWithOptions:options];
+    
+    [snapshotter startWithCompletionHandler:^(MKMapSnapshot *snapshot, NSError *error) {
+        MKAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:nil reuseIdentifier:nil];
+        
+        UIImage *image = snapshot.image;
+        UIGraphicsBeginImageContextWithOptions(image.size, YES, image.scale);
+        {
+            [image drawAtPoint:CGPointMake(0.0f, 0.0f)];
+            
+            CGRect rect = CGRectMake(0.0f, 0.0f, image.size.width, image.size.height);
+            for (id <MKAnnotation> annotation in self.mapView.annotations) {
+                CGPoint point = [snapshot pointForCoordinate:annotation.coordinate];
+                if (CGRectContainsPoint(rect, point)) {
+                    point.x = point.x + pin.centerOffset.x -
+                    (pin.bounds.size.width / 2.0f);
+                    point.y = point.y + pin.centerOffset.y -
+                    (pin.bounds.size.height / 2.0f);
+                    [pin.image drawAtPoint:point];
+                }
+            }
+            
+            UIImage *compositeImage = UIGraphicsGetImageFromCurrentImageContext();
+            UIGraphicsEndImageContext();
+            
+            if(image != nil)
+            {
+                spokePositionImageData = UIImagePNGRepresentation(compositeImage);
+            }
+            [positionButton setBackgroundImage:compositeImage forState:UIControlStateNormal];
+            [positionButton setTitle:@"" forState:UIControlStateNormal];
+        }
+    }];
 }
 
 #pragma mark UITextViewDelegate

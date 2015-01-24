@@ -13,6 +13,8 @@
 #import "RespokenViewController.h"
 #import "LocationController.h"
 #import <SpeechKit/SpeechKit.h>
+#import <MapKit/MapKit.h>
+#import <MapKit/MKReverseGeocoder.h>
 
 #define kAudioFilePath @"EZAudioTest.m4a"
 
@@ -42,13 +44,17 @@
     } transactionState;
 
     NSMutableArray *hashTagArray;
+    NSData *spokePositionImageData;
+    NSString *spokeAddress;
 }
 
+@property (strong, nonatomic) IBOutlet UILabel *spokeAddressLabel;
 @property(readonly)         SKRecognizer* voiceSearch;
 @property (strong, nonatomic) IBOutlet UITextView *messageTextView;
 @property (strong, nonatomic) IBOutlet UIButton *photoButton;
 @property (nonatomic, strong) RespokenViewController *respokenVC;
 @property (strong, nonatomic) IBOutlet UIButton *positionButton;
+@property (strong, nonatomic) IBOutlet MKMapView *mapView;
 @property (nonatomic, assign) BOOL startRecord;
 /**
  Use a OpenGL based plot to visualize the data coming in

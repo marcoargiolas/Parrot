@@ -22,19 +22,23 @@
     NSString *ownerName;
     NSString *ownerSurname;
     NSData *ownerImageData;
+    NSData *spokePositionImageData;
     NSData *spokeImageData;
     NSMutableArray *listOfHeardsID;
     NSMutableArray *listOfThankersID;
     NSMutableArray *listOfRespokeID;
     CLLocation *spokeLocation;
     NSString *spokeText;
+    NSString *spokeAddress;
 }
+@property (nonatomic, strong) NSString *spokeAddress;
 @property (nonatomic, strong) NSString *spokeText;
 @property (nonatomic, strong) CLLocation *spokeLocation;
 @property (nonatomic, strong) NSString *ownerName;
 @property (nonatomic, strong) NSString *ownerSurname;
 @property (nonatomic, strong) NSData *ownerImageData;
 @property (nonatomic, strong) NSData *spokeImageData;
+@property (nonatomic, strong) NSData *spokePositionImageData;
 @property (nonatomic, strong) NSMutableArray *listOfHeardsID;
 @property (nonatomic, strong) NSMutableArray *listOfThankersID;
 @property (nonatomic, strong) NSMutableArray *listOfRespokeID;

@@ -105,6 +105,7 @@
 		DED13A5F1A42E3230068A522 /* SpeechKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DED13A5E1A42E3230068A522 /* SpeechKit.framework */; };
 		DED22EC31A2F6AAE00A1E2EA /* button_bar_respoken_enabled@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DED22EC21A2F6AAE00A1E2EA /* button_bar_respoken_enabled@2x.png */; };
 		DED22EC51A2F6DBB00A1E2EA /* PlayBarView.xib in Resources */ = {isa = PBXBuildFile; fileRef = DED22EC41A2F6DBB00A1E2EA /* PlayBarView.xib */; };
+		DEDF8AF81A73ED4F00A5B210 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DEDF8AF71A73ED4F00A5B210 /* MapKit.framework */; };
 		DEF176F619717B9F003F15A0 /* handle_slider@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF176F519717B9F003F15A0 /* handle_slider@2x.png */; };
 		DEF8192F19962EBD00D086A7 /* ParrotNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DEF8192E19962EBD00D086A7 /* ParrotNavigationController.m */; };
 		DEF819311996592B00D086A7 /* background_navbar@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DEF819301996592B00D086A7 /* background_navbar@2x.png */; };
@@ -256,6 +257,7 @@
 		DED13A5E1A42E3230068A522 /* SpeechKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SpeechKit.framework; path = Libs/SpeechKit.framework; sourceTree = "<group>"; };
 		DED22EC21A2F6AAE00A1E2EA /* button_bar_respoken_enabled@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "button_bar_respoken_enabled@2x.png"; sourceTree = "<group>"; };
 		DED22EC41A2F6DBB00A1E2EA /* PlayBarView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = PlayBarView.xib; path = Parrot/Resources/Xib/PlayBarView.xib; sourceTree = "<group>"; };
+		DEDF8AF71A73ED4F00A5B210 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		DEF176F519717B9F003F15A0 /* handle_slider@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "handle_slider@2x.png"; sourceTree = "<group>"; };
 		DEF8192D19962EBD00D086A7 /* ParrotNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ParrotNavigationController.h; path = Source/ParrotNavigationController.h; sourceTree = "<group>"; };
 		DEF8192E19962EBD00D086A7 /* ParrotNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ParrotNavigationController.m; path = Source/ParrotNavigationController.m; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DEDF8AF81A73ED4F00A5B210 /* MapKit.framework in Frameworks */,
 				DE5B754E19F69E2D00726E8D /* ImageIO.framework in Frameworks */,
 				DEAA9022196355CF0036B6BF /* GLKit.framework in Frameworks */,
 				DECADBD11961EA300024D067 /* UIKit.framework in Frameworks */,
@@ -449,6 +452,7 @@
 		DECADBCB1961EA300024D067 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DEDF8AF71A73ED4F00A5B210 /* MapKit.framework */,
 				DED13A5E1A42E3230068A522 /* SpeechKit.framework */,
 				DE5B754D19F69E2D00726E8D /* ImageIO.framework */,
 				DEAA9021196355CF0036B6BF /* GLKit.framework */,

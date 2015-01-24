@@ -319,6 +319,7 @@ static UserProfile *shared = nil;
     [obj setObject:[NSString stringWithFormat:@"%d",spokeToSave.totalLikes] forKey:@"totalLikes"];
     [obj setObject:spokeToSave.respokeToSpokeID forKey:@"respokeToSpokeID"];
     [obj setObject:spokeToSave.ownerID forKey:@"ownerID"];
+    [obj setObject:spokeToSave.spokeAddress forKey:@"spokeAddress"];
     [obj setObject:spokeToSave.listOfHeardsID forKey:@"listOfHeardsID"];
     [obj setObject:spokeToSave.listOfThankersID forKey:@"listOfThankersID"];
     [obj setObject:spokeToSave.listOfRespokeID forKey:@"listOfRespokeID"];
@@ -333,6 +334,11 @@ static UserProfile *shared = nil;
     {
         PFGeoPoint *spokeGeoPoint = [PFGeoPoint geoPointWithLocation:spokeToSave.spokeLocation];
         [obj setObject:spokeGeoPoint forKey:@"spokePosition"];
+    }
+    if (spokeToSave.spokePositionImageData != nil)
+    {
+        PFFile *spokePositionImageData = [PFFile fileWithData:spokeToSave.spokePositionImageData];
+        [obj setObject:spokePositionImageData forKey:@"spokePositionImageData"];
     }
     if ([spokeToSave.spokeText length] > 0)
     {

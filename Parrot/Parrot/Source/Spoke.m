@@ -27,6 +27,8 @@
 @synthesize listOfRespokeID;
 @synthesize spokeLocation;
 @synthesize spokeText;
+@synthesize spokePositionImageData;
+@synthesize spokeAddress;
 
 - (id)init
 {
@@ -48,7 +50,9 @@
         spokeText = @"";
         ownerImageData = [[NSData alloc]init];
         spokeImageData = [[NSData alloc]init];
+        spokePositionImageData = [[NSData alloc]init];
         spokeLocation = [[CLLocation alloc]init];
+        spokeAddress = @"";
 	}
 	return self;
 }
@@ -67,7 +71,9 @@
     [aCoder encodeObject:listOfRespokeID forKey:@"listOfRespokeID"];
     [aCoder encodeObject:ownerImageData forKey:@"ownerImageData"];
     [aCoder encodeObject:spokeImageData forKey:@"spokeImageData"];
+    [aCoder encodeObject:spokePositionImageData forKey:@"spokePositionImageData"];
     [aCoder encodeObject:ownerID forKey:@"ownerID"];
+    [aCoder encodeObject:spokeAddress forKey:@"spokeAddress"];
     [aCoder encodeObject:ownerName forKey:@"ownerName"];
     [aCoder encodeObject:spokeText forKey:@"spokeText"];
     [aCoder encodeObject:ownerSurname forKey:@"ownerSurname"];
@@ -90,10 +96,12 @@
         listOfRespokeID = [aDecoder decodeObjectForKey:@"listOfRespokeID"];
         ownerImageData = [aDecoder decodeObjectForKey:@"ownerImageData"];
         spokeImageData = [aDecoder decodeObjectForKey:@"spokeImageData"];
+        spokePositionImageData = [aDecoder decodeObjectForKey:@"spokePositionImageData"];
         ownerID = [aDecoder decodeObjectForKey:@"ownerID"];
         ownerName = [aDecoder decodeObjectForKey:@"ownerName"];
         ownerSurname = [aDecoder decodeObjectForKey:@"ownerSurname"];
         spokeText = [aDecoder decodeObjectForKey:@"spokeText"];
+        spokeAddress = [aDecoder decodeObjectForKey:@"spokeAddress"];
         spokeLocation = [aDecoder decodeObjectForKey:@"spokeLocation"];
     }
     
