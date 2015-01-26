@@ -25,7 +25,7 @@
 
 
 @end
-@interface RecordViewController : UIViewController <AVAudioPlayerDelegate,EZMicrophoneDelegate, UIGestureRecognizerDelegate, AVAudioSessionDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, SpeechKitDelegate, SKRecognizerDelegate, UITextViewDelegate>
+@interface RecordViewController : UIViewController <AVAudioPlayerDelegate,EZMicrophoneDelegate, UIGestureRecognizerDelegate, AVAudioSessionDelegate, UIActionSheetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate, SpeechKitDelegate, SKRecognizerDelegate, UITextViewDelegate, MKMapViewDelegate>
 {
     NSString *spokeFileName;
     IBOutlet UIView *buttonsContainerView;
@@ -56,6 +56,11 @@
     NSData *spokePositionImageData;
     NSString *spokeAddress;
     int lookForHashIndex;
+    
+    CLLocationCoordinate2D currentCentre;
+    int currenDist;
+    
+    NSArray* places;
 }
 
 @property (strong, nonatomic) IBOutlet UIView *editContainerView;

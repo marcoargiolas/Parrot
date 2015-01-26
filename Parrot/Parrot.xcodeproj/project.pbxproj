@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DE0AFC2B1A76A3D0004A7AFC /* PlacesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0AFC2A1A76A3D0004A7AFC /* PlacesViewController.m */; };
+		DE0AFC371A76D47E004A7AFC /* MapPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = DE0AFC361A76D47E004A7AFC /* MapPoint.m */; };
 		DE1D8984197ACC0600B552B4 /* SpokeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DE1D8983197ACC0600B552B4 /* SpokeCell.xib */; };
 		DE1D8987197AEFA900B552B4 /* SpokeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DE1D8986197AEFA900B552B4 /* SpokeCell.m */; };
 		DE1D898A197C3D4200B552B4 /* button_main_record_active@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DE1D8989197C3D4200B552B4 /* button_main_record_active@2x.png */; };
@@ -125,6 +127,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DE0AFC291A76A3D0004A7AFC /* PlacesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PlacesViewController.h; path = Source/PlacesViewController.h; sourceTree = "<group>"; };
+		DE0AFC2A1A76A3D0004A7AFC /* PlacesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PlacesViewController.m; path = Source/PlacesViewController.m; sourceTree = "<group>"; };
+		DE0AFC351A76D47E004A7AFC /* MapPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MapPoint.h; path = Source/MapPoint.h; sourceTree = "<group>"; };
+		DE0AFC361A76D47E004A7AFC /* MapPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MapPoint.m; path = Source/MapPoint.m; sourceTree = "<group>"; };
 		DE1D8983197ACC0600B552B4 /* SpokeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = SpokeCell.xib; path = Parrot/Resources/Xib/SpokeCell.xib; sourceTree = "<group>"; };
 		DE1D8985197AEFA900B552B4 /* SpokeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SpokeCell.h; path = Source/SpokeCell.h; sourceTree = "<group>"; };
 		DE1D8986197AEFA900B552B4 /* SpokeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SpokeCell.m; path = Source/SpokeCell.m; sourceTree = "<group>"; };
@@ -407,6 +413,10 @@
 				DEAA9050196356C70036B6BF /* RecordViewController.m */,
 				DE9DFC5A1965F0EC00908ED7 /* UserProfile.h */,
 				DE9DFC5B1965F0EC00908ED7 /* UserProfile.m */,
+				DE0AFC291A76A3D0004A7AFC /* PlacesViewController.h */,
+				DE0AFC2A1A76A3D0004A7AFC /* PlacesViewController.m */,
+				DE0AFC351A76D47E004A7AFC /* MapPoint.h */,
+				DE0AFC361A76D47E004A7AFC /* MapPoint.m */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -746,11 +756,13 @@
 				DEAA901D196350A40036B6BF /* WallViewController.m in Sources */,
 				DEAA9045196356170036B6BF /* EZAudioPlotGL.m in Sources */,
 				DEAA9046196356170036B6BF /* EZAudioPlotGLKViewController.m in Sources */,
+				DE0AFC2B1A76A3D0004A7AFC /* PlacesViewController.m in Sources */,
 				DEAA9048196356170036B6BF /* EZOutput.m in Sources */,
 				DEF8192F19962EBD00D086A7 /* ParrotNavigationController.m in Sources */,
 				DE9DFC621965FC3200908ED7 /* UIImage+Additions.m in Sources */,
 				DEAA9040196356170036B6BF /* AEFloatConverter.m in Sources */,
 				DEB5128619E03F25007FB802 /* RegisterViewController.m in Sources */,
+				DE0AFC371A76D47E004A7AFC /* MapPoint.m in Sources */,
 				DEAA904B196356170036B6BF /* TPCircularBuffer.c in Sources */,
 				DE568C781A3612D600760D55 /* PlayBarView.m in Sources */,
 				DECADC0C1961EC160024D067 /* AppDelegate.m in Sources */,

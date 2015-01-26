@@ -10,6 +10,7 @@
 #import "Utilities.h"
 #import "Spoke.h"
 #import "GlobalDefines.h"
+#import "PlacesViewController.h"
 
 @implementation EditCell
 
@@ -116,6 +117,13 @@ const unsigned char SpeechKitApplicationKey[] = {0x89, 0xe2, 0x81, 0x7f, 0x25, 0
     [[UIDevice currentDevice] setProximityMonitoringEnabled:YES];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(sensorStateChange:) name:@"UIDeviceProximityStateDidChangeNotification" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(populateHashtagArray:) name:HASHTAG_ARRAY_ARRIVED object:nil];
+    
+    NSString *spokePlace = [[[NSUserDefaults standardUserDefaults]objectForKey:PLACE_CHOOSE] objectForKey:@"name"];
+    if ([spokePlace length] > 0)
+    {
+        [self.spokeAddressLabel setText:spokePlace];
+        [[NSUserDefaults standardUserDefaults]removeObjectForKey:PLACE_CHOOSE];
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated
@@ -587,6 +595,13 @@ withNumberOfChannels:(UInt32)numberOfChannels {
         [location.locManager startMonitoringSignificantLocationChanges];
     }
     
+    [location.locManager setDistanceFilter:kCLDistanceFilterNone];
+    [location.locManager setDesiredAccuracy:kCLLocationAccuracyBest];
+    
+    
+    self.mapView.delegate = self;
+    [self.mapView setShowsUserLocation:YES];
+    
     [self.mapView setCenterCoordinate:location.locManager.location.coordinate];
     
     CLGeocoder *geocoder = [[CLGeocoder alloc] init];
@@ -597,7 +612,7 @@ withNumberOfChannels:(UInt32)numberOfChannels {
         {
             MKPlacemark *placemark = [placemarks lastObject];
             NSString *strAdd = nil;
-            
+
             if ([placemark.thoroughfare length] != 0)
             {
                 // strAdd -> store value of current location
@@ -625,7 +640,7 @@ withNumberOfChannels:(UInt32)numberOfChannels {
                 else
                     strAdd = placemark.locality;
             }
-            
+
 //            if ([placemark.administrativeArea length] != 0)
 //            {
 //                if ([strAdd length] != 0)
@@ -642,7 +657,7 @@ withNumberOfChannels:(UInt32)numberOfChannels {
                     strAdd = placemark.country;
             }
             spokeAddress = strAdd;
-            [self.spokeAddressLabel setText:spokeAddress];
+//            [self.spokeAddressLabel setText:spokeAddress];
         }
     }];
     
@@ -694,6 +709,67 @@ withNumberOfChannels:(UInt32)numberOfChannels {
             [positionButton setTitle:@"" forState:UIControlStateNormal];
         }
     }];
+    
+    [self queryGooglePlaces:@"puppa"];
+}
+
+#pragma mark - MKMapViewDelegate methods.
+- (void)mapView:(MKMapView *)mv didAddAnnotationViews:(NSArray *)views {
+    MKCoordinateRegion region;
+    region = MKCoordinateRegionMakeWithDistance(location.locManager.location.coordinate,1000,1000);
+    
+    
+    [mv setRegion:region animated:YES];
+}
+
+-(void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated {
+    //Get the east and west points on the map so you can calculate the distance (zoom level) of the current map view.
+    MKMapRect mRect = self.mapView.visibleMapRect;
+    MKMapPoint eastMapPoint = MKMapPointMake(MKMapRectGetMinX(mRect), MKMapRectGetMidY(mRect));
+    MKMapPoint westMapPoint = MKMapPointMake(MKMapRectGetMaxX(mRect), MKMapRectGetMidY(mRect));
+    
+    //Set your current distance instance variable.
+    currenDist = MKMetersBetweenMapPoints(eastMapPoint, westMapPoint);
+    
+    //Set your current center point on the map instance variable.
+    currentCentre = self.mapView.centerCoordinate;
+}
+
+-(void) queryGooglePlaces: (NSString *) googleType
+{
+    // Build the url string to send to Google. NOTE: The kGOOGLE_API_KEY is a constant that should contain your own API key that you obtain from Google. See this link for more info:
+    // https://developers.google.com/maps/documentation/places/#Authentication
+    NSString *url = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/search/json?location=%f,%f&sensor=true&key=%@", location.locManager.location.coordinate.latitude, location.locManager.location.coordinate.longitude, kGOOGLE_API_KEY];
+    
+    url = [NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/search/json?location=%f,%f&radius=%@&types=%@&sensor=true&key=%@", location.locManager.location.coordinate.latitude, location.locManager.location.coordinate.longitude, [NSString stringWithFormat:@"%i", currenDist], @"", kGOOGLE_API_KEY];
+    //Formulate the string as a URL object.
+    NSURL *googleRequestURL=[NSURL URLWithString:url];
+    
+    // Retrieve the results of the URL.
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSData* data = [NSData dataWithContentsOfURL: googleRequestURL];
+        [self performSelectorOnMainThread:@selector(fetchedData:) withObject:data waitUntilDone:YES];
+    });
+}
+
+-(void)fetchedData:(NSData *)responseData {
+    //parse out the json data
+    NSError* error;
+    NSDictionary* json = [NSJSONSerialization
+                          JSONObjectWithData:responseData
+                          
+                          options:kNilOptions
+                          error:&error];
+    
+    if (places == nil)
+    {
+        places = [[NSMutableArray alloc]init];
+    }
+    places = [json objectForKey:@"results"];
+    
+    [[NSUserDefaults standardUserDefaults] setObject:places forKey:CURRENT_PLACES_SET];
+    
+    [self performSegueWithIdentifier:@"placesAction" sender:self];
 }
 
 - (IBAction)editViewDoneButtonPressed:(id)sender

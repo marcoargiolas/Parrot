@@ -42,3 +42,7 @@
 #define UPDATE_LIKES                    @"updateLikes"
 #define UPDATE_HEARDS                   @"updateHeards"
 #define INVALIDATE_HIDE_PLAYBAR         @"invalidateHidePlayBar"
+
+#define kGOOGLE_API_KEY                 @"AIzaSyDcThNanLyiOZ9HC3Fuv1WYWHx6VkQUNYc"
+#define PLACE_CHOOSE                    @"placeChoose"
+#define CURRENT_PLACES_SET              @"currentPlacesSet"
